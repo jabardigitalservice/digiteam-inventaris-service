@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - development
+    pull_request:
+      - development
     paths:
       - 'src/**'
 
