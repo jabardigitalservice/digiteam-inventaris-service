@@ -4,7 +4,6 @@ import configuration from './configuration';
 import { AppConfigService } from './config.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
-
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -20,10 +19,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         KEYCLOAK_REALM: Joi.string().required(),
         KEYCLOAK_CLIENT_ID: Joi.string().required(),
         KEYCLOAK_SECRET: Joi.string().required(),
-      })
+      }),
+      expandVariables: true,
     }),
   ],
   providers: [ConfigService, AppConfigService],
-  exports: [ConfigService, AppConfigService]
+  exports: [ConfigService, AppConfigService],
 })
 export class AppConfigModule {}

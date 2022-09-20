@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { AppConfigService } from '../../app/config.service';
-import { KeycloakConnectOptions, KeycloakConnectOptionsFactory } from 'nest-keycloak-connect';
+import {
+  KeycloakConnectOptions,
+  KeycloakConnectOptionsFactory,
+} from 'nest-keycloak-connect';
 
 @Injectable()
 export class KeycloakConfigService implements KeycloakConnectOptionsFactory {
-
   constructor(private appConfigService: AppConfigService) {}
 
   createKeycloakConnectOptions(): KeycloakConnectOptions {
@@ -14,5 +16,5 @@ export class KeycloakConfigService implements KeycloakConnectOptionsFactory {
       clientId: this.appConfigService.keycloakClientId,
       secret: this.appConfigService.keycloakSecret,
     };
-  } 
+  }
 }

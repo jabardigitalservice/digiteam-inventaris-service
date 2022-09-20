@@ -1,5 +1,5 @@
-import { Injectable } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
+import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AppConfigService {
@@ -16,7 +16,7 @@ export class AppConfigService {
   get url(): string {
     return this.configService.get('app.APP_URL');
   }
-  
+
   get port(): number {
     return Number(this.configService.get('app.APP_PORT'));
   }

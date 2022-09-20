@@ -4,7 +4,7 @@ import { Roles, Unprotected } from 'nest-keycloak-connect';
 @Controller()
 export class SamplesController {
   @Get('/goods/request')
-  @Roles({roles: ['admin']})
+  @Roles({ roles: ['admin'] })
   getGoods(): string {
     return 'list of goods request';
   }
