@@ -51,4 +51,4 @@ jobs:
           context: .
           file: Dockerfile
           push: true
-          tags: ${{ IMAGE_NAME.SERVICE_IMAGENAME }}:${{ steps.vars.outputs.sha_short }}
+          tags: ${{ secrets.SERVICE_IMAGENAME }}:${{ steps.vars.outputs.sha_short }}
