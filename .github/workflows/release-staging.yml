@@ -1,10 +1,6 @@
 name: Digiteam Inventory Release Staging
 
 on:
-  push:
-    branches: [ "development" ]
-    paths:
-      - 'src/**'
   pull_request: 
     branches: ["development"]
     paths:
