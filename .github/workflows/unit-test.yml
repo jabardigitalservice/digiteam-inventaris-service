@@ -1,0 +1,19 @@
+name: Digiteam Inventory Release Staging
+
+on:
+  pull_request: 
+    branches: ["development", "feature/*" "rc/*"]
+    paths:
+      - 'src/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run Tests
+        run: |
+          npm install
+          npm run lint
+          sleep 5
+          npm run test
