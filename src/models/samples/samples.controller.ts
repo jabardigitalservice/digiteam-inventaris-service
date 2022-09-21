@@ -1,9 +1,9 @@
 import { Controller, Get } from '@nestjs/common';
 import { Roles, Unprotected } from 'nest-keycloak-connect';
 
-@Controller()
+@Controller('v1')
 export class SamplesController {
-  @Get('/goods/request')
+  @Get('/requests')
   @Roles({ roles: ['admin'] })
   getGoods(): string {
     return 'list of goods request';
