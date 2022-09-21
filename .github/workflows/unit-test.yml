@@ -2,7 +2,10 @@ name: Digiteam Inventory Release Staging
 
 on:
   pull_request: 
-    branches: ["development", "feature/*" "rc/*"]
+    branches: 
+      - "development"
+      - "feature/*"
+      - "rc/*"
     paths:
       - 'src/**'
 
