@@ -9,4 +9,9 @@ export default registerAs('app', () => ({
   KEYCLOAK_REALM: process.env.KEYCLOAK_REALM,
   KEYCLOAK_CLIENT_ID: process.env.KEYCLOAK_CLIENT_ID,
   KEYCLOAK_SECRET: process.env.KEYCLOAK_SECRET,
+  MYSQL_HOST: process.env.MYSQL_HOST,
+  MYSQL_PORT: process.env.MYSQL_PORT,
+  MYSQL_USERNAME: process.env.MYSQL_USERNAME,
+  MYSQL_PASSWORD: process.env.MYSQL_PASSWORD,
+  MYSQL_DATABASE: process.env.MYSQL_DATABASE,
 }));
