@@ -5,6 +5,7 @@ import { ConfigService } from '@nestjs/config';
 export class AppConfigService {
   constructor(private configService: ConfigService) {}
 
+  // App Configuration
   get env(): string {
     return this.configService.get('app.APP_ENV');
   }
@@ -21,6 +22,7 @@ export class AppConfigService {
     return Number(this.configService.get('app.APP_PORT'));
   }
 
+  // Keycloak Configuration
   get keycloakServer(): string {
     return this.configService.get('app.KEYCLOAK_AUTH_SERVER_URL');
   }
@@ -35,5 +37,26 @@ export class AppConfigService {
 
   get keycloakSecret(): string {
     return this.configService.get('app.KEYCLOAK_SECRET');
+  }
+
+  // Mysql DB Configuration
+  get dbHost(): string {
+    return this.configService.get('app.MYSQL_HOST');
+  }
+
+  get dbPort(): number {
+    return Number(this.configService.get('app.MYSQL_PORT'));
+  }
+
+  get dbUsername(): string {
+    return this.configService.get('app.MYSQL_USERNAME');
+  }
+
+  get dbPassword(): string {
+    return this.configService.get('app.MYSQL_PASSWORD');
+  }
+
+  get dbName(): string {
+    return this.configService.get('app.MYSQL_DATABASE');
   }
 }
