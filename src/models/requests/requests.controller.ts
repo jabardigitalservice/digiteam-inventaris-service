@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, Res, HttpStatus } from '@nestjs/common';
 import { CreateRequestDto } from './dtos/create-request.dto';
 import { Unprotected } from 'nest-keycloak-connect';
 import { RequestsService } from './requests.service';
@@ -9,12 +9,19 @@ export class RequestsController {
 
   @Post('/requests')
   @Unprotected()
-  PostRequest(@Body() createRequestDto: CreateRequestDto): void {
+  PostRequest(
+    @Body() createRequestDto: CreateRequestDto,
+    @Res() response,
+  ): Promise<any> {
     this.requestsService.create(
       createRequestDto.request_type,
       createRequestDto.item_name,
       createRequestDto.purpose,
       createRequestDto.priority,
     );
+
+    return response.status(HttpStatus.CREATED).send({
+      message: 'CREATED',
+    });
   }
 }
