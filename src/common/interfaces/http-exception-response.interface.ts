@@ -1,3 +1,4 @@
 export interface HttpExceptionResponse {
-  error: string;
+  error?: string;
+  errors?: Object;
 }
