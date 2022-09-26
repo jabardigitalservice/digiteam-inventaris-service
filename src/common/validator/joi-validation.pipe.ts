@@ -1,16 +1,17 @@
 import {
+  ArgumentMetadata,
   Injectable,
   PipeTransform,
   UnprocessableEntityException,
 } from '@nestjs/common';
-import Joi, { ObjectSchema } from 'joi';
+import Joi, { NumberSchema, ObjectSchema, StringSchema } from 'joi';
 import lang from '../lang/config';
 
 @Injectable()
 export class JoiValidationPipe implements PipeTransform {
-  constructor(private schema: ObjectSchema) {}
+  constructor(private schema: ObjectSchema | StringSchema | NumberSchema) {}
 
-  transform(values: Record<string, any>) {
+  transform(values: Record<string, any>, metadata: ArgumentMetadata) {
     const { error, value } = this.schema.validate(values, {
       abortEarly: false,
       allowUnknown: true,
@@ -20,16 +21,21 @@ export class JoiValidationPipe implements PipeTransform {
 
     if (!error) return value;
 
-    const errors = this.validateError(error.details);
+    const errors = this.validateError(error.details, metadata);
 
     throw new UnprocessableEntityException(errors);
   }
 
-  private validateError = (details: Joi.ValidationErrorItem[]) => {
+  private validateError = (
+    details: Joi.ValidationErrorItem[],
+    metadata: ArgumentMetadata,
+  ) => {
     const rules: any = {};
 
     for (const item of details) {
       const { context, type, path } = item;
+
+      if (path.length === 0) path.push(metadata.data);
 
       const key = path.join('.');
       const label = path[path.length - 1].toString();
