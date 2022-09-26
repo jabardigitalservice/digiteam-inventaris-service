@@ -20,11 +20,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
       error: errorMessage,
     };
 
-    if (statusCode === HttpStatus.UNPROCESSABLE_ENTITY) {
-      delete resp.error;
-      resp.errors = exception.getResponse();
-    }
-
     response.status(statusCode).json(resp);
   }
 }
