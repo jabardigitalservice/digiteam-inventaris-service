@@ -2,7 +2,6 @@ import {
   Body,
   Controller,
   Post,
-  Get,
   Res,
   HttpStatus,
   UsePipes,
@@ -10,6 +9,7 @@ import {
 import { CreateRequestDto } from './dtos/create-request.dto';
 import { Unprotected } from 'nest-keycloak-connect';
 import { RequestsService } from './requests.service';
+import { JoiValidationPipe } from 'src/common/validator/joi-validation.pipe';
 import { RequestPayloadSchema } from './validator/request.schema-validator';
 
 @Controller()
@@ -18,25 +18,15 @@ export class RequestsController {
 
   @Post('/requests')
   @Unprotected()
-  @UsePipes(RequestPayloadSchema)
+  @UsePipes(new JoiValidationPipe(RequestPayloadSchema))
   async PostRequest(
     @Body() createRequestDto: CreateRequestDto,
     @Res() response,
   ): Promise<any> {
-    this.requestsService.create({ ...createRequestDto });
+    this.requestsService.createNewRequest(createRequestDto);
 
     return response.status(HttpStatus.CREATED).send({
       message: 'CREATED',
-    });
-  }
-
-  @Get('/requests')
-  @Unprotected()
-  async GetRequests(@Res() response): Promise<Request[]> {
-    const requests = await this.requestsService.findAll();
-
-    return response.status(HttpStatus.OK).send({
-      data: requests,
     });
   }
 }

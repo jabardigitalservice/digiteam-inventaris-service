@@ -14,24 +14,24 @@ export class Request {
   @Column({ type: 'int', nullable: false, name: 'request_type' })
   public requestType: number;
 
-  @Column({ type: 'varchar', length: 255, nullable: false, name: 'user_name' })
-  public userName: string;
+  @Column({ type: 'varchar', length: 255, nullable: false, name: 'name' })
+  public name: string;
 
   @Column({
     type: 'varchar',
     length: 255,
     nullable: false,
-    name: 'user_division',
+    name: 'division',
   })
-  public userDivision: string;
+  public division: string;
 
   @Column({
     type: 'varchar',
     length: 255,
     nullable: false,
-    name: 'user_phone_number',
+    name: 'phone_number',
   })
-  public userPhoneNumber: string;
+  public phoneNumber: string;
 
   @Column({
     type: 'varchar',

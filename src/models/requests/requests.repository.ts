@@ -10,14 +10,9 @@ export class RequestsRepository extends Repository<Request> {
     super(repository.target, repository.manager, repository.queryRunner);
   }
 
-  async createNewRequest(newRequest: Request) {
-    const request = this.create({
-      ...newRequest,
-    });
+  async store(newRequest: Request) {
+    const request = this.create(newRequest);
 
     return this.save(request);
-  }
-  async getAllRequests() {
-    return this.find();
   }
 }
