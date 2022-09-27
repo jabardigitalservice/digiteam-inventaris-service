@@ -6,16 +6,32 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity()
-export class Requests {
+@Entity('requests')
+export class Request {
   @PrimaryGeneratedColumn('uuid')
-  public id: string;
+  public id?: string;
+
+  @Column({ type: 'varchar', length: 255, nullable: false, name: 'username' })
+  public username: string;
+
+  @Column({
+    type: 'varchar',
+    length: 255,
+    nullable: false,
+    name: 'division',
+  })
+  public division: string;
+
+  @Column({
+    type: 'varchar',
+    length: 255,
+    nullable: false,
+    name: 'phone_number',
+  })
+  public phoneNumber: string;
 
   @Column({ type: 'int', nullable: false, name: 'request_type' })
   public requestType: number;
-
-  @Column({ type: 'varchar', length: 255, nullable: true, name: 'user_name' })
-  public userName: string;
 
   @Column({
     type: 'varchar',
@@ -32,21 +48,21 @@ export class Requests {
   public priority: number;
 
   @Column({ type: 'int', nullable: false, default: 1 })
-  public status: number;
+  public status?: number;
 
   @CreateDateColumn({
     type: 'timestamp',
     name: 'created_at',
     nullable: false,
   })
-  public createdAt: Date;
+  public createdAt?: Date;
 
   @UpdateDateColumn({
     type: 'timestamp',
     name: 'updated_at',
     nullable: false,
   })
-  public updatedAt: Date;
+  public updatedAt?: Date;
 
   @Column({
     type: 'timestamp',

@@ -2,6 +2,18 @@ import { IsString, IsNumber, IsNotEmpty } from 'class-validator';
 
 export class CreateRequestDto {
   @IsNotEmpty()
+  @IsString()
+  username: string;
+
+  @IsNotEmpty()
+  @IsString()
+  division: string;
+
+  @IsNotEmpty()
+  @IsString()
+  phone_number: string;
+
+  @IsNotEmpty()
   @IsNumber()
   request_type: number;
 
