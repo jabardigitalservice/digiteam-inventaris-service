@@ -1,25 +1,27 @@
+import { CreateRequestDto } from './dtos/create-request.dto';
 import { Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
 import { Requests } from './entities/request.entity';
+import { RequestsRepository } from './requests.repository';
 
 @Injectable()
 export class RequestsService {
-  constructor(@InjectRepository(Requests) private repo: Repository<Requests>) {}
+  constructor(private repo: RequestsRepository) {}
 
-  create(
-    requestType: number,
-    itemName: string,
-    purpose: string,
-    priority: number,
-  ) {
-    const request = this.repo.create({
-      requestType,
-      itemName,
-      purpose,
-      priority,
+  async create(reqBody: CreateRequestDto) {
+    const newRequest = this.repo.create({
+      userName: reqBody.user_name,
+      userDivision: reqBody.user_division,
+      userPhoneNumber: reqBody.user_phone_number,
+      requestType: reqBody.request_type,
+      itemName: reqBody.item_name,
+      purpose: reqBody.purpose,
+      priority: reqBody.priority,
     });
 
-    return this.repo.save(request);
+    return this.repo.createNewRequest(newRequest);
+  }
+
+  async findAll(): Promise<Requests[]> {
+    return this.repo.getAllRequests();
   }
 }

@@ -14,8 +14,24 @@ export class Requests {
   @Column({ type: 'int', nullable: false, name: 'request_type' })
   public requestType: number;
 
-  @Column({ type: 'varchar', length: 255, nullable: true, name: 'user_name' })
+  @Column({ type: 'varchar', length: 255, nullable: false, name: 'user_name' })
   public userName: string;
+
+  @Column({
+    type: 'varchar',
+    length: 255,
+    nullable: false,
+    name: 'user_division',
+  })
+  public userDivision: string;
+
+  @Column({
+    type: 'varchar',
+    length: 255,
+    nullable: false,
+    name: 'user_phone_number',
+  })
+  public userPhoneNumber: string;
 
   @Column({
     type: 'varchar',
