@@ -1,16 +1,16 @@
 import { Repository } from 'typeorm';
-import { Requests } from './entities/request.entity';
+import { Request } from './entities/request.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 
-export class RequestsRepository extends Repository<Requests> {
+export class RequestsRepository extends Repository<Request> {
   constructor(
-    @InjectRepository(Requests)
-    repository: Repository<Requests>,
+    @InjectRepository(Request)
+    repository: Repository<Request>,
   ) {
     super(repository.target, repository.manager, repository.queryRunner);
   }
 
-  async createNewRequest(newRequest: Requests) {
+  async createNewRequest(newRequest: Request) {
     const request = this.create({
       ...newRequest,
     });

@@ -1,6 +1,6 @@
 import { CreateRequestDto } from './dtos/create-request.dto';
 import { Injectable } from '@nestjs/common';
-import { Requests } from './entities/request.entity';
+import { Request } from './entities/request.entity';
 import { RequestsRepository } from './requests.repository';
 
 @Injectable()
@@ -21,7 +21,7 @@ export class RequestsService {
     return this.repo.createNewRequest(newRequest);
   }
 
-  async findAll(): Promise<Requests[]> {
+  async findAll(): Promise<Request[]> {
     return this.repo.getAllRequests();
   }
 }
