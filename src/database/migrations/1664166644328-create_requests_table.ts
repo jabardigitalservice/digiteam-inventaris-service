@@ -15,16 +15,28 @@ export class CreateRequestTable1664166644328 implements MigrationInterface {
             isPrimary: true,
           },
           {
-            name: 'request_type',
+            name: 'user_name',
             type: 'varchar',
             length: '255',
             isNullable: false,
           },
           {
-            name: 'user_name',
+            name: 'user_division',
             type: 'varchar',
             length: '255',
-            isNullable: true,
+            isNullable: false,
+          },
+          {
+            name: 'user_phone_number',
+            type: 'varchar',
+            length: '255',
+            isNullable: false,
+          },
+          {
+            name: 'request_type',
+            type: 'varchar',
+            length: '255',
+            isNullable: false,
           },
           {
             name: 'item_name',
