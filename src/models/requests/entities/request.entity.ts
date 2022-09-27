@@ -9,13 +9,10 @@ import {
 @Entity('requests')
 export class Request {
   @PrimaryGeneratedColumn('uuid')
-  public id: string;
+  public id?: string;
 
-  @Column({ type: 'int', nullable: false, name: 'request_type' })
-  public requestType: number;
-
-  @Column({ type: 'varchar', length: 255, nullable: false, name: 'name' })
-  public name: string;
+  @Column({ type: 'varchar', length: 255, nullable: false, name: 'username' })
+  public username: string;
 
   @Column({
     type: 'varchar',
@@ -33,6 +30,9 @@ export class Request {
   })
   public phoneNumber: string;
 
+  @Column({ type: 'int', nullable: false, name: 'request_type' })
+  public requestType: number;
+
   @Column({
     type: 'varchar',
     length: 255,
@@ -48,21 +48,21 @@ export class Request {
   public priority: number;
 
   @Column({ type: 'int', nullable: false, default: 1 })
-  public status: number;
+  public status?: number;
 
   @CreateDateColumn({
     type: 'timestamp',
     name: 'created_at',
     nullable: false,
   })
-  public createdAt: Date;
+  public createdAt?: Date;
 
   @UpdateDateColumn({
     type: 'timestamp',
     name: 'updated_at',
     nullable: false,
   })
-  public updatedAt: Date;
+  public updatedAt?: Date;
 
   @Column({
     type: 'timestamp',

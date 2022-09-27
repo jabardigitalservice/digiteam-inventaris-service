@@ -7,8 +7,8 @@ export class RequestsService {
   constructor(private repo: RequestsRepository) {}
 
   async createNewRequest(reqBody: CreateRequestDto) {
-    const newRequest = this.repo.create({
-      name: reqBody.name,
+    const newRequest = this.repo.store({
+      username: reqBody.username,
       division: reqBody.division,
       phoneNumber: reqBody.phone_number,
       requestType: reqBody.request_type,
@@ -17,6 +17,6 @@ export class RequestsService {
       priority: reqBody.priority,
     });
 
-    return this.repo.store(newRequest);
+    return newRequest;
   }
 }
