@@ -15,7 +15,7 @@ export class CreateRequestTable1664166644328 implements MigrationInterface {
             isPrimary: true,
           },
           {
-            name: 'name',
+            name: 'username',
             type: 'varchar',
             length: '255',
             isNullable: false,
