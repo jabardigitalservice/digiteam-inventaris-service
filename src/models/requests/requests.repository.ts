@@ -15,15 +15,19 @@ export class RequestsRepository extends Repository<Request> {
     return this.save(request);
   }
 
-  async fetchAll(page: number, limit: number): Promise<Request[]> {
-    const result = this.createQueryBuilder('request');
+  async fetchAll(offset: number, limit: number) {
+    const query = this.createQueryBuilder('request');
 
-    const skip = (page - 1) * limit;
-    result.take(limit);
-    result.skip(skip);
+    const count: number = await query.getCount();
 
-    const requests = await result.getMany();
+    query.take(limit);
+    query.skip(offset);
 
-    return requests;
+    const result = await query.getMany();
+
+    return {
+      result,
+      count,
+    };
   }
 }

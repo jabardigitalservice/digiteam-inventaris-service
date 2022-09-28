@@ -1,20 +1,37 @@
+import { QueryPaginateDto } from './dtos/query-pagination.dto';
 export interface MetaPagination {
-  current_page: number;
+  page: number;
   limit: number;
-  previous_page: number;
-  next_page: number;
-  total_item: number;
+  from: number;
+  to: number;
+  last_page: number;
+  total: number;
 }
 
-export const metaPagination = (data, page, limit: any): MetaPagination => {
-  const total = data.length;
-  const current_page = Number(page);
-
+export const queryPagination = (request: QueryPaginateDto) => {
+  const limit = Number(request.limit) || 10;
+  const page = Number(request.page) || 1;
+  const offset = (page - 1) * limit;
   return {
-    current_page: current_page,
-    previous_page: current_page - 1,
-    next_page: current_page + 1,
+    page,
+    limit,
+    offset,
+  };
+};
+
+export const metaPagination = (
+  count: number,
+  page: number,
+  limit: number,
+  offset: number,
+  result: Array<object>,
+): MetaPagination => {
+  return {
+    page: Number(page), //current_page
+    from: offset + 1,
+    to: offset + result.length,
+    last_page: Math.ceil(count / limit),
     limit: Number(limit),
-    total_item: total,
+    total: count,
   };
 };

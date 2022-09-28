@@ -13,8 +13,7 @@ import { Unprotected } from 'nest-keycloak-connect';
 import { RequestsService } from './requests.service';
 import { JoiValidationPipe } from 'src/common/validator/joi-validation.pipe';
 import { RequestPayloadSchema } from './validator/request.schema-validator';
-import { GetRequestsPaginateDto } from './dtos/get-requests-paginate.dto';
-// import { metaPaginate } from 'src/common/helper/pagaination.helper';
+import { QueryRequestDto } from './dtos/query-request.dto';
 
 @Controller()
 export class RequestsController {
@@ -37,12 +36,10 @@ export class RequestsController {
   @Get('/requests')
   @Unprotected()
   async GetRequests(
-    @Query() getRequestsPaginate: GetRequestsPaginateDto,
+    @Query() queryRequest: QueryRequestDto,
     @Res() response,
   ): Promise<any> {
-    const apiResponse = await this.requestsService.getAllRequests(
-      getRequestsPaginate,
-    );
+    const apiResponse = await this.requestsService.getAllRequests(queryRequest);
 
     return response.status(HttpStatus.OK).send(apiResponse);
   }

@@ -2,9 +2,12 @@ import { CreateRequestDto } from './dtos/create-request.dto';
 import { Injectable } from '@nestjs/common';
 import { RequestsRepository } from './requests.repository';
 import { mapEntitytoInterface } from './interfaces/response.interface';
-import { GetRequestsPaginateDto } from './dtos/get-requests-paginate.dto';
-import { metaPagination } from 'src/common/helper/pagination.helper';
+import {
+  metaPagination,
+  queryPagination,
+} from 'src/common/helper/pagination.helper';
 import { ApiResponse } from 'src/common/interfaces/api-response.interface';
+import { QueryRequestDto } from './dtos/query-request.dto';
 
 @Injectable()
 export class RequestsService {
@@ -24,12 +27,12 @@ export class RequestsService {
     return newRequest;
   }
 
-  async getAllRequests(getRequestsPaginateDto: GetRequestsPaginateDto) {
-    const { page = 1, limit = 10 } = getRequestsPaginateDto;
-    const result = await this.repo.fetchAll(page, limit);
+  async getAllRequests(queryRequest: QueryRequestDto) {
+    const { offset, page, limit } = queryPagination(queryRequest);
+    const { result, count } = await this.repo.fetchAll(offset, limit);
 
     const data = result.map((requests) => mapEntitytoInterface(requests));
-    const meta = metaPagination(data, page, limit);
+    const meta = metaPagination(count, page, limit, offset, result);
 
     const apiResponse: ApiResponse = {
       data: data,
