@@ -1,4 +1,10 @@
 import { QueryPaginateDto } from './dtos/query-pagination.dto';
+
+export interface Pagination {
+  page: number;
+  limit: number;
+  offset: number;
+}
 export interface MetaPagination {
   page: number;
   limit: number;
@@ -8,7 +14,7 @@ export interface MetaPagination {
   total: number;
 }
 
-export const queryPagination = (request: QueryPaginateDto) => {
+export const queryPagination = (request: QueryPaginateDto): Pagination => {
   const limit = Number(request.limit) || 10;
   const page = Number(request.page) || 1;
   const offset = (page - 1) * limit;
@@ -21,17 +27,15 @@ export const queryPagination = (request: QueryPaginateDto) => {
 
 export const metaPagination = (
   count: number,
-  page: number,
-  limit: number,
-  offset: number,
   result: Array<object>,
+  pagination: Pagination,
 ): MetaPagination => {
   return {
-    page: Number(page), //current_page
-    from: offset + 1,
-    to: offset + result.length,
-    last_page: Math.ceil(count / limit),
-    limit: Number(limit),
+    page: pagination.page, //current_page
+    from: pagination.offset + 1,
+    to: pagination.offset + result.length,
+    last_page: Math.ceil(count / pagination.limit),
+    limit: pagination.limit,
     total: count,
   };
 };

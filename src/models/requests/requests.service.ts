@@ -28,11 +28,11 @@ export class RequestsService {
   }
 
   async getAllRequests(queryRequest: QueryRequestDto) {
-    const { offset, page, limit } = queryPagination(queryRequest);
-    const { result, count } = await this.repo.fetchAll(offset, limit);
+    const pagination = queryPagination(queryRequest);
+    const { result, count } = await this.repo.fetchAll(pagination);
 
     const data = result.map((requests) => mapEntitytoInterface(requests));
-    const meta = metaPagination(count, page, limit, offset, result);
+    const meta = metaPagination(count, result, pagination);
 
     const apiResponse: ApiResponse = {
       data: data,
