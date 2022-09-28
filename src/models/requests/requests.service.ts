@@ -35,8 +35,8 @@ export class RequestsService {
     const meta = metaPagination(count, result, pagination);
 
     const apiResponse: ApiResponse = {
-      data: data,
-      meta: meta,
+      data,
+      meta,
     };
 
     return apiResponse;
