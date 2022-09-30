@@ -11,6 +11,9 @@ export class Request {
   @PrimaryGeneratedColumn('uuid')
   public id?: string;
 
+  @Column({ type: 'varchar', length: 255, nullable: false, name: 'email' })
+  public email: string;
+
   @Column({ type: 'varchar', length: 255, nullable: false, name: 'username' })
   public username: string;
 
