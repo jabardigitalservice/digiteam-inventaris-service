@@ -1,4 +1,4 @@
-import { MetaPagination } from '../helper/pagination.helper';
+import { MetaPagination } from '../helpers/pagination.helper';
 
 export interface ApiResponse {
   data: any;

@@ -1,3 +1,3 @@
-import { QueryPaginateDto } from 'src/common/helper/dtos/query-pagination.dto';
+import { QueryPaginateDto } from '../../../common/helpers/dtos/query-pagination.dto';
 
 export class QueryRequestDto extends QueryPaginateDto {}

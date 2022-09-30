@@ -7,40 +7,46 @@ import {
   HttpStatus,
   UsePipes,
   Query,
+  Req,
 } from '@nestjs/common';
 import { CreateRequestDto } from './dtos/create-request.dto';
-import { Unprotected } from 'nest-keycloak-connect';
 import { RequestsService } from './requests.service';
 import { JoiValidationPipe } from 'src/common/validator/joi-validation.pipe';
 import { RequestPayloadSchema } from './validator/request.schema-validator';
 import { QueryRequestDto } from './dtos/query-request.dto';
+import { AuthUser } from 'src/common/interfaces/auth-user.interface';
 
 @Controller()
 export class RequestsController {
   constructor(private requestsService: RequestsService) {}
 
   @Post('/requests')
-  @Unprotected()
   @UsePipes(new JoiValidationPipe(RequestPayloadSchema))
   async PostRequest(
     @Body() createRequestDto: CreateRequestDto,
-    @Res() response,
+    @Req() req,
+    @Res() res,
   ): Promise<any> {
-    this.requestsService.createNewRequest(createRequestDto);
+    const authUser = req.user as AuthUser;
+    this.requestsService.createNewRequest(createRequestDto, authUser);
 
-    return response.status(HttpStatus.CREATED).send({
+    return res.status(HttpStatus.CREATED).send({
       message: 'CREATED',
     });
   }
 
   @Get('/requests')
-  @Unprotected()
   async GetRequests(
     @Query() queryRequest: QueryRequestDto,
-    @Res() response,
+    @Req() req,
+    @Res() res,
   ): Promise<any> {
-    const apiResponse = await this.requestsService.getAllRequests(queryRequest);
+    const authUser = req.user as AuthUser;
+    const apiResponse = await this.requestsService.getAllRequests(
+      queryRequest,
+      authUser,
+    );
 
-    return response.status(HttpStatus.OK).send(apiResponse);
+    return res.status(HttpStatus.OK).send(apiResponse);
   }
 }
