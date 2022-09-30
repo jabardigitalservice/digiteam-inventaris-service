@@ -10,7 +10,7 @@ import {
   Req,
 } from '@nestjs/common';
 import { CreateRequestDto } from './dtos/create-request.dto';
-import { RequestsService } from './requests.service';
+import { RequestsService } from './services/requests.service';
 import { JoiValidationPipe } from 'src/common/validator/joi-validation.pipe';
 import { RequestPayloadSchema } from './validator/request.schema-validator';
 import { QueryRequestDto } from './dtos/query-request.dto';

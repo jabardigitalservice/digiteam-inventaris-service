@@ -1,8 +1,8 @@
 import { Repository } from 'typeorm';
-import { Request } from './entities/request.entity';
+import { Request } from '../entities/request.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Pagination } from '../../common/helpers/pagination.helper';
-import { AuthUser } from '../../common/interfaces/auth-user.interface';
+import { Pagination } from '../../../common/helpers/pagination.helper';
+import { AuthUser } from '../../../common/interfaces/auth-user.interface';
 export class RequestsRepository extends Repository<Request> {
   constructor(
     @InjectRepository(Request)

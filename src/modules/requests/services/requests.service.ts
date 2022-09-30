@@ -1,14 +1,14 @@
-import { CreateRequestDto } from './dtos/create-request.dto';
+import { CreateRequestDto } from '../dtos/create-request.dto';
 import { Injectable } from '@nestjs/common';
-import { RequestsRepository } from './requests.repository';
-import { mapEntitytoInterface } from './interfaces/response.interface';
+import { RequestsRepository } from '../respositories/requests.repository';
+import { mapEntitytoInterface } from '../interfaces/response.interface';
 import {
   metaPagination,
   queryPagination,
 } from 'src/common/helpers/pagination.helper';
-import { ApiResponse } from '../../common/interfaces/api-response.interface';
-import { QueryRequestDto } from './dtos/query-request.dto';
-import { AuthUser } from '../../common/interfaces/auth-user.interface';
+import { ApiResponse } from '../../../common/interfaces/api-response.interface';
+import { QueryRequestDto } from '../dtos/query-request.dto';
+import { AuthUser } from '../../../common/interfaces/auth-user.interface';
 
 @Injectable()
 export class RequestsService {
