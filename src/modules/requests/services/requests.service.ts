@@ -7,8 +7,9 @@ import {
   queryPagination,
 } from 'src/common/helpers/pagination.helper';
 import { ApiResponse } from '../../../common/interfaces/api-response.interface';
-import { QueryRequestDto } from '../dtos/query-request.dto';
+
 import { AuthUser } from '../../../common/interfaces/auth-user.interface';
+import { QueryRequestDto } from '../dtos/query-request.dto';
 
 @Injectable()
 export class RequestsService {
