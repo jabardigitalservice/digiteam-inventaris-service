@@ -2,10 +2,7 @@ import { CreateRequestDto } from '../dtos/create-request.dto';
 import { Injectable } from '@nestjs/common';
 import { RequestsRepository } from '../respositories/requests.repository';
 import { mapEntitytoInterface } from '../interfaces/response.interface';
-import {
-  metaPagination,
-  queryPagination,
-} from 'src/common/helpers/pagination.helper';
+import { metaPagination, queryPagination } from 'src/common/helpers/pagination';
 import { ApiResponse } from '../../../common/interfaces/api-response.interface';
 
 import { UserAccess } from '../../../common/interfaces/auth-user.interface';
