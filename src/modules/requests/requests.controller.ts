@@ -14,10 +14,8 @@ import { RequestsService } from './services/requests.service';
 import { JoiValidationPipe } from 'src/common/validator/joi-validation.pipe';
 import { RequestPayloadSchema } from './validator/request.schema-validator';
 import { QueryRequestDto } from './dtos/query-request.dto';
-import {
-  AuthUser,
-  getUserAccess,
-} from '../../common/interfaces/auth-user.interface';
+import { AuthUser } from '../../common/interfaces/auth-user.interface';
+import { getUserAccess } from '../../common/helpers/auth-user.helper';
 
 @Controller()
 export class RequestsController {
