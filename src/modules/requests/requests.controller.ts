@@ -14,7 +14,8 @@ import { RequestsService } from './services/requests.service';
 import { JoiValidationPipe } from 'src/common/validator/joi-validation.pipe';
 import { RequestPayloadSchema } from './validator/request.schema-validator';
 import { QueryRequestDto } from './dtos/query-request.dto';
-import { AuthUser } from 'src/common/interfaces/auth-user.interface';
+import { AuthUser } from '../../common/interfaces/auth-user.interface';
+import { getUserAccess } from '../../common/helpers/auth-user';
 
 @Controller()
 export class RequestsController {
@@ -28,7 +29,8 @@ export class RequestsController {
     @Res() res,
   ): Promise<any> {
     const authUser = req.user as AuthUser;
-    this.requestsService.createNewRequest(createRequestDto, authUser);
+    const userAccess = getUserAccess(authUser);
+    this.requestsService.createNewRequest(createRequestDto, userAccess);
 
     return res.status(HttpStatus.CREATED).send({
       message: 'CREATED',
@@ -42,9 +44,10 @@ export class RequestsController {
     @Res() res,
   ): Promise<any> {
     const authUser = req.user as AuthUser;
+    const userAccess = getUserAccess(authUser);
     const apiResponse = await this.requestsService.getAllRequests(
       queryRequest,
-      authUser,
+      userAccess,
     );
 
     return res.status(HttpStatus.OK).send(apiResponse);

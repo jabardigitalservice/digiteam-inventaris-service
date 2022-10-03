@@ -1,8 +1,8 @@
 import { Repository } from 'typeorm';
 import { Request } from '../entities/request.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Pagination } from '../../../common/helpers/pagination.helper';
-import { AuthUser } from '../../../common/interfaces/auth-user.interface';
+import { Pagination } from '../../../common/helpers/pagination';
+import { UserAccess } from '../../../common/interfaces/auth-user.interface';
 export class RequestsRepository extends Repository<Request> {
   constructor(
     @InjectRepository(Request)
@@ -17,11 +17,14 @@ export class RequestsRepository extends Repository<Request> {
     return this.save(request);
   }
 
-  async fetchAll(pagination: Pagination, authUser: AuthUser) {
-    const email = authUser.email;
+  async fetchAll(pagination: Pagination, userAccess: UserAccess) {
+    const { email, isAdmin } = userAccess;
 
     const query = this.createQueryBuilder('request');
-    query.where('request.email = :email', { email });
+
+    if (!isAdmin) {
+      query.where('request.email = :email', { email });
+    }
 
     const count: number = await query.getCount();
 

@@ -2,6 +2,7 @@ import { Request } from '../entities/request.entity';
 
 export interface ResponseInterface {
   id: string;
+  email: string;
   username: string;
   division: string;
   phone_number: string;
@@ -15,6 +16,7 @@ export interface ResponseInterface {
 export const mapEntitytoInterface = (request: Request) => {
   const responseInterface: ResponseInterface = {
     id: request.id,
+    email: request.email,
     username: request.username,
     division: request.division,
     phone_number: request.phoneNumber,
