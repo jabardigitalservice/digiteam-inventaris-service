@@ -18,8 +18,7 @@ export class RequestsRepository extends Repository<Request> {
   }
 
   async fetchAll(pagination: Pagination, userAccess: UserAccess) {
-    const email = userAccess.email;
-    const isAdmin = userAccess.isAdmin;
+    const { email, isAdmin } = userAccess;
 
     const query = this.createQueryBuilder('request');
 
