@@ -14,14 +14,14 @@ import { RequestsService } from './services/requests.service';
 import { JoiValidationPipe } from 'src/common/validator/joi-validation.pipe';
 import { RequestPayloadSchema } from './validator/request.schema-validator';
 import { QueryRequestDto } from './dtos/query-request.dto';
-import { AuthenticationService } from '../../authentication/authentication.service';
 import { AuthUser } from '../../common/interfaces/keycloak/keycloak-user.interface';
+import { UserAccessService } from './../../common/providers/user-access.service';
 
 @Controller()
 export class RequestsController {
   constructor(
     private requestsService: RequestsService,
-    private authService: AuthenticationService,
+    private userAccessService: UserAccessService,
   ) {}
 
   @Post('/requests')
@@ -33,7 +33,7 @@ export class RequestsController {
   ): Promise<any> {
     const authUser = req.user as AuthUser;
 
-    const userAccess = this.authService.getUserAccess(authUser);
+    const userAccess = this.userAccessService.getUserAccess(authUser);
     this.requestsService.createNewRequest(createRequestDto, userAccess);
 
     return res.status(HttpStatus.CREATED).send({
@@ -48,7 +48,8 @@ export class RequestsController {
     @Res() res,
   ): Promise<any> {
     const authUser = req.user as AuthUser;
-    const userAccess = this.authService.getUserAccess(authUser);
+    const userAccess = this.userAccessService.getUserAccess(authUser);
+
     const apiResponse = await this.requestsService.getAllRequests(
       queryRequest,
       userAccess,

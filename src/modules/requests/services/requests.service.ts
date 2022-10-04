@@ -14,7 +14,7 @@ export class RequestsService {
   async createNewRequest(reqBody: CreateRequestDto, userAccess: UserAccess) {
     const newRequest = this.repo.store({
       email: userAccess.email,
-      username: reqBody.username,
+      username: userAccess.name,
       division: reqBody.division,
       phoneNumber: reqBody.phone_number,
       requestType: reqBody.request_type,

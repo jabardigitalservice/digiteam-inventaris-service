@@ -2,17 +2,17 @@ import { Injectable } from '@nestjs/common';
 import {
   AuthUser,
   UserAccess,
-} from '../common/interfaces/keycloak/keycloak-user.interface';
-import { RoleAccessService } from '../common/providers/role-access.service';
+} from '../interfaces/keycloak/keycloak-user.interface';
+import { RoleAccessService } from './role-access.service';
 
 @Injectable()
-export class AuthenticationService {
+export class UserAccessService {
   constructor(private roleAccessService: RoleAccessService) {}
 
   getUserAccess(authUser: AuthUser): UserAccess {
     const role = authUser.realm_access.roles.map((role) => role);
     const isAdmin = authUser.realm_access.roles.includes(
-      this.roleAccessService.roleAccess.ADMIN,
+      this.roleAccessService.role.ADMIN,
     );
 
     return {
