@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { AppConfigService } from '../../config/app/config.service';
-import { RoleAccess } from '../interfaces/keycloak/role-access.interface';
+import { RoleAccess } from '../interfaces/role-access.interface';
 
 @Injectable()
 export class RoleAccessService {

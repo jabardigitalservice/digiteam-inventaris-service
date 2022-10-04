@@ -1,8 +1,8 @@
 import { Repository } from 'typeorm';
-import { Request } from '../entities/request.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Request } from '../entities/request.entity';
 import { Pagination } from '../../../common/helpers/pagination';
-import { UserAccess } from '../../../common/interfaces/keycloak/keycloak-user.interface';
+import { UserAccess } from '../../../common/interfaces/keycloak-user.interface';
 export class RequestsRepository extends Repository<Request> {
   constructor(
     @InjectRepository(Request)
