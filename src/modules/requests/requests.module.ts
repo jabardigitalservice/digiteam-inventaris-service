@@ -4,9 +4,10 @@ import { RequestsController } from './requests.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Request } from './entities/request.entity';
 import { RequestsRepository } from './respositories/requests.repository';
+import { AuthenticationModule } from '../../authentication/authentication.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Request])],
+  imports: [AuthenticationModule, TypeOrmModule.forFeature([Request])],
   providers: [RequestsRepository, RequestsService],
   controllers: [RequestsController],
 })

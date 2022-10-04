@@ -14,12 +14,15 @@ import { RequestsService } from './services/requests.service';
 import { JoiValidationPipe } from 'src/common/validator/joi-validation.pipe';
 import { RequestPayloadSchema } from './validator/request.schema-validator';
 import { QueryRequestDto } from './dtos/query-request.dto';
-import { AuthUser } from '../../common/interfaces/auth-user.interface';
-import { getUserAccess } from '../../common/helpers/auth-user';
+import { AuthenticationService } from '../../authentication/authentication.service';
+import { AuthUser } from '../../common/interfaces/keycloak/keycloak-user.interface';
 
 @Controller()
 export class RequestsController {
-  constructor(private requestsService: RequestsService) {}
+  constructor(
+    private requestsService: RequestsService,
+    private authService: AuthenticationService,
+  ) {}
 
   @Post('/requests')
   @UsePipes(new JoiValidationPipe(RequestPayloadSchema))
@@ -29,7 +32,8 @@ export class RequestsController {
     @Res() res,
   ): Promise<any> {
     const authUser = req.user as AuthUser;
-    const userAccess = getUserAccess(authUser);
+
+    const userAccess = this.authService.getUserAccess(authUser);
     this.requestsService.createNewRequest(createRequestDto, userAccess);
 
     return res.status(HttpStatus.CREATED).send({
@@ -44,7 +48,7 @@ export class RequestsController {
     @Res() res,
   ): Promise<any> {
     const authUser = req.user as AuthUser;
-    const userAccess = getUserAccess(authUser);
+    const userAccess = this.authService.getUserAccess(authUser);
     const apiResponse = await this.requestsService.getAllRequests(
       queryRequest,
       userAccess,

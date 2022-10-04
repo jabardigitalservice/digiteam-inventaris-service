@@ -59,4 +59,12 @@ export class AppConfigService {
   get dbName(): string {
     return this.configService.get('app.MYSQL_DATABASE');
   }
+
+  get roleAdmin(): string {
+    return this.configService.get('app.ROLE_0');
+  }
+
+  get roleUser(): string {
+    return this.configService.get('app.ROLE_1');
+  }
 }

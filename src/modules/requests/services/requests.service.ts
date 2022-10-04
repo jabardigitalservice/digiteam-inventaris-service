@@ -4,9 +4,8 @@ import { RequestsRepository } from '../respositories/requests.repository';
 import { mapEntitytoInterface } from '../interfaces/response.interface';
 import { metaPagination, queryPagination } from 'src/common/helpers/pagination';
 import { ApiResponse } from '../../../common/interfaces/api-response.interface';
-
-import { UserAccess } from '../../../common/interfaces/auth-user.interface';
 import { QueryRequestDto } from '../dtos/query-request.dto';
+import { UserAccess } from '../../../common/interfaces/keycloak/keycloak-user.interface';
 
 @Injectable()
 export class RequestsService {
