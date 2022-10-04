@@ -9,7 +9,7 @@ export class UserAccessService {
   getUserAccess(authUser: AuthUser): UserAccess {
     const role = authUser.realm_access.roles.map((role) => role);
     const isAdmin = authUser.realm_access.roles.includes(
-      this.roleAccessService.role.ADMIN,
+      this.roleAccessService.getAdminRole(),
     );
 
     return {

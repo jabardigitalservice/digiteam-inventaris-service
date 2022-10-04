@@ -4,13 +4,21 @@ import { RoleAccess } from '../interfaces/role-access.interface';
 
 @Injectable()
 export class RoleAccessService {
-  public role: RoleAccess;
+  private _role: RoleAccess;
 
   constructor(private appConfigService: AppConfigService) {
-    this.role = this.getRoleAccess();
+    this._role = this.setRoleAccess();
   }
 
-  getRoleAccess(): RoleAccess {
+  getAdminRole() {
+    return this._role.ADMIN;
+  }
+
+  getUserRole() {
+    return this._role.USER;
+  }
+
+  setRoleAccess(): RoleAccess {
     return {
       ADMIN: this.appConfigService.roleAdmin,
       USER: this.appConfigService.roleUser,
