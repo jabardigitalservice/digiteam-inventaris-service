@@ -14,4 +14,6 @@ export default registerAs('app', () => ({
   MYSQL_USERNAME: process.env.MYSQL_USERNAME,
   MYSQL_PASSWORD: process.env.MYSQL_PASSWORD,
   MYSQL_DATABASE: process.env.MYSQL_DATABASE,
+  ROLE_0: process.env.ROLE_0,
+  ROLE_1: process.env.ROLE_1,
 }));

@@ -4,9 +4,8 @@ import { RequestsRepository } from '../respositories/requests.repository';
 import { mapEntitytoInterface } from '../interfaces/response.interface';
 import { metaPagination, queryPagination } from 'src/common/helpers/pagination';
 import { ApiResponse } from '../../../common/interfaces/api-response.interface';
-
-import { UserAccess } from '../../../common/interfaces/auth-user.interface';
 import { QueryRequestDto } from '../dtos/query-request.dto';
+import { UserAccess } from '../../../common/interfaces/keycloak-user.interface';
 
 @Injectable()
 export class RequestsService {
@@ -15,7 +14,7 @@ export class RequestsService {
   async createNewRequest(reqBody: CreateRequestDto, userAccess: UserAccess) {
     const newRequest = this.repo.store({
       email: userAccess.email,
-      username: reqBody.username,
+      username: userAccess.name,
       division: reqBody.division,
       phoneNumber: reqBody.phone_number,
       requestType: reqBody.request_type,

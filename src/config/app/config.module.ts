@@ -24,6 +24,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         MYSQL_USERNAME: Joi.string().required(),
         MYSQL_PASSWORD: Joi.string().required(),
         MYSQL_DATABASE: Joi.string().required(),
+        ROLE_0: Joi.string().required(),
+        ROLE_1: Joi.string().required(),
       }),
       expandVariables: true,
     }),
