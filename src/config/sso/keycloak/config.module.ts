@@ -1,5 +1,6 @@
+import { ConfigService } from '@nestjs/config';
 import { Global, Module } from '@nestjs/common';
-import { KeycloakConfigService } from './config.service';
+import { KeycloakConfigService } from './config.provider';
 import {
   KeycloakConnectModule,
   ResourceGuard,
@@ -7,17 +8,18 @@ import {
   AuthGuard,
 } from 'nest-keycloak-connect';
 import { APP_GUARD } from '@nestjs/core';
+import { AppConfigModule } from 'src/config/app/config.module';
 
 @Global()
 @Module({
   imports: [
     KeycloakConnectModule.registerAsync({
-      useExisting: KeycloakConfigService,
-      imports: [KeycloakConfigModule],
+      imports: [AppConfigModule],
+      useClass: KeycloakConfigService,
+      inject: [ConfigService],
     }),
   ],
   providers: [
-    KeycloakConfigService,
     {
       provide: APP_GUARD,
       useClass: AuthGuard,
@@ -31,6 +33,5 @@ import { APP_GUARD } from '@nestjs/core';
       useClass: RoleGuard,
     },
   ],
-  exports: [KeycloakConfigService],
 })
 export class KeycloakConfigModule {}

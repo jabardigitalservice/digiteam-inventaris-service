@@ -1,3 +1,4 @@
+import { ConfigService } from '@nestjs/config';
 import { Module } from '@nestjs/common';
 import { RequestsService } from './services/requests.service';
 import { RequestsController } from './requests.controller';
@@ -10,6 +11,7 @@ import { RoleAccessService } from '../../common/providers/role-access.service';
 @Module({
   imports: [TypeOrmModule.forFeature([Request])],
   providers: [
+    ConfigService,
     RequestsRepository,
     RequestsService,
     RoleAccessService,

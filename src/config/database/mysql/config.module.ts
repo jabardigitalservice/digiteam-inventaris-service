@@ -1,13 +1,16 @@
-import { Global, Module } from '@nestjs/common';
-import { MysqlConfigService } from './config.service';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigService } from '@nestjs/config';
+import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppConfigModule } from '../../app/config.module';
-import { AppConfigService } from '../../app/config.service';
+import { TypeOrmConfigService } from './config.provider';
 
-@Global()
 @Module({
-  imports: [ConfigModule, AppConfigModule],
-  providers: [AppConfigService, MysqlConfigService],
-  exports: [AppConfigService, MysqlConfigService],
+  imports: [
+    TypeOrmModule.forRootAsync({
+      imports: [AppConfigModule],
+      useClass: TypeOrmConfigService,
+      inject: [ConfigService],
+    }),
+  ],
 })
 export class MysqlConfigModule {}
