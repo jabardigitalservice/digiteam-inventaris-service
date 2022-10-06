@@ -14,8 +14,6 @@ export default () => ({
     realm: process.env.KEYCLOAK_REALM,
     clientId: process.env.KEYCLOAK_CLIENT_ID,
     secret: process.env.KEYCLOAK_SECRET,
-    role0: process.env.ROLE_0,
-    role1: process.env.ROLE_1,
   },
   mysql: {
     host: process.env.DB_HOST,
@@ -23,5 +21,9 @@ export default () => ({
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE,
+  },
+  roles: {
+    role0: process.env.ROLE_0,
+    role1: process.env.ROLE_1,
   },
 });

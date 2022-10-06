@@ -12,8 +12,6 @@ export const schema = Joi.object({
     realm: Joi.string().required(),
     clientId: Joi.string().required(),
     secret: Joi.string().required(),
-    role0: Joi.string().required(),
-    role1: Joi.string().required(),
   }),
   mysql: Joi.object({
     host: Joi.string().required(),
@@ -22,4 +20,8 @@ export const schema = Joi.object({
     password: Joi.string().required(),
     database: Joi.string().required(),
   }),
+  roles: {
+    role0: Joi.string().required(),
+    role1: Joi.string().required(),
+  },
 });

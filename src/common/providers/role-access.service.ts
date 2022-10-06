@@ -8,8 +8,8 @@ export class RoleAccessService {
 
   private _setRoleAccess(): RoleAccess {
     return {
-      ADMIN: this.configService.get('keycloak.role0'),
-      USER: this.configService.get('keycloak.role1'),
+      ADMIN: this.configService.get('roles.role0'),
+      USER: this.configService.get('roles.role1'),
     };
   }
 
