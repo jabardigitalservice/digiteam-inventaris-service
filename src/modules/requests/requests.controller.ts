@@ -11,8 +11,8 @@ import {
 } from '@nestjs/common';
 import { CreateRequestDto } from './dtos/create-request.dto';
 import { RequestsService } from './services/requests.service';
-import { JoiValidationPipe } from 'src/common/validator/joi-validation.pipe';
-import { RequestPayloadSchema } from './validator/request.schema-validator';
+import { JoiValidationPipe } from '../../common/pipes/joi-validation.pipe';
+import { RequestPayloadSchema } from './rules/request.schema-validator';
 import { QueryRequestDto } from './dtos/query-request.dto';
 import { AuthUser } from '../../common/interfaces/keycloak-user.interface';
 import { UserAccessService } from './../../common/providers/user-access.service';
