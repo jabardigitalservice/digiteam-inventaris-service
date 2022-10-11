@@ -3,7 +3,8 @@ import {
   AuthUser,
   UserAccess,
 } from 'src/common/interfaces/keycloak-user.interface';
-import { UserAccessService } from 'src/common/providers/user-access.service';
+import { UserAccessService } from '../../../common/providers/user-access.service';
+import { ApiResponse } from '../../../common/interfaces/api-response.interface';
 
 @Injectable()
 export class AuthenticationsService {
@@ -12,12 +13,16 @@ export class AuthenticationsService {
   getProfile(authUser: AuthUser) {
     const userAccess = this.userAccessService.getUserAccess(authUser);
 
-    const profile: UserAccess = {
+    const data: UserAccess = {
       name: userAccess.name,
       email: userAccess.email,
       isAdmin: userAccess.isAdmin,
     };
 
-    return profile;
+    const apiResponse: ApiResponse = {
+      data,
+    };
+
+    return apiResponse;
   }
 }

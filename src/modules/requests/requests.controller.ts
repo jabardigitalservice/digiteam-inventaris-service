@@ -79,6 +79,8 @@ export class RequestsController {
     }
 
     this.requestsService.changeStatus(changeStatusBody, id);
-    return res.status(HttpStatus.OK).send('UPDATED');
+    return res.status(HttpStatus.OK).send({
+      message: 'UPDATED',
+    });
   }
 }
