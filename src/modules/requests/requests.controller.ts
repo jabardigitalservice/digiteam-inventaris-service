@@ -33,7 +33,7 @@ export class RequestsController {
   ): Promise<any> {
     const authUser = req.user as AuthUser;
 
-    const userAccess = this.userAccessService.getUserAccess(authUser);
+    const userAccess = await this.userAccessService.getUserAccess(authUser);
     this.requestsService.createNewRequest(createRequestDto, userAccess);
 
     return res.status(HttpStatus.CREATED).send({
@@ -48,7 +48,7 @@ export class RequestsController {
     @Res() res,
   ): Promise<any> {
     const authUser = req.user as AuthUser;
-    const userAccess = this.userAccessService.getUserAccess(authUser);
+    const userAccess = await this.userAccessService.getUserAccess(authUser);
 
     const apiResponse = await this.requestsService.getAllRequests(
       queryRequest,
