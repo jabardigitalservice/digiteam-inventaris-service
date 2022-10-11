@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { ApiResponse } from 'src/common/interfaces/api-response.interface';
 import {
   AuthUser,
   UserAccess,
@@ -12,12 +13,16 @@ export class AuthenticationsService {
   getProfile(authUser: AuthUser) {
     const userAccess = this.userAccessService.getUserAccess(authUser);
 
-    const profile: UserAccess = {
+    const data: UserAccess = {
       name: userAccess.name,
       email: userAccess.email,
       isAdmin: userAccess.isAdmin,
     };
 
-    return profile;
+    const apiResponse: ApiResponse = {
+      data,
+    };
+
+    return apiResponse;
   }
 }
