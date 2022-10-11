@@ -6,7 +6,7 @@ import { RoleAccessService } from './role-access.service';
 export class UserAccessService {
   constructor(private roleAccessService: RoleAccessService) {}
 
-  getUserAccess(authUser: AuthUser): UserAccess {
+  async getUserAccess(authUser: AuthUser): Promise<UserAccess> {
     const role = authUser.realm_access.roles.map((role) => role);
 
     const roleAccess = this.roleAccessService.getRole();

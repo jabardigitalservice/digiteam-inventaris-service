@@ -6,11 +6,11 @@ import {
 import { UserAccessService } from 'src/common/providers/user-access.service';
 
 @Injectable()
-export class UsersService {
+export class AuthenticationsService {
   constructor(private userAccessService: UserAccessService) {}
 
   async getProfile(authUser: AuthUser) {
-    const userAccess = this.userAccessService.getUserAccess(authUser);
+    const userAccess = await this.userAccessService.getUserAccess(authUser);
 
     const profile: UserAccess = {
       name: userAccess.name,

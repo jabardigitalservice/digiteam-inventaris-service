@@ -2,13 +2,13 @@ import { Controller, Get, Res, HttpStatus } from '@nestjs/common';
 import { Response } from 'express';
 import { AuthenticatedUser } from 'nest-keycloak-connect';
 import { AuthUser } from 'src/common/interfaces/keycloak-user.interface';
-import { UsersService } from './services/users.service';
+import { AuthenticationsService } from './services/authentications.service';
 
-@Controller()
-export class UsersController {
-  constructor(private usersService: UsersService) {}
+@Controller('authentications')
+export class AuthenticationsController {
+  constructor(private usersService: AuthenticationsService) {}
 
-  @Get('users/profile')
+  @Get('/profile')
   async GetRequests(
     @AuthenticatedUser() authUser: AuthUser,
     @Res() res: Response,
