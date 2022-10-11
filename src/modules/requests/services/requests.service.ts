@@ -7,26 +7,30 @@ import {
 } from '../../../common/helpers/pagination';
 import { ApiResponse } from '../../../common/interfaces/api-response.interface';
 import { UserAccess } from '../../../common/interfaces/keycloak-user.interface';
-import { CreateRequest } from '../interfaces/request.interface';
-import { QueryPagination } from 'src/common/interfaces/pagination.interface';
+import {
+  CreateRequestBody,
+  ChangeStatusBody,
+} from '../interfaces/request.interface';
+import { QueryPagination } from '../../../common/interfaces/pagination.interface';
 
 @Injectable()
 export class RequestsService {
   constructor(private repo: RequestsRepository) {}
 
-  async createNewRequest(reqBody: CreateRequest, userAccess: UserAccess) {
-    const newRequest = this.repo.store({
+  async createNewRequest(
+    createRequestBody: CreateRequestBody,
+    userAccess: UserAccess,
+  ) {
+    this.repo.store({
       email: userAccess.email,
       username: userAccess.name,
-      division: reqBody.division,
-      phoneNumber: reqBody.phone_number,
-      requestType: reqBody.request_type,
-      itemName: reqBody.item_name,
-      purpose: reqBody.purpose,
-      priority: reqBody.priority,
+      division: createRequestBody.division,
+      phoneNumber: createRequestBody.phone_number,
+      requestType: createRequestBody.request_type,
+      itemName: createRequestBody.item_name,
+      purpose: createRequestBody.purpose,
+      priority: createRequestBody.priority,
     });
-
-    return newRequest;
   }
 
   async getAllRequests(queryRequest: QueryPagination, userAccess: UserAccess) {
@@ -42,5 +46,10 @@ export class RequestsService {
     };
 
     return apiResponse;
+  }
+
+  async changeStatus(changeStatus: ChangeStatusBody, id: string) {
+    const status = changeStatus.status;
+    await this.repo.setStatusById(id, status);
   }
 }

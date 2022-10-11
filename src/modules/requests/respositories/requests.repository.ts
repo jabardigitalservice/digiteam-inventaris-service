@@ -38,4 +38,11 @@ export class RequestsRepository extends Repository<Request> {
       count,
     };
   }
+
+  async setStatusById(id: string, status: number) {
+    const request = await this.findOneBy({ id });
+    request.status = status;
+
+    await this.save(request);
+  }
 }

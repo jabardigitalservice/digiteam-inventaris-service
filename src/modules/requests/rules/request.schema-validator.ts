@@ -14,6 +14,6 @@ export const RequestPaginationSchema = Joi.object({
   page: Joi.number().required(),
 });
 
-export const AddAvailableItemPayloadSchema = Joi.object({
-  available_item_name: Joi.string().required(),
+export const ChangeRequestPayloadSchema = Joi.object({
+  status: Joi.number().strict().required(),
 });
