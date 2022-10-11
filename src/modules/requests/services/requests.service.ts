@@ -1,4 +1,3 @@
-import { CreateRequestDto } from '../dtos/create-request.dto';
 import { Injectable } from '@nestjs/common';
 import { RequestsRepository } from '../respositories/requests.repository';
 import { mapEntitytoInterface } from '../interfaces/response.interface';
@@ -7,14 +6,15 @@ import {
   queryPagination,
 } from '../../../common/helpers/pagination';
 import { ApiResponse } from '../../../common/interfaces/api-response.interface';
-import { QueryRequestDto } from '../dtos/query-request.dto';
 import { UserAccess } from '../../../common/interfaces/keycloak-user.interface';
+import { CreateRequest } from '../interfaces/request.interface';
+import { QueryPagination } from 'src/common/interfaces/pagination.interface';
 
 @Injectable()
 export class RequestsService {
   constructor(private repo: RequestsRepository) {}
 
-  async createNewRequest(reqBody: CreateRequestDto, userAccess: UserAccess) {
+  async createNewRequest(reqBody: CreateRequest, userAccess: UserAccess) {
     const newRequest = this.repo.store({
       email: userAccess.email,
       username: userAccess.name,
@@ -29,7 +29,7 @@ export class RequestsService {
     return newRequest;
   }
 
-  async getAllRequests(queryRequest: QueryRequestDto, userAccess: UserAccess) {
+  async getAllRequests(queryRequest: QueryPagination, userAccess: UserAccess) {
     const pagination = queryPagination(queryRequest);
     const { result, count } = await this.repo.fetchAll(pagination, userAccess);
 

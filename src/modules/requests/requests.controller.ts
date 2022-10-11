@@ -1,3 +1,5 @@
+import { QueryPagination } from './../../../dist/common/interfaces/query-pagination.interface.d';
+import { CreateRequest } from './../../../dist/modules/requests/interfaces/create-requests.d';
 import {
   Body,
   Controller,
@@ -5,15 +7,16 @@ import {
   Get,
   Res,
   HttpStatus,
-  UsePipes,
   Query,
-  Req,
 } from '@nestjs/common';
-import { CreateRequestDto } from './dtos/create-request.dto';
+import { Response } from 'express';
 import { RequestsService } from './services/requests.service';
 import { JoiValidationPipe } from '../../common/pipes/joi-validation.pipe';
-import { RequestPayloadSchema } from './rules/request.schema-validator';
-import { QueryRequestDto } from './dtos/query-request.dto';
+import {
+  RequestPaginationSchema,
+  CreateRequestPayloadSchema,
+} from './rules/request.schema-validator';
+import { AuthenticatedUser } from 'nest-keycloak-connect';
 import { AuthUser } from '../../common/interfaces/keycloak-user.interface';
 import { UserAccessService } from './../../common/providers/user-access.service';
 
@@ -25,16 +28,14 @@ export class RequestsController {
   ) {}
 
   @Post('/requests')
-  @UsePipes(new JoiValidationPipe(RequestPayloadSchema))
   async PostRequest(
-    @Body() createRequestDto: CreateRequestDto,
-    @Req() req,
-    @Res() res,
+    @Body(new JoiValidationPipe(CreateRequestPayloadSchema))
+    createRequest: CreateRequest,
+    @AuthenticatedUser() authUser: AuthUser,
+    @Res() res: Response,
   ): Promise<any> {
-    const authUser = req.user as AuthUser;
-
     const userAccess = this.userAccessService.getUserAccess(authUser);
-    this.requestsService.createNewRequest(createRequestDto, userAccess);
+    this.requestsService.createNewRequest(createRequest, userAccess);
 
     return res.status(HttpStatus.CREATED).send({
       message: 'CREATED',
@@ -43,15 +44,15 @@ export class RequestsController {
 
   @Get('/requests')
   async GetRequests(
-    @Query() queryRequest: QueryRequestDto,
-    @Req() req,
-    @Res() res,
+    @Query(new JoiValidationPipe(RequestPaginationSchema))
+    queryPagination: QueryPagination,
+    @AuthenticatedUser() authUser: AuthUser,
+    @Res() res: Response,
   ): Promise<any> {
-    const authUser = req.user as AuthUser;
     const userAccess = this.userAccessService.getUserAccess(authUser);
 
     const apiResponse = await this.requestsService.getAllRequests(
-      queryRequest,
+      queryPagination,
       userAccess,
     );
 
