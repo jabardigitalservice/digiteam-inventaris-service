@@ -1,5 +1,3 @@
-import { QueryPagination } from './../../../dist/common/interfaces/query-pagination.interface.d';
-import { CreateRequest } from './../../../dist/modules/requests/interfaces/create-requests.d';
 import {
   Body,
   Controller,
@@ -19,6 +17,8 @@ import {
 import { AuthenticatedUser } from 'nest-keycloak-connect';
 import { AuthUser } from '../../common/interfaces/keycloak-user.interface';
 import { UserAccessService } from './../../common/providers/user-access.service';
+import { CreateRequest } from './interfaces/request.interface';
+import { QueryPagination } from '../../common/interfaces/pagination.interface';
 
 @Controller()
 export class RequestsController {
