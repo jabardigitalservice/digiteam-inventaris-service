@@ -75,7 +75,9 @@ export class RequestsController {
   ): Promise<any> {
     const userAccess = this.userAccessService.getUserAccess(authUser);
     if (!userAccess.isAdmin) {
-      return res.status(HttpStatus.UNAUTHORIZED).send('Unauthorized');
+      return res.status(HttpStatus.UNAUTHORIZED).send({
+        message: 'Unauthorized',
+      });
     }
 
     this.requestsService.changeStatus(changeStatusBody, id);
