@@ -9,4 +9,4 @@ import { AuthenticationsService } from './services/authentications.service';
   providers: [RoleAccessService, UserAccessService, AuthenticationsService],
   controllers: [AuthenticationsController],
 })
-export class UsersService {}
+export class AuthenticationsModule {}
