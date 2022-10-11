@@ -23,8 +23,8 @@
     "migration:create": "npm run typeorm -- migration:create ./src/database/migrations/$npm_config_name",
     "migration:show": "cross-var npm run typeorm -- migration:show -d ./src/database/orm/typeorm.config.ts",
     "migration:dev": "npm run build && npm run typeorm -- migration:run -d ./src/database/orm/typeorm.config.js",
-    "migration:prod": "npm run typeorm -- migration:run -d ./dist/database/orm/typeorm.config.js",
-    "migration:revert": "npm run typeorm -- migration:revert -d ./dist/database/orm/typeorm.config.js"
+    "migration:prod": "typeorm-ts-node-commonjs migration:run -d ./dist/database/orm/typeorm.config.js",
+    "migration:revert": "typeorm-ts-node-commonjs migration:revert -d ./dist/database/orm/typeorm.config.js"
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",
