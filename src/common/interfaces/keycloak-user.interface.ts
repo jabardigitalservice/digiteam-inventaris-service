@@ -11,6 +11,6 @@ export interface RealmAccess {
 export interface UserAccess {
   name: string;
   email: string;
-  role: string[];
+  role?: string[];
   isAdmin: boolean;
 }
