@@ -9,8 +9,8 @@ import { UserAccessService } from 'src/common/providers/user-access.service';
 export class AuthenticationsService {
   constructor(private userAccessService: UserAccessService) {}
 
-  async getProfile(authUser: AuthUser) {
-    const userAccess = await this.userAccessService.getUserAccess(authUser);
+  getProfile(authUser: AuthUser) {
+    const userAccess = this.userAccessService.getUserAccess(authUser);
 
     const profile: UserAccess = {
       name: userAccess.name,

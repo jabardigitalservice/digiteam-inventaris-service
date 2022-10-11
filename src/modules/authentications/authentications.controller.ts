@@ -13,7 +13,7 @@ export class AuthenticationsController {
     @AuthenticatedUser() authUser: AuthUser,
     @Res() res: Response,
   ) {
-    const profile = await this.usersService.getProfile(authUser);
+    const profile = this.usersService.getProfile(authUser);
 
     return res.status(HttpStatus.OK).send(profile);
   }
