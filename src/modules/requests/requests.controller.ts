@@ -66,6 +66,16 @@ export class RequestsController {
     return res.status(HttpStatus.OK).send(apiResponse);
   }
 
+  @Get(':id')
+  async GetRequest(
+    @Param('id') id: string,
+    @Res() res: Response,
+  ): Promise<any> {
+    const apiResponse = await this.requestsService.getRequestById(id);
+
+    return res.status(HttpStatus.OK).send(apiResponse);
+  }
+
   @Patch(':id/status')
   async PutRequestStatus(
     @Param('id') id: string,
