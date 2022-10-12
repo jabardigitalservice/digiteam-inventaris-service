@@ -39,6 +39,11 @@ export class RequestsRepository extends Repository<Request> {
     };
   }
 
+  async fetchById(id: string): Promise<Request> {
+    const result = await this.findOneBy({ id });
+    return result;
+  }
+
   async setStatusById(id: string, status: number) {
     await this.update(id, { status });
   }

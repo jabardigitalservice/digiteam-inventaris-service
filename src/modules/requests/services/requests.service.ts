@@ -48,6 +48,14 @@ export class RequestsService {
     return apiResponse;
   }
 
+  async getRequestById(id: string) {
+    const result = await this.repo.fetchById(id);
+    const data = mapEntitytoInterface(result);
+
+    const apiResponse: ApiResponse = { data };
+    return apiResponse;
+  }
+
   async changeStatus(changeStatus: ChangeStatusBody, id: string) {
     const status = changeStatus.status;
     await this.repo.setStatusById(id, status);
