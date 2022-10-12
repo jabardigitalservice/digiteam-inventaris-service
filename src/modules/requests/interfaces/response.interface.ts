@@ -11,6 +11,8 @@ export interface ResponseInterface {
   purpose: string;
   priority: number;
   status: number;
+  created_at: string;
+  updated_at: string;
 }
 
 export const mapEntitytoInterface = (request: Request) => {
@@ -25,6 +27,8 @@ export const mapEntitytoInterface = (request: Request) => {
     purpose: request.purpose,
     priority: request.priority,
     status: request.status,
+    created_at: request.createdAt.toISOString(),
+    updated_at: request.updatedAt.toISOString(),
   };
 
   return responseInterface;
