@@ -17,10 +17,7 @@ import { QueryPagination } from '../../../common/interfaces/pagination.interface
 export class RequestsService {
   constructor(private repo: RequestsRepository) {}
 
-  async createNewRequest(
-    createRequestBody: CreateRequestBody,
-    userAccess: UserAccess,
-  ) {
+  async create(createRequestBody: CreateRequestBody, userAccess: UserAccess) {
     this.repo.store({
       email: userAccess.email,
       username: userAccess.name,
@@ -33,9 +30,9 @@ export class RequestsService {
     });
   }
 
-  async getAllRequests(queryRequest: QueryPagination, userAccess: UserAccess) {
+  async fetch(queryRequest: QueryPagination, userAccess: UserAccess) {
     const pagination = queryPagination(queryRequest);
-    const { result, count } = await this.repo.fetchAll(pagination, userAccess);
+    const { result, count } = await this.repo.fetch(pagination, userAccess);
 
     const data = result.map((requests) => mapEntitytoInterface(requests));
     const meta = metaPagination(count, result, pagination);
@@ -48,8 +45,8 @@ export class RequestsService {
     return apiResponse;
   }
 
-  async getRequestById(id: string) {
-    const result = await this.repo.fetchById(id);
+  async findById(id: string) {
+    const result = await this.repo.findById(id);
     const data = mapEntitytoInterface(result);
 
     const apiResponse: ApiResponse = { data };
