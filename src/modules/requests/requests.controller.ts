@@ -5,56 +5,83 @@ import {
   Get,
   Res,
   HttpStatus,
-  UsePipes,
   Query,
-  Req,
+  Patch,
+  Param,
+  UnauthorizedException,
 } from '@nestjs/common';
-import { CreateRequestDto } from './dtos/create-request.dto';
+import { Response } from 'express';
 import { RequestsService } from './services/requests.service';
 import { JoiValidationPipe } from '../../common/pipes/joi-validation.pipe';
-import { RequestPayloadSchema } from './rules/request.schema-validator';
-import { QueryRequestDto } from './dtos/query-request.dto';
+import {
+  GetRequestsSchema,
+  CreateRequestPayloadSchema,
+  ChangeRequestPayloadSchema,
+} from './rules/request.schema-validator';
+import { AuthenticatedUser } from 'nest-keycloak-connect';
 import { AuthUser } from '../../common/interfaces/keycloak-user.interface';
 import { UserAccessService } from './../../common/providers/user-access.service';
+import {
+  ChangeStatusBody,
+  CreateRequestBody,
+} from './interfaces/request.interface';
+import { QueryPagination } from '../../common/interfaces/pagination.interface';
 
-@Controller()
+@Controller('requests')
 export class RequestsController {
   constructor(
     private requestsService: RequestsService,
     private userAccessService: UserAccessService,
   ) {}
 
-  @Post('/requests')
-  @UsePipes(new JoiValidationPipe(RequestPayloadSchema))
+  @Post()
   async PostRequest(
-    @Body() createRequestDto: CreateRequestDto,
-    @Req() req,
-    @Res() res,
+    @Body(new JoiValidationPipe(CreateRequestPayloadSchema))
+    createRequestBody: CreateRequestBody,
+    @AuthenticatedUser() authUser: AuthUser,
+    @Res() res: Response,
   ): Promise<any> {
-    const authUser = req.user as AuthUser;
-
     const userAccess = this.userAccessService.getUserAccess(authUser);
-    this.requestsService.createNewRequest(createRequestDto, userAccess);
+    this.requestsService.createNewRequest(createRequestBody, userAccess);
 
     return res.status(HttpStatus.CREATED).send({
       message: 'CREATED',
     });
   }
 
-  @Get('/requests')
+  @Get()
   async GetRequests(
-    @Query() queryRequest: QueryRequestDto,
-    @Req() req,
-    @Res() res,
+    @Query(new JoiValidationPipe(GetRequestsSchema))
+    queryPagination: QueryPagination,
+    @AuthenticatedUser() authUser: AuthUser,
+    @Res() res: Response,
   ): Promise<any> {
-    const authUser = req.user as AuthUser;
     const userAccess = this.userAccessService.getUserAccess(authUser);
 
     const apiResponse = await this.requestsService.getAllRequests(
-      queryRequest,
+      queryPagination,
       userAccess,
     );
 
     return res.status(HttpStatus.OK).send(apiResponse);
+  }
+
+  @Patch(':id/status')
+  async PutRequestStatus(
+    @Param('id') id: string,
+    @Body(new JoiValidationPipe(ChangeRequestPayloadSchema))
+    changeStatusBody: ChangeStatusBody,
+    @AuthenticatedUser() authUser: AuthUser,
+    @Res() res: Response,
+  ): Promise<any> {
+    const userAccess = this.userAccessService.getUserAccess(authUser);
+    if (!userAccess.isAdmin) {
+      throw new UnauthorizedException();
+    }
+
+    this.requestsService.changeStatus(changeStatusBody, id);
+    return res.status(HttpStatus.OK).send({
+      message: 'UPDATED',
+    });
   }
 }

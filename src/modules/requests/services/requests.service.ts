@@ -1,4 +1,3 @@
-import { CreateRequestDto } from '../dtos/create-request.dto';
 import { Injectable } from '@nestjs/common';
 import { RequestsRepository } from '../respositories/requests.repository';
 import { mapEntitytoInterface } from '../interfaces/response.interface';
@@ -7,29 +6,34 @@ import {
   queryPagination,
 } from '../../../common/helpers/pagination';
 import { ApiResponse } from '../../../common/interfaces/api-response.interface';
-import { QueryRequestDto } from '../dtos/query-request.dto';
 import { UserAccess } from '../../../common/interfaces/keycloak-user.interface';
+import {
+  CreateRequestBody,
+  ChangeStatusBody,
+} from '../interfaces/request.interface';
+import { QueryPagination } from '../../../common/interfaces/pagination.interface';
 
 @Injectable()
 export class RequestsService {
   constructor(private repo: RequestsRepository) {}
 
-  async createNewRequest(reqBody: CreateRequestDto, userAccess: UserAccess) {
-    const newRequest = this.repo.store({
+  async createNewRequest(
+    createRequestBody: CreateRequestBody,
+    userAccess: UserAccess,
+  ) {
+    this.repo.store({
       email: userAccess.email,
       username: userAccess.name,
-      division: reqBody.division,
-      phoneNumber: reqBody.phone_number,
-      requestType: reqBody.request_type,
-      itemName: reqBody.item_name,
-      purpose: reqBody.purpose,
-      priority: reqBody.priority,
+      division: createRequestBody.division,
+      phoneNumber: createRequestBody.phone_number,
+      requestType: createRequestBody.request_type,
+      itemName: createRequestBody.item_name,
+      purpose: createRequestBody.purpose,
+      priority: createRequestBody.priority,
     });
-
-    return newRequest;
   }
 
-  async getAllRequests(queryRequest: QueryRequestDto, userAccess: UserAccess) {
+  async getAllRequests(queryRequest: QueryPagination, userAccess: UserAccess) {
     const pagination = queryPagination(queryRequest);
     const { result, count } = await this.repo.fetchAll(pagination, userAccess);
 
@@ -42,5 +46,10 @@ export class RequestsService {
     };
 
     return apiResponse;
+  }
+
+  async changeStatus(changeStatus: ChangeStatusBody, id: string) {
+    const status = changeStatus.status;
+    await this.repo.setStatusById(id, status);
   }
 }
