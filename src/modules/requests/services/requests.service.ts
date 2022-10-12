@@ -12,6 +12,7 @@ import {
   ChangeStatusBody,
 } from '../interfaces/request.interface';
 import { QueryPagination } from '../../../common/interfaces/pagination.interface';
+import { UpdateRequestItemBody } from './../interfaces/request.interface';
 
 @Injectable()
 export class RequestsService {
@@ -53,8 +54,16 @@ export class RequestsService {
     return apiResponse;
   }
 
-  async changeStatus(changeStatus: ChangeStatusBody, id: string) {
+  async updateStatus(changeStatus: ChangeStatusBody, id: string) {
     const status = changeStatus.status;
-    await this.repo.setStatusById(id, status);
+    await this.repo.updateStatus(id, status);
+  }
+
+  async updateAvailableItem(
+    updateRequestItemBody: UpdateRequestItemBody,
+    id: string,
+  ) {
+    const availableItemName = updateRequestItemBody.available_item_name;
+    this.repo.updateAvailableItem(id, availableItemName);
   }
 }

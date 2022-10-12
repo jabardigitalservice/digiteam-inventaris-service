@@ -44,6 +44,14 @@ export class Request {
   })
   public itemName: string;
 
+  @Column({
+    type: 'varchar',
+    length: 255,
+    nullable: true,
+    name: 'available_item_name',
+  })
+  public availableItemName?: string;
+
   @Column({ type: 'text', nullable: false })
   public purpose: string;
 

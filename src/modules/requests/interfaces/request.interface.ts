@@ -10,3 +10,7 @@ export interface CreateRequestBody {
 export interface ChangeStatusBody {
   status: number;
 }
+
+export interface UpdateRequestItemBody {
+  available_item_name: string;
+}

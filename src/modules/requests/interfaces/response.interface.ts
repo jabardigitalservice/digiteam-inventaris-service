@@ -8,6 +8,7 @@ export interface ResponseInterface {
   phone_number: string;
   request_type: number;
   item_name: string;
+  available_item_name: string;
   purpose: string;
   priority: number;
   status: number;
@@ -24,6 +25,7 @@ export const mapEntitytoInterface = (request: Request) => {
     phone_number: request.phoneNumber,
     request_type: request.requestType,
     item_name: request.itemName,
+    available_item_name: request.availableItemName,
     purpose: request.purpose,
     priority: request.priority,
     status: request.status,
