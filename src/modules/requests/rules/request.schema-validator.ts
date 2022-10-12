@@ -9,7 +9,7 @@ export const CreateRequestPayloadSchema = Joi.object({
   priority: Joi.number().strict().required(),
 });
 
-export const RequestPaginationSchema = Joi.object({
+export const GetRequestsSchema = Joi.object({
   limit: Joi.number().required(),
   page: Joi.number().required(),
 });

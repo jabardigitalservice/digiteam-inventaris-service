@@ -13,7 +13,7 @@ import { Response } from 'express';
 import { RequestsService } from './services/requests.service';
 import { JoiValidationPipe } from '../../common/pipes/joi-validation.pipe';
 import {
-  RequestPaginationSchema,
+  GetRequestsSchema,
   CreateRequestPayloadSchema,
   ChangeRequestPayloadSchema,
 } from './rules/request.schema-validator';
@@ -50,7 +50,7 @@ export class RequestsController {
 
   @Get()
   async GetRequests(
-    @Query(new JoiValidationPipe(RequestPaginationSchema))
+    @Query(new JoiValidationPipe(GetRequestsSchema))
     queryPagination: QueryPagination,
     @AuthenticatedUser() authUser: AuthUser,
     @Res() res: Response,
