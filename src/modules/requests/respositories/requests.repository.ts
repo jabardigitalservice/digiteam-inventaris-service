@@ -40,9 +40,6 @@ export class RequestsRepository extends Repository<Request> {
   }
 
   async setStatusById(id: string, status: number) {
-    const request = await this.findOneBy({ id });
-    request.status = status;
-
-    await this.save(request);
+    await this.update(id, { status });
   }
 }
