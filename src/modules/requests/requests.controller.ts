@@ -8,6 +8,7 @@ import {
   Query,
   Patch,
   Param,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { RequestsService } from './services/requests.service';
@@ -75,9 +76,7 @@ export class RequestsController {
   ): Promise<any> {
     const userAccess = this.userAccessService.getUserAccess(authUser);
     if (!userAccess.isAdmin) {
-      return res.status(HttpStatus.UNAUTHORIZED).send({
-        message: 'Unauthorized',
-      });
+      throw new UnauthorizedException();
     }
 
     this.requestsService.changeStatus(changeStatusBody, id);
