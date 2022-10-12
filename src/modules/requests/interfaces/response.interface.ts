@@ -1,4 +1,4 @@
-import { Request } from '../entities/request.entity';
+import { Request } from '../../../entities/request.entity';
 
 export interface ResponseInterface {
   id: string;
