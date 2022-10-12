@@ -10,8 +10,8 @@ export const CreateRequestPayloadSchema = Joi.object({
 });
 
 export const GetRequestsSchema = Joi.object({
-  limit: Joi.number().required(),
-  page: Joi.number().required(),
+  limit: Joi.number(),
+  page: Joi.number(),
 });
 
 export const ChangeRequestPayloadSchema = Joi.object({
