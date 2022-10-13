@@ -42,7 +42,7 @@ export class RequestsController {
     @Res() res: Response,
   ): Promise<any> {
     const userAccess = this.userAccessService.getUserAccess(authUser);
-    this.requestsService.createNewRequest(createRequestBody, userAccess);
+    this.requestsService.create(createRequestBody, userAccess);
 
     return res.status(HttpStatus.CREATED).send({
       message: 'CREATED',
@@ -58,10 +58,20 @@ export class RequestsController {
   ): Promise<any> {
     const userAccess = this.userAccessService.getUserAccess(authUser);
 
-    const apiResponse = await this.requestsService.getAllRequests(
+    const apiResponse = await this.requestsService.fetch(
       queryPagination,
       userAccess,
     );
+
+    return res.status(HttpStatus.OK).send(apiResponse);
+  }
+
+  @Get(':id')
+  async GetRequest(
+    @Param('id') id: string,
+    @Res() res: Response,
+  ): Promise<any> {
+    const apiResponse = await this.requestsService.findById(id);
 
     return res.status(HttpStatus.OK).send(apiResponse);
   }

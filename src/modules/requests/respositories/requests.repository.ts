@@ -17,7 +17,7 @@ export class RequestsRepository extends Repository<Request> {
     return this.save(request);
   }
 
-  async fetchAll(pagination: Pagination, userAccess: UserAccess) {
+  async fetch(pagination: Pagination, userAccess: UserAccess) {
     const { email, isAdmin } = userAccess;
 
     const query = this.createQueryBuilder('request');
@@ -37,6 +37,11 @@ export class RequestsRepository extends Repository<Request> {
       result,
       count,
     };
+  }
+
+  async findById(id: string): Promise<Request> {
+    const result = await this.findOneBy({ id });
+    return result;
   }
 
   async setStatusById(id: string, status: number) {
