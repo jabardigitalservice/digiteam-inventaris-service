@@ -10,6 +10,7 @@ import { UserAccess } from '../../../common/interfaces/keycloak-user.interface';
 import {
   CreateRequestBody,
   ChangeStatusBody,
+  UpdateRequestItemBody,
 } from '../interfaces/request.interface';
 import { QueryPagination } from '../../../common/interfaces/pagination.interface';
 
@@ -56,5 +57,13 @@ export class RequestsService {
   async changeStatus(changeStatus: ChangeStatusBody, id: string) {
     const status = changeStatus.status;
     await this.repo.setStatusById(id, status);
+  }
+
+  async updateAvailableItem(
+    updateRequestItemBody: UpdateRequestItemBody,
+    id: string,
+  ) {
+    const availableItemName = updateRequestItemBody.available_item_name;
+    this.repo.updateAvailableItem(id, availableItemName);
   }
 }

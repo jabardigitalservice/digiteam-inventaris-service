@@ -17,6 +17,7 @@ import {
   GetRequestsSchema,
   CreateRequestPayloadSchema,
   ChangeRequestPayloadSchema,
+  PatchRequestItemPayloadSchema,
 } from './rules/request.schema-validator';
 import { AuthenticatedUser } from 'nest-keycloak-connect';
 import { AuthUser } from '../../common/interfaces/keycloak-user.interface';
@@ -24,6 +25,7 @@ import { UserAccessService } from './../../common/providers/user-access.service'
 import {
   ChangeStatusBody,
   CreateRequestBody,
+  UpdateRequestItemBody,
 } from './interfaces/request.interface';
 import { QueryPagination } from '../../common/interfaces/pagination.interface';
 
@@ -90,6 +92,19 @@ export class RequestsController {
     }
 
     this.requestsService.changeStatus(changeStatusBody, id);
+    return res.status(HttpStatus.OK).send({
+      message: 'UPDATED',
+    });
+  }
+
+  @Patch(':id')
+  async PutRequestItem(
+    @Param('id') id: string,
+    @Body(new JoiValidationPipe(PatchRequestItemPayloadSchema))
+    updateRequestItemBody: UpdateRequestItemBody,
+    @Res() res: Response,
+  ): Promise<any> {
+    await this.requestsService.updateAvailableItem(updateRequestItemBody, id);
     return res.status(HttpStatus.OK).send({
       message: 'UPDATED',
     });
