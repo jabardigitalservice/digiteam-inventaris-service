@@ -17,3 +17,7 @@ export const GetRequestsSchema = Joi.object({
 export const ChangeRequestPayloadSchema = Joi.object({
   status: Joi.number().strict().required(),
 });
+
+export const PatchRequestItemPayloadSchema = Joi.object({
+  available_item_name: Joi.string().strict().required(),
+});

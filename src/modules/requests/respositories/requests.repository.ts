@@ -47,4 +47,8 @@ export class RequestsRepository extends Repository<Request> {
   async setStatusById(id: string, status: number) {
     await this.update(id, { status });
   }
+
+  async updateAvailableItem(id: string, availableItemName: string) {
+    await this.update(id, { availableItemName });
+  }
 }
