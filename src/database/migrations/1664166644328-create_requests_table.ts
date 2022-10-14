@@ -40,8 +40,7 @@ export class CreateRequestTable1664166644328 implements MigrationInterface {
           },
           {
             name: 'request_type',
-            type: 'varchar',
-            length: '255',
+            type: 'int',
             isNullable: false,
           },
           {
@@ -49,6 +48,12 @@ export class CreateRequestTable1664166644328 implements MigrationInterface {
             type: 'varchar',
             length: '255',
             isNullable: false,
+          },
+          {
+            name: 'available_item_name',
+            type: 'varchar',
+            length: '255',
+            isNullable: true,
           },
           {
             name: 'purpose',
