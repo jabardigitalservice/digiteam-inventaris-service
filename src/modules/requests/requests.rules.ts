@@ -1,4 +1,4 @@
-import * as Joi from 'joi';
+import Joi from 'joi';
 
 export const CreateRequestPayloadSchema = Joi.object({
   division: Joi.string().required(),
@@ -9,9 +9,11 @@ export const CreateRequestPayloadSchema = Joi.object({
   priority: Joi.number().strict().required(),
 });
 
+const emptyAllow = ['', null];
+
 export const GetRequestsSchema = Joi.object({
-  limit: Joi.number().required(),
-  page: Joi.number().required(),
+  limit: Joi.number().allow(...emptyAllow),
+  page: Joi.number().allow(...emptyAllow),
 });
 
 export const ChangeRequestPayloadSchema = Joi.object({

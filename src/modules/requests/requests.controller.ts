@@ -11,14 +11,14 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { RequestsService } from './services/requests.service';
+import { RequestsService } from './requests.service';
 import { JoiValidationPipe } from '../../common/pipes/joi-validation.pipe';
 import {
   GetRequestsSchema,
   CreateRequestPayloadSchema,
   ChangeRequestPayloadSchema,
   PatchRequestItemPayloadSchema,
-} from './rules/request.schema-validator';
+} from './requests.rules';
 import { AuthenticatedUser } from 'nest-keycloak-connect';
 import { AuthUser } from '../../common/interfaces/keycloak-user.interface';
 import { UserAccessService } from './../../common/providers/user-access.service';
@@ -26,7 +26,7 @@ import {
   ChangeStatusBody,
   CreateRequestBody,
   UpdateRequestItemBody,
-} from './interfaces/request.interface';
+} from './requests.interface';
 import { QueryPagination } from '../../common/interfaces/pagination.interface';
 
 @Controller('requests')

@@ -1,18 +1,19 @@
+import { Request } from '../../entities/request.entity';
 import { Injectable } from '@nestjs/common';
-import { RequestsRepository } from '../respositories/requests.repository';
-import { mapEntitytoInterface } from '../interfaces/response.interface';
+import { RequestsRepository } from './requests.repository';
 import {
   metaPagination,
   queryPagination,
-} from '../../../common/helpers/pagination';
-import { ApiResponse } from '../../../common/interfaces/api-response.interface';
-import { UserAccess } from '../../../common/interfaces/keycloak-user.interface';
+} from '../../common/helpers/pagination';
+import { ApiResponse } from '../../common/interfaces/api-response.interface';
+import { UserAccess } from '../../common/interfaces/keycloak-user.interface';
 import {
   CreateRequestBody,
   ChangeStatusBody,
   UpdateRequestItemBody,
-} from '../interfaces/request.interface';
-import { QueryPagination } from '../../../common/interfaces/pagination.interface';
+  ResponseInterface,
+} from './requests.interface';
+import { QueryPagination } from '../../common/interfaces/pagination.interface';
 
 @Injectable()
 export class RequestsService {
@@ -33,10 +34,10 @@ export class RequestsService {
 
   async fetch(queryRequest: QueryPagination, userAccess: UserAccess) {
     const pagination = queryPagination(queryRequest);
-    const { result, count } = await this.repo.fetch(pagination, userAccess);
+    const { result, total } = await this.repo.fetch(pagination, userAccess);
 
-    const data = result.map((requests) => mapEntitytoInterface(requests));
-    const meta = metaPagination(count, result, pagination);
+    const data = result.map((requests) => this.mapEntitytoInterface(requests));
+    const meta = metaPagination(total, result, pagination);
 
     const apiResponse: ApiResponse = {
       data,
@@ -48,7 +49,7 @@ export class RequestsService {
 
   async findById(id: string) {
     const result = await this.repo.findById(id);
-    const data = mapEntitytoInterface(result);
+    const data = this.mapEntitytoInterface(result);
 
     const apiResponse: ApiResponse = { data };
     return apiResponse;
@@ -65,5 +66,24 @@ export class RequestsService {
   ) {
     const availableItemName = updateRequestItemBody.available_item_name;
     this.repo.updateAvailableItem(id, availableItemName);
+  }
+
+  mapEntitytoInterface(request: Request) {
+    const responseInterface: ResponseInterface = {
+      id: request.id,
+      email: request.email,
+      username: request.username,
+      division: request.division,
+      phone_number: request.phoneNumber,
+      request_type: request.requestType,
+      item_name: request.itemName,
+      purpose: request.purpose,
+      priority: request.priority,
+      status: request.status,
+      created_at: request.createdAt,
+      updated_at: request.updatedAt,
+    };
+
+    return responseInterface;
   }
 }
