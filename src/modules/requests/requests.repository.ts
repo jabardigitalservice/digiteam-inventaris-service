@@ -3,52 +3,41 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from '../../entities/request.entity';
 import { UserAccess } from '../../common/interfaces/keycloak-user.interface';
 import { Pagination } from 'src/common/interfaces/pagination.interface';
-export class RequestsRepository extends Repository<Request> {
+export class RequestsRepository {
   constructor(
     @InjectRepository(Request)
-    repository: Repository<Request>,
-  ) {
-    super(repository.target, repository.manager, repository.queryRunner);
-  }
+    private request: Repository<Request>,
+  ) {}
 
   async store(newRequest: Request) {
-    const request = this.create(newRequest);
+    const request = this.request.create(newRequest);
 
-    return this.save(request);
+    return this.request.save(request);
   }
 
   async fetch(pagination: Pagination, userAccess: UserAccess) {
     const { email, isAdmin } = userAccess;
+    const condition = !isAdmin ? { email } : undefined;
 
-    const query = this.createQueryBuilder('request');
+    const result = this.request.find({
+      where: condition,
+      take: pagination.limit,
+      skip: pagination.offset,
+    });
 
-    if (!isAdmin) {
-      query.where('request.email = :email', { email });
-    }
-
-    const count: number = await query.getCount();
-
-    query.take(pagination.limit);
-    query.skip(pagination.offset);
-
-    const result = await query.getMany();
-
-    return {
-      result,
-      count,
-    };
+    return result;
   }
 
   async findById(id: string): Promise<Request> {
-    const result = await this.findOneBy({ id });
+    const result = await this.request.findOneBy({ id });
     return result;
   }
 
   async setStatusById(id: string, status: number) {
-    await this.update(id, { status });
+    await this.request.update(id, { status });
   }
 
   async updateAvailableItem(id: string, availableItemName: string) {
-    await this.update(id, { availableItemName });
+    await this.request.update(id, { availableItemName });
   }
 }
