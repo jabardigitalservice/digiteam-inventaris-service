@@ -17,15 +17,21 @@ export class RequestsRepository {
 
   async fetch(pagination: Pagination, userAccess: UserAccess) {
     const { email, isAdmin } = userAccess;
-    const condition = !isAdmin ? { email } : undefined;
+    const condition: Record<string, any> = {};
+    if (!isAdmin) condition.email = email;
 
-    const result = this.request.find({
+    const result = await this.request.find({
       where: condition,
       take: pagination.limit,
       skip: pagination.offset,
     });
 
-    return result;
+    const total = await this.request.count({ where: condition });
+
+    return {
+      result,
+      total,
+    };
   }
 
   async findById(id: string): Promise<Request> {

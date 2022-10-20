@@ -18,7 +18,7 @@ import {
   CreateRequestPayloadSchema,
   ChangeRequestPayloadSchema,
   PatchRequestItemPayloadSchema,
-} from './rules/request.schema-validator';
+} from './requests.rules';
 import { AuthenticatedUser } from 'nest-keycloak-connect';
 import { AuthUser } from '../../common/interfaces/keycloak-user.interface';
 import { UserAccessService } from './../../common/providers/user-access.service';

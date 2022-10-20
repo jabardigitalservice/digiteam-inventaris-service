@@ -34,10 +34,10 @@ export class RequestsService {
 
   async fetch(queryRequest: QueryPagination, userAccess: UserAccess) {
     const pagination = queryPagination(queryRequest);
-    const result = await this.repo.fetch(pagination, userAccess);
+    const { result, total } = await this.repo.fetch(pagination, userAccess);
 
     const data = result.map((requests) => this.mapEntitytoInterface(requests));
-    const meta = metaPagination(result.length, result, pagination);
+    const meta = metaPagination(total, result, pagination);
 
     const apiResponse: ApiResponse = {
       data,
