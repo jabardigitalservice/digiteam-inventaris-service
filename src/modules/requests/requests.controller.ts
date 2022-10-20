@@ -11,7 +11,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { RequestsService } from './services/requests.service';
+import { RequestsService } from './requests.service';
 import { JoiValidationPipe } from '../../common/pipes/joi-validation.pipe';
 import {
   GetRequestsSchema,
@@ -26,7 +26,7 @@ import {
   ChangeStatusBody,
   CreateRequestBody,
   UpdateRequestItemBody,
-} from './interfaces/request.interface';
+} from './requests.interface';
 import { QueryPagination } from '../../common/interfaces/pagination.interface';
 
 @Controller('requests')
