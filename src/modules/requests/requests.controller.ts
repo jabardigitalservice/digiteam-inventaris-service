@@ -88,7 +88,7 @@ export class RequestsController {
       throw new UnauthorizedException();
     }
 
-    this.requestsService.updateStatus(changeStatusBody, id);
+    await this.requestsService.updateStatus(changeStatusBody, id);
     return res.status(HttpStatus.OK).send({
       message: 'UPDATED',
     });
