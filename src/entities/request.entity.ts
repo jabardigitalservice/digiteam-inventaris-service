@@ -11,46 +11,26 @@ export class Request {
   @PrimaryGeneratedColumn('uuid')
   public id?: string;
 
-  @Column({ type: 'varchar', length: 255, nullable: false, name: 'email' })
+  @Column({ type: 'varchar', length: 255, nullable: false })
   public email: string;
 
-  @Column({ type: 'varchar', length: 255, nullable: false, name: 'username' })
+  @Column({ type: 'varchar', length: 255, nullable: false })
   public username: string;
 
-  @Column({
-    type: 'varchar',
-    length: 255,
-    nullable: false,
-    name: 'division',
-  })
+  @Column({ type: 'varchar', length: 255, nullable: false })
   public division: string;
 
-  @Column({
-    type: 'varchar',
-    length: 255,
-    nullable: false,
-    name: 'phone_number',
-  })
-  public phoneNumber: string;
+  @Column({ type: 'varchar', length: 255, nullable: false })
+  public phone_number: string;
 
-  @Column({ type: 'int', nullable: false, name: 'request_type' })
-  public requestType: number;
+  @Column({ type: 'int', nullable: false })
+  public request_type: number;
 
-  @Column({
-    type: 'varchar',
-    length: 255,
-    nullable: false,
-    name: 'item_name',
-  })
-  public itemName: string;
+  @Column({ type: 'varchar', length: 255, nullable: false })
+  public item_name: string;
 
-  @Column({
-    type: 'varchar',
-    length: 255,
-    nullable: true,
-    name: 'available_item_name',
-  })
-  public availableItemName?: string;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  public available_item_name?: string;
 
   @Column({ type: 'text', nullable: false })
   public purpose: string;
@@ -61,24 +41,12 @@ export class Request {
   @Column({ type: 'int', nullable: false, default: 1 })
   public status?: number;
 
-  @CreateDateColumn({
-    type: 'timestamp',
-    name: 'created_at',
-    nullable: false,
-  })
-  public createdAt?: Date;
+  @CreateDateColumn({ type: 'timestamp', nullable: false })
+  public created_at?: Date;
 
-  @UpdateDateColumn({
-    type: 'timestamp',
-    name: 'updated_at',
-    nullable: false,
-  })
-  public updatedAt?: Date;
+  @UpdateDateColumn({ type: 'timestamp', nullable: false })
+  public updated_at?: Date;
 
-  @Column({
-    type: 'timestamp',
-    name: 'deleted_at',
-    nullable: true,
-  })
-  public deletedAt?: Date;
+  @Column({ type: 'timestamp', nullable: true })
+  public deleted_at?: Date;
 }
