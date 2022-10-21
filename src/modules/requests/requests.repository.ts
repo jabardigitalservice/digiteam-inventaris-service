@@ -38,7 +38,7 @@ export class RequestsRepository {
     return result;
   }
 
-  async setStatusById(id: string, status: number) {
+  async updateStatus(id: string, status: number) {
     await this.request.update(id, { status });
   }
 

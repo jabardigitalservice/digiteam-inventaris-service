@@ -49,7 +49,7 @@ export class RequestsService {
 
   async updateStatus(changeStatus: ChangeStatusBody, id: string) {
     const status = changeStatus.status;
-    await this.repo.setStatusById(id, status);
+    await this.repo.updateStatus(id, status);
   }
 
   async updateItem(updateRequestItemBody: UpdateRequestItemBody, id: string) {
