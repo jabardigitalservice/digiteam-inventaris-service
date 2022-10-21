@@ -11,11 +11,10 @@ export class RequestsRepository {
 
   async store(newRequest: Request) {
     const request = this.request.create(newRequest);
-
-    return this.request.save(request);
+    await this.request.save(request);
   }
 
-  async fetch(pagination: Pagination, userAccess: UserAccess) {
+  async findAll(pagination: Pagination, userAccess: UserAccess) {
     const { email, isAdmin } = userAccess;
     const condition: Record<string, any> = {};
     if (!isAdmin) condition.email = email;
@@ -34,7 +33,7 @@ export class RequestsRepository {
     };
   }
 
-  async findById(id: string): Promise<Request> {
+  async findById(id: string) {
     const result = await this.request.findOneBy({ id });
     return result;
   }
@@ -43,7 +42,7 @@ export class RequestsRepository {
     await this.request.update(id, { status });
   }
 
-  async updateAvailableItem(id: string, availableItemName: string) {
-    await this.request.update(id, { availableItemName });
+  async updateAvailableItem(id: string, available_item_name: string) {
+    await this.request.update(id, { available_item_name });
   }
 }
