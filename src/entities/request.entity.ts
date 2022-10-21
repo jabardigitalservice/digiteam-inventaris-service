@@ -17,35 +17,19 @@ export class Request {
   @Column({ type: 'varchar', length: 255, nullable: false })
   public username: string;
 
-  @Column({
-    type: 'varchar',
-    length: 255,
-    nullable: false,
-  })
+  @Column({ type: 'varchar', length: 255, nullable: false })
   public division: string;
 
-  @Column({
-    type: 'varchar',
-    length: 255,
-    nullable: false,
-  })
+  @Column({ type: 'varchar', length: 255, nullable: false })
   public phone_number: string;
 
   @Column({ type: 'int', nullable: false })
   public request_type: number;
 
-  @Column({
-    type: 'varchar',
-    length: 255,
-    nullable: false,
-  })
+  @Column({ type: 'varchar', length: 255, nullable: false })
   public item_name: string;
 
-  @Column({
-    type: 'varchar',
-    length: 255,
-    nullable: true,
-  })
+  @Column({ type: 'varchar', length: 255, nullable: true })
   public available_item_name?: string;
 
   @Column({ type: 'text', nullable: false })
@@ -57,21 +41,12 @@ export class Request {
   @Column({ type: 'int', nullable: false, default: 1 })
   public status?: number;
 
-  @CreateDateColumn({
-    type: 'timestamp',
-    nullable: false,
-  })
+  @CreateDateColumn({ type: 'timestamp', nullable: false })
   public created_at?: Date;
 
-  @UpdateDateColumn({
-    type: 'timestamp',
-    nullable: false,
-  })
+  @UpdateDateColumn({ type: 'timestamp', nullable: false })
   public updated_at?: Date;
 
-  @Column({
-    type: 'timestamp',
-    nullable: true,
-  })
+  @Column({ type: 'timestamp', nullable: true })
   public deleted_at?: Date;
 }
