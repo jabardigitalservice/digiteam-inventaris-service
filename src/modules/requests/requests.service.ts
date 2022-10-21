@@ -52,7 +52,10 @@ export class RequestsService {
     await this.repo.updateStatus(id, status);
   }
 
-  async updateAvailableItem(updateRequestItemBody: UpdateRequestItemBody, id: string) {
+  async updateAvailableItem(
+    updateRequestItemBody: UpdateRequestItemBody,
+    id: string,
+  ) {
     const available_item_name = updateRequestItemBody.available_item_name;
     await this.repo.updateAvailableItem(id, available_item_name);
   }
