@@ -11,17 +11,16 @@ export class Request {
   @PrimaryGeneratedColumn('uuid')
   public id?: string;
 
-  @Column({ type: 'varchar', length: 255, nullable: false, name: 'email' })
+  @Column({ type: 'varchar', length: 255, nullable: false })
   public email: string;
 
-  @Column({ type: 'varchar', length: 255, nullable: false, name: 'username' })
+  @Column({ type: 'varchar', length: 255, nullable: false })
   public username: string;
 
   @Column({
     type: 'varchar',
     length: 255,
     nullable: false,
-    name: 'division',
   })
   public division: string;
 
@@ -29,28 +28,25 @@ export class Request {
     type: 'varchar',
     length: 255,
     nullable: false,
-    name: 'phone_number',
   })
-  public phoneNumber: string;
+  public phone_number: string;
 
-  @Column({ type: 'int', nullable: false, name: 'request_type' })
-  public requestType: number;
+  @Column({ type: 'int', nullable: false })
+  public request_type: number;
 
   @Column({
     type: 'varchar',
     length: 255,
     nullable: false,
-    name: 'item_name',
   })
-  public itemName: string;
+  public item_name: string;
 
   @Column({
     type: 'varchar',
     length: 255,
     nullable: true,
-    name: 'available_item_name',
   })
-  public availableItemName?: string;
+  public available_item_name?: string;
 
   @Column({ type: 'text', nullable: false })
   public purpose: string;
@@ -63,22 +59,19 @@ export class Request {
 
   @CreateDateColumn({
     type: 'timestamp',
-    name: 'created_at',
     nullable: false,
   })
-  public createdAt?: Date;
+  public created_at?: Date;
 
   @UpdateDateColumn({
     type: 'timestamp',
-    name: 'updated_at',
     nullable: false,
   })
-  public updatedAt?: Date;
+  public updated_at?: Date;
 
   @Column({
     type: 'timestamp',
-    name: 'deleted_at',
     nullable: true,
   })
-  public deletedAt?: Date;
+  public deleted_at?: Date;
 }
