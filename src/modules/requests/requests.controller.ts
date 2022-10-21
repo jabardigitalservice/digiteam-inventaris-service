@@ -37,14 +37,14 @@ export class RequestsController {
   ) {}
 
   @Post()
-  async PostRequest(
+  async store(
     @Body(new JoiValidationPipe(CreateRequestPayloadSchema))
     createRequestBody: CreateRequestBody,
     @AuthenticatedUser() authUser: AuthUser,
     @Res() res: Response,
   ): Promise<any> {
     const userAccess = this.userAccessService.getUserAccess(authUser);
-    this.requestsService.create(createRequestBody, userAccess);
+    await this.requestsService.store(createRequestBody, userAccess);
 
     return res.status(HttpStatus.CREATED).send({
       message: 'CREATED',
@@ -52,7 +52,7 @@ export class RequestsController {
   }
 
   @Get()
-  async GetRequests(
+  async findAll(
     @Query(new JoiValidationPipe(GetRequestsSchema))
     queryPagination: QueryPagination,
     @AuthenticatedUser() authUser: AuthUser,
@@ -60,26 +60,23 @@ export class RequestsController {
   ): Promise<any> {
     const userAccess = this.userAccessService.getUserAccess(authUser);
 
-    const apiResponse = await this.requestsService.fetch(
+    const responseBody = await this.requestsService.findAll(
       queryPagination,
       userAccess,
     );
 
-    return res.status(HttpStatus.OK).send(apiResponse);
+    return res.status(HttpStatus.OK).send(responseBody);
   }
 
   @Get(':id')
-  async GetRequest(
-    @Param('id') id: string,
-    @Res() res: Response,
-  ): Promise<any> {
-    const apiResponse = await this.requestsService.findById(id);
+  async findById(@Param('id') id: string, @Res() res: Response): Promise<any> {
+    const responseBody = await this.requestsService.findById(id);
 
-    return res.status(HttpStatus.OK).send(apiResponse);
+    return res.status(HttpStatus.OK).send(responseBody);
   }
 
   @Patch(':id/status')
-  async PutRequestStatus(
+  async updateStatus(
     @Param('id') id: string,
     @Body(new JoiValidationPipe(ChangeRequestPayloadSchema))
     changeStatusBody: ChangeStatusBody,
@@ -91,20 +88,20 @@ export class RequestsController {
       throw new UnauthorizedException();
     }
 
-    this.requestsService.changeStatus(changeStatusBody, id);
+    this.requestsService.updateStatus(changeStatusBody, id);
     return res.status(HttpStatus.OK).send({
       message: 'UPDATED',
     });
   }
 
   @Patch(':id')
-  async PutRequestItem(
+  async updateItem(
     @Param('id') id: string,
     @Body(new JoiValidationPipe(PatchRequestItemPayloadSchema))
     updateRequestItemBody: UpdateRequestItemBody,
     @Res() res: Response,
   ): Promise<any> {
-    await this.requestsService.updateAvailableItem(updateRequestItemBody, id);
+    await this.requestsService.updateItem(updateRequestItemBody, id);
     return res.status(HttpStatus.OK).send({
       message: 'UPDATED',
     });
