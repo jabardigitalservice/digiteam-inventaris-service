@@ -11,6 +11,7 @@ import {
   UpdateRequestItemBody,
 } from './requests.interface';
 import { QueryPagination } from '../../common/interfaces/pagination.interface';
+import { status } from '../../common/helpers/status';
 
 @Injectable()
 export class RequestsService {
@@ -53,6 +54,11 @@ export class RequestsService {
   }
 
   async updateItem(id: string, updateRequestItemBody: UpdateRequestItemBody) {
-    await this.repo.updateItem(id, updateRequestItemBody);
+    const updated = {
+      ...updateRequestItemBody,
+      status: status.APPROVED,
+    };
+
+    await this.repo.updateItem(id, updated);
   }
 }
