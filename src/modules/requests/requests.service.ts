@@ -47,12 +47,12 @@ export class RequestsService {
     return { data, meta: {} };
   }
 
-  async updateStatus(changeStatus: ChangeStatusBody, id: string) {
+  async updateStatus(id: string, changeStatus: ChangeStatusBody) {
     const status = changeStatus.status;
     await this.repo.updateStatus(id, status);
   }
 
-  async updateItem(updateRequestItemBody: UpdateRequestItemBody, id: string) {
+  async updateItem(id: string, updateRequestItemBody: UpdateRequestItemBody) {
     await this.repo.updateItem(id, updateRequestItemBody);
   }
 }

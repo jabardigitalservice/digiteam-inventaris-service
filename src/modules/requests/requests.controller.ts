@@ -88,7 +88,7 @@ export class RequestsController {
       throw new UnauthorizedException();
     }
 
-    await this.requestsService.updateStatus(changeStatusBody, id);
+    await this.requestsService.updateStatus(id, changeStatusBody);
     return res.status(HttpStatus.OK).send({
       message: 'UPDATED',
     });
@@ -101,7 +101,7 @@ export class RequestsController {
     updateRequestItemBody: UpdateRequestItemBody,
     @Res() res: Response,
   ): Promise<any> {
-    await this.requestsService.updateItem(updateRequestItemBody, id);
+    await this.requestsService.updateItem(id, updateRequestItemBody);
     return res.status(HttpStatus.OK).send({
       message: 'UPDATED',
     });
