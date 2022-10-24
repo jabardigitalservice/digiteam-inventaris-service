@@ -14,4 +14,5 @@ export interface UpdateRequestItemBody {
   item_name: string;
   item_brand: string;
   item_number: string;
+  status: number;
 }
