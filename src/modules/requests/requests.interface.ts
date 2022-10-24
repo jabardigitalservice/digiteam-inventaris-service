@@ -11,5 +11,7 @@ export interface ChangeStatusBody {
   status: number;
 }
 export interface UpdateRequestItemBody {
-  available_item_name: string;
+  item_name: string;
+  item_brand: string;
+  item_number: string;
 }

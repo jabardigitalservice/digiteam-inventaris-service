@@ -101,7 +101,7 @@ export class RequestsController {
     updateRequestItemBody: UpdateRequestItemBody,
     @Res() res: Response,
   ): Promise<any> {
-    await this.requestsService.updateAvailableItem(updateRequestItemBody, id);
+    await this.requestsService.updateItem(updateRequestItemBody, id);
     return res.status(HttpStatus.OK).send({
       message: 'UPDATED',
     });

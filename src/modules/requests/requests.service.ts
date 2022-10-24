@@ -23,7 +23,7 @@ export class RequestsService {
       division: createRequestBody.division,
       phone_number: createRequestBody.phone_number,
       request_type: createRequestBody.request_type,
-      item_name: createRequestBody.item_name,
+      requested_item: createRequestBody.item_name,
       purpose: createRequestBody.purpose,
       priority: createRequestBody.priority,
     });
@@ -52,11 +52,7 @@ export class RequestsService {
     await this.repo.updateStatus(id, status);
   }
 
-  async updateAvailableItem(
-    updateRequestItemBody: UpdateRequestItemBody,
-    id: string,
-  ) {
-    const available_item_name = updateRequestItemBody.available_item_name;
-    await this.repo.updateAvailableItem(id, available_item_name);
+  async updateItem(updateRequestItemBody: UpdateRequestItemBody, id: string) {
+    await this.repo.updateItem(id, updateRequestItemBody);
   }
 }
