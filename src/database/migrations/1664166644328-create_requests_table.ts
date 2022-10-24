@@ -44,13 +44,25 @@ export class CreateRequestTable1664166644328 implements MigrationInterface {
             isNullable: false,
           },
           {
-            name: 'item_name',
+            name: 'requested_item',
             type: 'varchar',
             length: '255',
             isNullable: false,
           },
           {
-            name: 'available_item_name',
+            name: 'item_name',
+            type: 'varchar',
+            length: '255',
+            isNullable: true,
+          },
+          {
+            name: 'item_brand',
+            type: 'varchar',
+            length: '255',
+            isNullable: true,
+          },
+          {
+            name: 'item_number',
             type: 'varchar',
             length: '255',
             isNullable: true,
