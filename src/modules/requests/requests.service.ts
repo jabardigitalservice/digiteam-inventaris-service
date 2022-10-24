@@ -11,6 +11,7 @@ import {
   UpdateRequestItemBody,
 } from './requests.interface';
 import { QueryPagination } from '../../common/interfaces/pagination.interface';
+import { status } from '../../common/helpers/status';
 
 @Injectable()
 export class RequestsService {
@@ -23,7 +24,7 @@ export class RequestsService {
       division: createRequestBody.division,
       phone_number: createRequestBody.phone_number,
       request_type: createRequestBody.request_type,
-      item_name: createRequestBody.item_name,
+      requested_item: createRequestBody.item_name,
       purpose: createRequestBody.purpose,
       priority: createRequestBody.priority,
     });
@@ -47,16 +48,17 @@ export class RequestsService {
     return { data, meta: {} };
   }
 
-  async updateStatus(changeStatus: ChangeStatusBody, id: string) {
+  async updateStatus(id: string, changeStatus: ChangeStatusBody) {
     const status = changeStatus.status;
     await this.repo.updateStatus(id, status);
   }
 
-  async updateAvailableItem(
-    updateRequestItemBody: UpdateRequestItemBody,
-    id: string,
-  ) {
-    const available_item_name = updateRequestItemBody.available_item_name;
-    await this.repo.updateAvailableItem(id, available_item_name);
+  async updateItem(id: string, updateRequestItemBody: UpdateRequestItemBody) {
+    const updated = {
+      ...updateRequestItemBody,
+      status: status.APPROVED,
+    };
+
+    await this.repo.updateItem(id, updated);
   }
 }

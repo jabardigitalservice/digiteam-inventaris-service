@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from '../../entities/request.entity';
 import { UserAccess } from '../../common/interfaces/keycloak-user.interface';
 import { Pagination } from 'src/common/interfaces/pagination.interface';
+import { UpdateRequestItemBody } from './requests.interface';
 export class RequestsRepository {
   constructor(
     @InjectRepository(Request)
@@ -42,7 +43,7 @@ export class RequestsRepository {
     await this.request.update(id, { status });
   }
 
-  async updateAvailableItem(id: string, available_item_name: string) {
-    await this.request.update(id, { available_item_name });
+  async updateItem(id: string, updateRequestItemBody: UpdateRequestItemBody) {
+    await this.request.update(id, updateRequestItemBody);
   }
 }
