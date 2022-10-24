@@ -27,10 +27,16 @@ export class Request {
   public request_type: number;
 
   @Column({ type: 'varchar', length: 255, nullable: false })
-  public item_name: string;
+  public requested_item: string;
 
   @Column({ type: 'varchar', length: 255, nullable: true })
-  public available_item_name?: string;
+  public item_name?: string;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  public item_brand?: string;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  public item_number?: string;
 
   @Column({ type: 'text', nullable: false })
   public purpose: string;
