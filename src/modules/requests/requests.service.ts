@@ -6,10 +6,10 @@ import {
 } from '../../common/helpers/pagination';
 import { UserAccess } from '../../common/interfaces/keycloak-user.interface';
 import {
-  CreateRequestBody,
-  ChangeStatusBody,
-  UpdateRequestItemBody,
-  UpdateFilePathBody,
+  Create,
+  UpdateStatus,
+  UpdateItem,
+  UpdateFilename,
 } from './requests.interface';
 import { QueryPagination } from '../../common/interfaces/pagination.interface';
 import { status } from '../../common/helpers/status';
@@ -18,16 +18,16 @@ import { status } from '../../common/helpers/status';
 export class RequestsService {
   constructor(private repo: RequestsRepository) {}
 
-  async store(createRequestBody: CreateRequestBody, userAccess: UserAccess) {
-    await this.repo.store({
+  store(create: Create, userAccess: UserAccess) {
+    this.repo.store({
       email: userAccess.email,
       username: userAccess.name,
-      division: createRequestBody.division,
-      phone_number: createRequestBody.phone_number,
-      request_type: createRequestBody.request_type,
-      requested_item: createRequestBody.item_name,
-      purpose: createRequestBody.purpose,
-      priority: createRequestBody.priority,
+      division: create.division,
+      phone_number: create.phone_number,
+      request_type: create.request_type,
+      requested_item: create.requested_item,
+      purpose: create.purpose,
+      priority: create.priority,
     });
   }
 
@@ -49,26 +49,26 @@ export class RequestsService {
     return { data, meta: {} };
   }
 
-  async updateStatus(id: string, changeStatus: ChangeStatusBody) {
-    const status = changeStatus.status;
-    await this.repo.updateStatus(id, status);
+  updateStatus(id: string, updateStatus: UpdateStatus) {
+    const status = updateStatus.status;
+    return this.repo.updateStatus(id, status);
   }
 
-  async updateFilePath(id: string, filename: string) {
-    const updated: UpdateFilePathBody = {
+  updateFilePath(id: string, filename: string) {
+    const updated: UpdateFilename = {
       filename,
       status: status.APPROVED,
     };
 
-    await this.repo.updateFilePath(id, updated);
+    return this.repo.updateFilePath(id, updated);
   }
 
-  async updateItem(id: string, updateRequestItemBody: UpdateRequestItemBody) {
+  updateItem(id: string, updateItem: UpdateItem) {
     const updated = {
-      ...updateRequestItemBody,
+      ...updateItem,
       status: status.REQUESTED,
     };
 
-    await this.repo.updateItem(id, updated);
+    return this.repo.updateItem(id, updated);
   }
 }
