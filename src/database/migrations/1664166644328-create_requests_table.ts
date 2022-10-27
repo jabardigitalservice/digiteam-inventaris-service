@@ -50,6 +50,12 @@ export class CreateRequestTable1664166644328 implements MigrationInterface {
             isNullable: false,
           },
           {
+            name: 'filename',
+            type: 'varchar',
+            length: '255',
+            isNullable: true,
+          },
+          {
             name: 'item_name',
             type: 'varchar',
             length: '255',
