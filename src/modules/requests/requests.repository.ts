@@ -12,7 +12,7 @@ export class RequestsRepository {
 
   store(newRequest: Request) {
     const request = this.request.create(newRequest);
-    return this.request.save(request);
+    this.request.save(request);
   }
 
   async findAll(pagination: Pagination, userAccess: UserAccess) {
