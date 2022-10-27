@@ -4,7 +4,7 @@ export const CreateRequestPayloadSchema = Joi.object({
   division: Joi.string().required(),
   phone_number: Joi.string().required(),
   request_type: Joi.number().strict().required(),
-  item_name: Joi.string().required(),
+  requested_item: Joi.string().required(),
   purpose: Joi.string().required(),
   priority: Joi.number().strict().required(),
 });

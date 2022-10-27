@@ -1,23 +1,23 @@
-export interface CreateRequestBody {
+export interface Create {
   division: string;
   phone_number: string;
   request_type: number;
-  item_name: string;
+  requested_item: string;
   purpose: string;
   priority: number;
 }
 
-export interface ChangeStatusBody {
+export interface UpdateStatus {
   status: number;
 }
-export interface UpdateRequestItemBody {
+export interface UpdateItem {
   item_name: string;
   item_brand: string;
   item_number: string;
   status: number;
 }
 
-export interface UpdateFilePathBody {
+export interface UpdateFilename {
   filename: string;
   status: number;
 }
