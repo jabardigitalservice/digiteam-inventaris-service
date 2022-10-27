@@ -10,6 +10,7 @@ import { schema } from './config.schema';
       load: [configuration],
       validationSchema: schema,
       expandVariables: true,
+      cache: true,
     }),
   ],
   providers: [ConfigService],

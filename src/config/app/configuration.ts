@@ -1,4 +1,5 @@
 import { config } from 'dotenv';
+import { convertToBoolean } from '../../common/helpers/convert';
 
 config();
 
@@ -25,5 +26,13 @@ export default () => ({
   roles: {
     role0: process.env.ROLE_0,
     role1: process.env.ROLE_1,
+  },
+  minio: {
+    endPoint: process.env.MINIO_ENDPOINT,
+    port: parseInt(process.env.MINIO_PORT),
+    useSSL: convertToBoolean(process.env.MINIO_USE_SSL),
+    accessKey: process.env.MINIO_ACCESS_KEY,
+    secretKey: process.env.MINIO_SECRET_KEY,
+    bucketName: process.env.MINIO_BUCKET_NAME,
   },
 });
