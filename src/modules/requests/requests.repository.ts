@@ -50,7 +50,7 @@ export class RequestsRepository {
     await this.request.update(id, updateRequestItemBody);
   }
 
-  async updateFilePath(id: string, uploadFile: UpdateFilePathBody) {
-    await this.request.update(id, uploadFile);
+  updateFilePath(id: string, uploadFile: UpdateFilePathBody) {
+    return this.request.update(id, uploadFile);
   }
 }
