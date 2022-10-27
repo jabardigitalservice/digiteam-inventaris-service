@@ -3,19 +3,16 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from '../../entities/request.entity';
 import { UserAccess } from '../../common/interfaces/keycloak-user.interface';
 import { Pagination } from '../../common/interfaces/pagination.interface';
-import {
-  UpdateFilePathBody,
-  UpdateRequestItemBody,
-} from './requests.interface';
+import { UpdateFilename, UpdateItem } from './requests.interface';
 export class RequestsRepository {
   constructor(
     @InjectRepository(Request)
     private request: Repository<Request>,
   ) {}
 
-  async store(newRequest: Request) {
+  store(newRequest: Request) {
     const request = this.request.create(newRequest);
-    await this.request.save(request);
+    this.request.save(request);
   }
 
   async findAll(pagination: Pagination, userAccess: UserAccess) {
@@ -42,15 +39,15 @@ export class RequestsRepository {
     return result;
   }
 
-  async updateStatus(id: string, status: number) {
-    await this.request.update(id, { status });
+  updateStatus(id: string, status: number) {
+    return this.request.update(id, { status });
   }
 
-  async updateItem(id: string, updateRequestItemBody: UpdateRequestItemBody) {
-    await this.request.update(id, updateRequestItemBody);
+  updateItem(id: string, updated: UpdateItem) {
+    return this.request.update(id, updated);
   }
 
-  updateFilePath(id: string, uploadFile: UpdateFilePathBody) {
-    return this.request.update(id, uploadFile);
+  updateFilePath(id: string, updated: UpdateFilename) {
+    return this.request.update(id, updated);
   }
 }

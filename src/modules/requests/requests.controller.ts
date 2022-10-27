@@ -24,11 +24,7 @@ import {
 import { AuthenticatedUser } from 'nest-keycloak-connect';
 import { AuthUser } from '../../common/interfaces/keycloak-user.interface';
 import { UserAccessService } from './../../common/providers/user-access.service';
-import {
-  ChangeStatusBody,
-  CreateRequestBody,
-  UpdateRequestItemBody,
-} from './requests.interface';
+import { UpdateStatus, Create, UpdateItem } from './requests.interface';
 import { QueryPagination } from '../../common/interfaces/pagination.interface';
 import { MinioClientService } from '../../storage/minio/minio.service';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -45,12 +41,12 @@ export class RequestsController {
   @Post()
   async store(
     @Body(new JoiValidationPipe(CreateRequestPayloadSchema))
-    createRequestBody: CreateRequestBody,
+    create: Create,
     @AuthenticatedUser() authUser: AuthUser,
     @Res() res: Response,
   ): Promise<any> {
     const userAccess = this.userAccessService.getUserAccess(authUser);
-    await this.requestsService.store(createRequestBody, userAccess);
+    this.requestsService.store(create, userAccess);
 
     return res.status(HttpStatus.CREATED).send({
       message: 'CREATED',
@@ -85,7 +81,7 @@ export class RequestsController {
   async updateStatus(
     @Param('id') id: string,
     @Body(new JoiValidationPipe(ChangeRequestPayloadSchema))
-    changeStatusBody: ChangeStatusBody,
+    updateStatus: UpdateStatus,
     @AuthenticatedUser() authUser: AuthUser,
     @Res() res: Response,
   ): Promise<any> {
@@ -94,7 +90,7 @@ export class RequestsController {
       throw new UnauthorizedException();
     }
 
-    await this.requestsService.updateStatus(id, changeStatusBody);
+    this.requestsService.updateStatus(id, updateStatus);
     return res.status(HttpStatus.OK).send({
       message: 'UPDATED',
     });
@@ -104,10 +100,11 @@ export class RequestsController {
   async updateItem(
     @Param('id') id: string,
     @Body(new JoiValidationPipe(PatchRequestItemPayloadSchema))
-    updateRequestItemBody: UpdateRequestItemBody,
+    updateItem: UpdateItem,
     @Res() res: Response,
   ): Promise<any> {
-    await this.requestsService.updateItem(id, updateRequestItemBody);
+    this.requestsService.updateItem(id, updateItem);
+
     return res.status(HttpStatus.OK).send({
       message: 'UPDATED',
     });
@@ -127,7 +124,7 @@ export class RequestsController {
     }
 
     const filename = await this.minioClientService.upload(file);
-    await this.requestsService.updateFilePath(id, filename);
+    this.requestsService.updateFilePath(id, filename);
 
     return res.status(HttpStatus.OK).send({
       message: 'UPDATED',
