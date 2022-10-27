@@ -9,8 +9,10 @@ import {
   Patch,
   Param,
   UnauthorizedException,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
-import { Response } from 'express';
+import { Express, Response } from 'express';
 import { RequestsService } from './requests.service';
 import { JoiValidationPipe } from '../../common/pipes/joi-validation.pipe';
 import {
@@ -28,12 +30,16 @@ import {
   UpdateRequestItemBody,
 } from './requests.interface';
 import { QueryPagination } from '../../common/interfaces/pagination.interface';
+import { MinioClientService } from '../../storage/minio/minio.service';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { multerOptions } from '../../common/helpers/upload';
 
 @Controller('requests')
 export class RequestsController {
   constructor(
     private requestsService: RequestsService,
     private userAccessService: UserAccessService,
+    private minioClientService: MinioClientService,
   ) {}
 
   @Post()
@@ -102,6 +108,27 @@ export class RequestsController {
     @Res() res: Response,
   ): Promise<any> {
     await this.requestsService.updateItem(id, updateRequestItemBody);
+    return res.status(HttpStatus.OK).send({
+      message: 'UPDATED',
+    });
+  }
+
+  @Post(':id/upload')
+  @UseInterceptors(FileInterceptor('file', multerOptions))
+  async upload(
+    @Param('id') id: string,
+    @UploadedFile() file: Express.Multer.File,
+    @AuthenticatedUser() authUser: AuthUser,
+    @Res() res: Response,
+  ) {
+    const userAccess = this.userAccessService.getUserAccess(authUser);
+    if (!userAccess.isAdmin) {
+      throw new UnauthorizedException();
+    }
+
+    const filename = await this.minioClientService.upload(file);
+    await this.requestsService.updateFilePath(id, filename);
+
     return res.status(HttpStatus.OK).send({
       message: 'UPDATED',
     });

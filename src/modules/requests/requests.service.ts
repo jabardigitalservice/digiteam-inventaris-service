@@ -9,6 +9,7 @@ import {
   CreateRequestBody,
   ChangeStatusBody,
   UpdateRequestItemBody,
+  UpdateFilePathBody,
 } from './requests.interface';
 import { QueryPagination } from '../../common/interfaces/pagination.interface';
 import { status } from '../../common/helpers/status';
@@ -53,10 +54,19 @@ export class RequestsService {
     await this.repo.updateStatus(id, status);
   }
 
+  async updateFilePath(id: string, filename: string) {
+    const updated: UpdateFilePathBody = {
+      filename,
+      status: status.APPROVED,
+    };
+
+    await this.repo.updateFilePath(id, updated);
+  }
+
   async updateItem(id: string, updateRequestItemBody: UpdateRequestItemBody) {
     const updated = {
       ...updateRequestItemBody,
-      status: status.APPROVED,
+      status: status.REQUESTED,
     };
 
     await this.repo.updateItem(id, updated);

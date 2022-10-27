@@ -1,4 +1,4 @@
-import * as Joi from 'joi';
+import Joi from 'joi';
 
 export const schema = Joi.object({
   app: Joi.object({
@@ -23,5 +23,13 @@ export const schema = Joi.object({
   roles: {
     role0: Joi.string().required(),
     role1: Joi.string().required(),
+  },
+  minio: {
+    endPoint: Joi.string().required(),
+    port: Joi.number().required(),
+    useSSL: Joi.string().required(),
+    accessKey: Joi.string().required(),
+    secretKey: Joi.string().required(),
+    bucketName: Joi.string().required(),
   },
 });

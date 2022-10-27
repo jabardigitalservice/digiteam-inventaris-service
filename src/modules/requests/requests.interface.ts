@@ -16,3 +16,8 @@ export interface UpdateRequestItemBody {
   item_number: string;
   status: number;
 }
+
+export interface UpdateFilePathBody {
+  filename: string;
+  status: number;
+}

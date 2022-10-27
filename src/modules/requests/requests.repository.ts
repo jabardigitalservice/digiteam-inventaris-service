@@ -2,8 +2,11 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from '../../entities/request.entity';
 import { UserAccess } from '../../common/interfaces/keycloak-user.interface';
-import { Pagination } from 'src/common/interfaces/pagination.interface';
-import { UpdateRequestItemBody } from './requests.interface';
+import { Pagination } from '../../common/interfaces/pagination.interface';
+import {
+  UpdateFilePathBody,
+  UpdateRequestItemBody,
+} from './requests.interface';
 export class RequestsRepository {
   constructor(
     @InjectRepository(Request)
@@ -45,5 +48,9 @@ export class RequestsRepository {
 
   async updateItem(id: string, updateRequestItemBody: UpdateRequestItemBody) {
     await this.request.update(id, updateRequestItemBody);
+  }
+
+  updateFilePath(id: string, uploadFile: UpdateFilePathBody) {
+    return this.request.update(id, uploadFile);
   }
 }
