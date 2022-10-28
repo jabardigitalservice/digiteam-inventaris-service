@@ -13,10 +13,14 @@ import {
 } from './requests.interface';
 import { QueryPagination } from '../../common/interfaces/pagination.interface';
 import { status } from '../../common/helpers/status';
+import { MinioClientService } from '../../storage/minio/minio.service';
 
 @Injectable()
 export class RequestsService {
-  constructor(private repo: RequestsRepository) {}
+  constructor(
+    private repo: RequestsRepository,
+    private minioClientService: MinioClientService,
+  ) {}
 
   store(create: Create, userAccess: UserAccess) {
     this.repo.store({
@@ -45,6 +49,10 @@ export class RequestsService {
 
   async findById(id: string) {
     const data = await this.repo.findById(id);
+
+    if (data.filename) {
+      data.file_url = await this.minioClientService.download(data.filename);
+    }
 
     return { data, meta: {} };
   }
