@@ -1,6 +1,7 @@
 import Joi from 'joi';
+import { status } from '../../common/helpers/status';
 
-export const CreateRequestPayloadSchema = Joi.object({
+export const CreatePayloadSchema = Joi.object({
   division: Joi.string().required(),
   phone_number: Joi.string().required(),
   request_type: Joi.number().strict().required(),
@@ -11,17 +12,25 @@ export const CreateRequestPayloadSchema = Joi.object({
 
 const emptyAllow = ['', null];
 
-export const GetRequestsSchema = Joi.object({
+export const FindAllPayloadSchema = Joi.object({
   limit: Joi.number().allow(...emptyAllow),
   page: Joi.number().allow(...emptyAllow),
 });
 
-export const ChangeRequestPayloadSchema = Joi.object({
+export const UpdateStatusPayloadSchema = Joi.object({
   status: Joi.number().strict().required(),
 });
 
-export const PatchRequestItemPayloadSchema = Joi.object({
+export const UpdateItemPayloadSchema = Joi.object({
   item_name: Joi.string().required(),
   item_brand: Joi.string().required(),
   item_number: Joi.string().required(),
+});
+
+export const UpdateNotesPayloadSchema = Joi.object({
+  status: Joi.number()
+    .strict()
+    .equal(status.REJECTED, status.ELIGIBILITY_CHECK)
+    .required(),
+  notes: Joi.string().required(),
 });
