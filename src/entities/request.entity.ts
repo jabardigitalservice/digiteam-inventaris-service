@@ -32,6 +32,8 @@ export class Request {
   @Column({ type: 'varchar', length: 255, nullable: true })
   public filename?: string;
 
+  public file_url?: string;
+
   @Column({ type: 'varchar', length: 255, nullable: true })
   public item_name?: string;
 

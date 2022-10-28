@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { MinioService } from 'nestjs-minio-client';
 import { createFileObject } from './../../common/helpers/upload';
@@ -29,6 +33,19 @@ export class MinioClientService {
       return fileName;
     } catch {
       throw new BadRequestException();
+    }
+  }
+
+  async download(fileName: string) {
+    try {
+      const url = await this.client.presignedGetObject(
+        this.bucketName,
+        fileName,
+      );
+
+      return url;
+    } catch {
+      throw new InternalServerErrorException();
     }
   }
 }
