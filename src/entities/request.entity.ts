@@ -52,6 +52,9 @@ export class Request {
   @Column({ type: 'int', nullable: false, default: 1 })
   public status?: number;
 
+  @Column({ type: 'text', nullable: true })
+  public notes?: string;
+
   @CreateDateColumn({ type: 'timestamp', nullable: false })
   public created_at?: Date;
 

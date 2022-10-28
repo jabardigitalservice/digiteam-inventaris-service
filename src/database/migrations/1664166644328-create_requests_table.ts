@@ -90,6 +90,11 @@ export class CreateRequestTable1664166644328 implements MigrationInterface {
             default: 1,
           },
           {
+            name: 'notes',
+            type: 'text',
+            isNullable: false,
+          },
+          {
             name: 'created_at',
             type: 'timestamp(6)',
             default: 'CURRENT_TIMESTAMP(6)',

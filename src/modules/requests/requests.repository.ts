@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from '../../entities/request.entity';
 import { UserAccess } from '../../common/interfaces/keycloak-user.interface';
 import { Pagination } from '../../common/interfaces/pagination.interface';
-import { UpdateFilename, UpdateItem } from './requests.interface';
+import { UpdateFilename, UpdateItem, UpdateNotes } from './requests.interface';
 export class RequestsRepository {
   constructor(
     @InjectRepository(Request)
@@ -48,6 +48,10 @@ export class RequestsRepository {
   }
 
   updateFilePath(id: string, updated: UpdateFilename) {
+    return this.request.update(id, updated);
+  }
+
+  updateNotes(id: string, updated: UpdateNotes) {
     return this.request.update(id, updated);
   }
 }
