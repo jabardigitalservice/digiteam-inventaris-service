@@ -9,6 +9,7 @@ export interface Create {
 
 export interface UpdateStatus {
   status: number;
+  notes: string;
 }
 export interface UpdateItem {
   item_name: string;
@@ -20,4 +21,9 @@ export interface UpdateItem {
 export interface UpdateFilename {
   filename: string;
   status: number;
+}
+
+export interface UpdateNotes {
+  status: number;
+  notes: string;
 }

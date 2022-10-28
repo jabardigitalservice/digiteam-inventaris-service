@@ -16,15 +16,21 @@ import { Express, Response } from 'express';
 import { RequestsService } from './requests.service';
 import { JoiValidationPipe } from '../../common/pipes/joi-validation.pipe';
 import {
-  GetRequestsSchema,
-  CreateRequestPayloadSchema,
-  ChangeRequestPayloadSchema,
-  PatchRequestItemPayloadSchema,
+  FindAllPayloadSchema,
+  CreatePayloadSchema,
+  UpdateStatusPayloadSchema,
+  UpdateItemPayloadSchema,
+  UpdateNotesPayloadSchema,
 } from './requests.rules';
 import { AuthenticatedUser } from 'nest-keycloak-connect';
 import { AuthUser } from '../../common/interfaces/keycloak-user.interface';
 import { UserAccessService } from './../../common/providers/user-access.service';
-import { UpdateStatus, Create, UpdateItem } from './requests.interface';
+import {
+  UpdateStatus,
+  Create,
+  UpdateItem,
+  UpdateNotes,
+} from './requests.interface';
 import { QueryPagination } from '../../common/interfaces/pagination.interface';
 import { MinioClientService } from '../../storage/minio/minio.service';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -40,7 +46,7 @@ export class RequestsController {
 
   @Post()
   async store(
-    @Body(new JoiValidationPipe(CreateRequestPayloadSchema))
+    @Body(new JoiValidationPipe(CreatePayloadSchema))
     create: Create,
     @AuthenticatedUser() authUser: AuthUser,
     @Res() res: Response,
@@ -55,7 +61,7 @@ export class RequestsController {
 
   @Get()
   async findAll(
-    @Query(new JoiValidationPipe(GetRequestsSchema))
+    @Query(new JoiValidationPipe(FindAllPayloadSchema))
     queryPagination: QueryPagination,
     @AuthenticatedUser() authUser: AuthUser,
     @Res() res: Response,
@@ -80,7 +86,7 @@ export class RequestsController {
   @Patch(':id/status')
   async updateStatus(
     @Param('id') id: string,
-    @Body(new JoiValidationPipe(ChangeRequestPayloadSchema))
+    @Body(new JoiValidationPipe(UpdateStatusPayloadSchema))
     updateStatus: UpdateStatus,
     @AuthenticatedUser() authUser: AuthUser,
     @Res() res: Response,
@@ -96,10 +102,29 @@ export class RequestsController {
     });
   }
 
+  @Patch(':id/notes')
+  async updateNotes(
+    @Param('id') id: string,
+    @Body(new JoiValidationPipe(UpdateNotesPayloadSchema))
+    updateNotes: UpdateNotes,
+    @AuthenticatedUser() authUser: AuthUser,
+    @Res() res: Response,
+  ): Promise<any> {
+    const userAccess = this.userAccessService.getUserAccess(authUser);
+    if (!userAccess.isAdmin) {
+      throw new UnauthorizedException();
+    }
+
+    this.requestsService.updateNotes(id, updateNotes);
+    return res.status(HttpStatus.OK).send({
+      message: 'UPDATED',
+    });
+  }
+
   @Patch(':id')
   async updateItem(
     @Param('id') id: string,
-    @Body(new JoiValidationPipe(PatchRequestItemPayloadSchema))
+    @Body(new JoiValidationPipe(UpdateItemPayloadSchema))
     updateItem: UpdateItem,
     @Res() res: Response,
   ): Promise<any> {

@@ -10,6 +10,7 @@ import {
   UpdateStatus,
   UpdateItem,
   UpdateFilename,
+  UpdateNotes,
 } from './requests.interface';
 import { QueryPagination } from '../../common/interfaces/pagination.interface';
 import { status } from '../../common/helpers/status';
@@ -78,5 +79,9 @@ export class RequestsService {
     };
 
     return this.repo.updateItem(id, updated);
+  }
+
+  updateNotes(id: string, updateNotes: UpdateNotes) {
+    return this.repo.updateNotes(id, updateNotes);
   }
 }
