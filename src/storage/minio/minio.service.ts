@@ -31,8 +31,8 @@ export class MinioClientService {
       );
 
       return fileName;
-    } catch {
-      throw new BadRequestException();
+    } catch (error) {
+      throw new BadRequestException(error);
     }
   }
 
