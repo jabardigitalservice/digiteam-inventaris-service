@@ -9,37 +9,33 @@ import { mockFindAll, mockStore } from './requests.mock';
 import { Create } from './requests.interface';
 import { UserAccess } from '../../common/interfaces/keycloak-user.interface';
 
+let service: RequestsService;
+let repo: RequestsRepository;
+const userAccess: UserAccess = {
+  name: 'test',
+  email: 'test',
+  role: ['test'],
+  isAdmin: true,
+};
+
+beforeAll(async () => {
+  const module: TestingModule = await Test.createTestingModule({
+    imports: [MinioClientModule],
+    providers: [
+      RequestsService,
+      RequestsRepository,
+      {
+        provide: getRepositoryToken(Request),
+        useClass: Repository,
+      },
+    ],
+  }).compile();
+
+  service = module.get<RequestsService>(RequestsService);
+  repo = module.get<RequestsRepository>(RequestsRepository);
+});
+
 describe('service test request', () => {
-  let service: RequestsService;
-  let repo: RequestsRepository;
-  const userAccess: UserAccess = {
-    name: 'test',
-    email: 'test',
-    role: ['test'],
-    isAdmin: true,
-  };
-
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      imports: [MinioClientModule],
-      providers: [
-        RequestsService,
-        RequestsRepository,
-        {
-          provide: getRepositoryToken(Request),
-          useClass: Repository,
-        },
-      ],
-    }).compile();
-
-    service = module.get<RequestsService>(RequestsService);
-    repo = module.get<RequestsRepository>(RequestsRepository);
-  });
-
-  it('should be defined (request)', () => {
-    expect(service).toBeDefined();
-  });
-
   it('test store request', async () => {
     mockStore(repo);
 
@@ -60,7 +56,9 @@ describe('service test request', () => {
     };
     expect(service.store(createStore, userAccess)).toEqual(undefined);
   });
+});
 
+describe('service test request', () => {
   it('test findAll request', async () => {
     const mockDataRepo = {
       result: [
