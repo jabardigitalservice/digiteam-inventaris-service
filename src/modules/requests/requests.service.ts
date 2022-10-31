@@ -45,9 +45,13 @@ export class RequestsService {
 
     const pagination = queryPagination(findAll);
 
+    order['created_at'] = 'desc';
+
     if (findAll.sort_by) {
-      order[findAll.sort_by] = findAll.sort || 'desc';
+      order[findAll.sort_by] = findAll.sort;
     }
+
+    console.log(order);
 
     const options = {
       where: condition,
