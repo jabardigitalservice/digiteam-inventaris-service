@@ -13,7 +13,7 @@ export interface FindAll {
   sort_by: string;
   sort: 'asc' | 'desc';
   request_type: number;
-  division: 'string';
+  division: string;
   status: number;
 }
 export interface UpdateStatus {
