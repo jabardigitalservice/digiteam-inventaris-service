@@ -11,12 +11,13 @@ export const CreatePayloadSchema = Joi.object({
 });
 
 const emptyAllow = ['', null];
-const sort = ['asc', 'desc', 'ASC', 'DESC'];
+const sortByAllow = ['created_at', 'division', 'status', 'request_type'];
+const sort = ['asc', 'desc'];
 
 export const FindAllPayloadSchema = Joi.object({
   limit: Joi.number().allow(...emptyAllow),
   page: Joi.number().allow(...emptyAllow),
-  sort_by: Joi.string().allow(...emptyAllow),
+  sort_by: Joi.string().equal(...sortByAllow),
   sort: Joi.string().equal(...sort),
 });
 

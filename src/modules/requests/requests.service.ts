@@ -46,7 +46,7 @@ export class RequestsService {
     const pagination = queryPagination(findAll);
 
     if (findAll.sort_by) {
-      order[findAll.sort_by] = findAll.sort;
+      order[findAll.sort_by] = findAll.sort || 'desc';
     }
 
     const options = {
