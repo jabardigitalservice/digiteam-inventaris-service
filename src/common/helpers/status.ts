@@ -3,7 +3,7 @@ export const status = {
   REJECTED: 2,
   APPROVED: 3,
   REQUESTED: 4,
-  ELIGIBILITY_CHECK: 5,
+  CHECKED: 5,
   READY: 6,
   COMPLETED: 7,
   RETURNED: 8,

@@ -28,9 +28,6 @@ export const UpdateItemPayloadSchema = Joi.object({
 });
 
 export const UpdateNotesPayloadSchema = Joi.object({
-  status: Joi.number()
-    .strict()
-    .equal(status.REJECTED, status.ELIGIBILITY_CHECK)
-    .required(),
+  status: Joi.number().strict().equal(status.REJECTED, status.READY).required(),
   notes: Joi.string().required(),
 });
