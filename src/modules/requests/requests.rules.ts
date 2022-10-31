@@ -11,10 +11,14 @@ export const CreatePayloadSchema = Joi.object({
 });
 
 const emptyAllow = ['', null];
+const sortByAllow = ['created_at', 'division', 'status', 'request_type'];
+const sort = ['asc', 'desc'];
 
 export const FindAllPayloadSchema = Joi.object({
   limit: Joi.number().allow(...emptyAllow),
   page: Joi.number().allow(...emptyAllow),
+  sort_by: Joi.string().equal(...sortByAllow),
+  sort: Joi.string().equal(...sort),
 });
 
 export const UpdateStatusPayloadSchema = Joi.object({
@@ -28,9 +32,6 @@ export const UpdateItemPayloadSchema = Joi.object({
 });
 
 export const UpdateNotesPayloadSchema = Joi.object({
-  status: Joi.number()
-    .strict()
-    .equal(status.REJECTED, status.ELIGIBILITY_CHECK)
-    .required(),
+  status: Joi.number().strict().equal(status.REJECTED, status.READY).required(),
   notes: Joi.string().required(),
 });

@@ -30,8 +30,8 @@ import {
   Create,
   UpdateItem,
   UpdateNotes,
+  FindAll,
 } from './requests.interface';
-import { QueryPagination } from '../../common/interfaces/pagination.interface';
 import { MinioClientService } from '../../storage/minio/minio.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { multerOptions } from '../../common/helpers/upload';
@@ -62,14 +62,14 @@ export class RequestsController {
   @Get()
   async findAll(
     @Query(new JoiValidationPipe(FindAllPayloadSchema))
-    queryPagination: QueryPagination,
+    queryParams: FindAll,
     @AuthenticatedUser() authUser: AuthUser,
     @Res() res: Response,
   ): Promise<any> {
     const userAccess = this.userAccessService.getUserAccess(authUser);
 
     const responseBody = await this.requestsService.findAll(
-      queryPagination,
+      queryParams,
       userAccess,
     );
 

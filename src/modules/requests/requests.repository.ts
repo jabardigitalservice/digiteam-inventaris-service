@@ -1,9 +1,14 @@
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from '../../entities/request.entity';
-import { UserAccess } from '../../common/interfaces/keycloak-user.interface';
-import { Pagination } from '../../common/interfaces/pagination.interface';
-import { UpdateFilename, UpdateItem, UpdateNotes } from './requests.interface';
+import {
+  FindAll,
+  UpdateFilename,
+  UpdateItem,
+  UpdateNotes,
+} from './requests.interface';
+import { Pagination } from 'src/common/interfaces/pagination.interface';
+import { UserAccess } from 'src/common/interfaces/keycloak-user.interface';
 export class RequestsRepository {
   constructor(
     @InjectRepository(Request)
@@ -15,16 +20,31 @@ export class RequestsRepository {
     this.request.save(request);
   }
 
-  async findAll(pagination: Pagination, userAccess: UserAccess) {
+  async findAll(
+    findAll: FindAll,
+    pagination: Pagination,
+    userAccess: UserAccess,
+  ) {
     const { email, isAdmin } = userAccess;
     const condition: Record<string, any> = {};
+    const order: Record<string, any> = {};
+
     if (!isAdmin) condition.email = email;
 
-    const result = await this.request.find({
+    order['created_at'] = 'desc';
+
+    if (findAll.sort_by) {
+      order[findAll.sort_by] = findAll.sort;
+    }
+
+    const options = {
       where: condition,
       take: pagination.limit,
       skip: pagination.offset,
-    });
+      order: order,
+    };
+
+    const result = await this.request.find(options);
 
     const total = await this.request.count({ where: condition });
 

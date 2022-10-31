@@ -7,6 +7,15 @@ export interface Create {
   priority: number;
 }
 
+export interface FindAll {
+  page: number;
+  limit: number;
+  sort_by: string;
+  sort: 'asc' | 'desc';
+  request_type: number;
+  division: string;
+  status: number;
+}
 export interface UpdateStatus {
   status: number;
   notes: string;

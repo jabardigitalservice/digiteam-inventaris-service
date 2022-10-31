@@ -11,8 +11,8 @@ import {
   UpdateItem,
   UpdateFilename,
   UpdateNotes,
+  FindAll,
 } from './requests.interface';
-import { QueryPagination } from '../../common/interfaces/pagination.interface';
 import { status } from '../../common/helpers/status';
 import { MinioClientService } from '../../storage/minio/minio.service';
 
@@ -36,9 +36,14 @@ export class RequestsService {
     });
   }
 
-  async findAll(queryRequest: QueryPagination, userAccess: UserAccess) {
-    const pagination = queryPagination(queryRequest);
-    const { result, total } = await this.repo.findAll(pagination, userAccess);
+  async findAll(findAll: FindAll, userAccess: UserAccess) {
+    const pagination = queryPagination(findAll);
+
+    const { result, total } = await this.repo.findAll(
+      findAll,
+      pagination,
+      userAccess,
+    );
 
     const meta = metaPagination(total, result, pagination);
 

@@ -8,6 +8,7 @@ export interface Pagination {
   limit: number;
   offset: number;
 }
+
 export interface MetaPagination {
   page: number;
   limit: number;
