@@ -1,8 +1,6 @@
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from '../../entities/request.entity';
-import { UserAccess } from '../../common/interfaces/keycloak-user.interface';
-import { Pagination } from '../../common/interfaces/pagination.interface';
 import { UpdateFilename, UpdateItem, UpdateNotes } from './requests.interface';
 export class RequestsRepository {
   constructor(
@@ -15,18 +13,10 @@ export class RequestsRepository {
     this.request.save(request);
   }
 
-  async findAll(pagination: Pagination, userAccess: UserAccess) {
-    const { email, isAdmin } = userAccess;
-    const condition: Record<string, any> = {};
-    if (!isAdmin) condition.email = email;
+  async findAll(options: any) {
+    const result = await this.request.find(options);
 
-    const result = await this.request.find({
-      where: condition,
-      take: pagination.limit,
-      skip: pagination.offset,
-    });
-
-    const total = await this.request.count({ where: condition });
+    const total = await this.request.count({ where: options.where });
 
     return {
       result,
