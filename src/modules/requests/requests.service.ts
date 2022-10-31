@@ -37,30 +37,13 @@ export class RequestsService {
   }
 
   async findAll(findAll: FindAll, userAccess: UserAccess) {
-    const { email, isAdmin } = userAccess;
-    const condition: Record<string, any> = {};
-    const order: Record<string, any> = {};
-
-    if (!isAdmin) condition.email = email;
-
     const pagination = queryPagination(findAll);
 
-    order['created_at'] = 'desc';
-
-    if (findAll.sort_by) {
-      order[findAll.sort_by] = findAll.sort;
-    }
-
-    console.log(order);
-
-    const options = {
-      where: condition,
-      take: pagination.limit,
-      skip: pagination.offset,
-      order: order,
-    };
-
-    const { result, total } = await this.repo.findAll(options);
+    const { result, total } = await this.repo.findAll(
+      findAll,
+      pagination,
+      userAccess,
+    );
 
     const meta = metaPagination(total, result, pagination);
 
