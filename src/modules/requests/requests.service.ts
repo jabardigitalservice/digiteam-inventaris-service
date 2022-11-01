@@ -88,6 +88,7 @@ export class RequestsService {
   }
 
   updatePickup(id: string, updatePickup: Update) {
+    updatePickup.pickup_date = new Date(updatePickup.pickup_date);
     const update = {
       ...updatePickup,
       status: status.COMPLETED,
