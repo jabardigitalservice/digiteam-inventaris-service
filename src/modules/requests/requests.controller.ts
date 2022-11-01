@@ -151,13 +151,36 @@ export class RequestsController {
     });
   }
 
+  @Patch(':id/received')
+  async updateReceived(
+    @Param('id') id: string,
+    @AuthenticatedUser() authUser: AuthUser,
+    @Res() res: Response,
+  ): Promise<any> {
+    const userAccess = this.userAccessService.getUserAccess(authUser);
+    if (!userAccess.isAdmin) {
+      throw new UnauthorizedException();
+    }
+
+    this.requestsService.updateReceived(id);
+    return res.status(HttpStatus.OK).send({
+      message: 'UPDATED',
+    });
+  }
+
   @Patch(':id/pickup')
   async updatePickup(
     @Param('id') id: string,
     @Body(new JoiValidationPipe(UpdatePickupPayloadSchema))
     updatePickup: Update,
+    @AuthenticatedUser() authUser: AuthUser,
     @Res() res: Response,
   ): Promise<any> {
+    const userAccess = this.userAccessService.getUserAccess(authUser);
+    if (!userAccess.isAdmin) {
+      throw new UnauthorizedException();
+    }
+
     this.requestsService.updatePickup(id, updatePickup);
 
     return res.status(HttpStatus.OK).send({

@@ -38,7 +38,6 @@ export const UpdateNotesPayloadSchema = Joi.object({
 });
 
 export const UpdatePickupPayloadSchema = Joi.object({
-  pickup_date: Joi.string().required(),
   pickup_signing: Joi.string().required(),
   pickup_evidence: Joi.string().required(),
   pickup_bast: Joi.string().required(),
