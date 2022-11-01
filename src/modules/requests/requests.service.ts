@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { RequestsRepository } from './requests.repository';
 import {
   metaPagination,
@@ -49,6 +49,10 @@ export class RequestsService {
 
   async findById(id: string) {
     const data = await this.repo.findById(id);
+
+    if (!data) {
+      throw new NotFoundException();
+    }
 
     if (data.filename) {
       data.file_url = await this.minioClientService.download(data.filename);
