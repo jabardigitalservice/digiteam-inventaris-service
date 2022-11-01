@@ -21,17 +21,12 @@ import {
   UpdateStatusPayloadSchema,
   UpdateItemPayloadSchema,
   UpdateNotesPayloadSchema,
+  UpdatePickupPayloadSchema,
 } from './requests.rules';
 import { AuthenticatedUser } from 'nest-keycloak-connect';
 import { AuthUser } from '../../common/interfaces/keycloak-user.interface';
 import { UserAccessService } from './../../common/providers/user-access.service';
-import {
-  UpdateStatus,
-  Create,
-  UpdateItem,
-  UpdateNotes,
-  FindAll,
-} from './requests.interface';
+import { Update, Create, FindAll } from './requests.interface';
 import { MinioClientService } from '../../storage/minio/minio.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { multerOptions } from '../../common/helpers/upload';
@@ -87,7 +82,7 @@ export class RequestsController {
   async updateStatus(
     @Param('id') id: string,
     @Body(new JoiValidationPipe(UpdateStatusPayloadSchema))
-    updateStatus: UpdateStatus,
+    updateStatus: Update,
     @AuthenticatedUser() authUser: AuthUser,
     @Res() res: Response,
   ): Promise<any> {
@@ -106,7 +101,7 @@ export class RequestsController {
   async updateNotes(
     @Param('id') id: string,
     @Body(new JoiValidationPipe(UpdateNotesPayloadSchema))
-    updateNotes: UpdateNotes,
+    updateNotes: Update,
     @AuthenticatedUser() authUser: AuthUser,
     @Res() res: Response,
   ): Promise<any> {
@@ -125,7 +120,7 @@ export class RequestsController {
   async updateItem(
     @Param('id') id: string,
     @Body(new JoiValidationPipe(UpdateItemPayloadSchema))
-    updateItem: UpdateItem,
+    updateItem: Update,
     @Res() res: Response,
   ): Promise<any> {
     this.requestsService.updateItem(id, updateItem);
@@ -150,6 +145,20 @@ export class RequestsController {
 
     const filename = await this.minioClientService.upload(file);
     this.requestsService.updateFilePath(id, filename);
+
+    return res.status(HttpStatus.OK).send({
+      message: 'UPDATED',
+    });
+  }
+
+  @Patch(':id/pickup')
+  async updatePickup(
+    @Param('id') id: string,
+    @Body(new JoiValidationPipe(UpdatePickupPayloadSchema))
+    updatePickup: Update,
+    @Res() res: Response,
+  ): Promise<any> {
+    this.requestsService.updatePickup(id, updatePickup);
 
     return res.status(HttpStatus.OK).send({
       message: 'UPDATED',

@@ -1,6 +1,10 @@
 import Joi from 'joi';
 import { status } from '../../common/helpers/status';
 
+const emptyAllow = ['', null];
+const sortByAllow = ['created_at', 'division', 'status', 'request_type'];
+const sort = ['asc', 'desc'];
+
 export const CreatePayloadSchema = Joi.object({
   division: Joi.string().required(),
   phone_number: Joi.string().required(),
@@ -8,11 +12,8 @@ export const CreatePayloadSchema = Joi.object({
   requested_item: Joi.string().required(),
   purpose: Joi.string().required(),
   priority: Joi.number().strict().required(),
+  replacement_evidence: Joi.string().allow(...emptyAllow),
 });
-
-const emptyAllow = ['', null];
-const sortByAllow = ['created_at', 'division', 'status', 'request_type'];
-const sort = ['asc', 'desc'];
 
 export const FindAllPayloadSchema = Joi.object({
   limit: Joi.number().allow(...emptyAllow),
@@ -34,4 +35,11 @@ export const UpdateItemPayloadSchema = Joi.object({
 export const UpdateNotesPayloadSchema = Joi.object({
   status: Joi.number().strict().equal(status.REJECTED, status.READY).required(),
   notes: Joi.string().required(),
+});
+
+export const UpdatePickupPayloadSchema = Joi.object({
+  pickup_date: Joi.string().required(),
+  pickup_signing: Joi.string().required(),
+  pickup_evidence: Joi.string().required(),
+  pickup_bast: Joi.string().required(),
 });
