@@ -7,7 +7,14 @@ export class FilesService {
 
   async upload(file: Express.Multer.File) {
     const filename = await this.minioClientService.upload(file);
+    const file_url = await this.minioClientService.download(filename);
 
-    return { data: { filename }, meta: {} };
+    return {
+      data: {
+        filename,
+        file_url,
+      },
+      meta: {},
+    };
   }
 }
