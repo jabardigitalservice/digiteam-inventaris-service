@@ -5,34 +5,28 @@ export interface Create {
   requested_item: string;
   purpose: string;
   priority: number;
+  replacement_evidence?: string | null;
+}
+
+export interface Update {
+  status?: number;
+  notes?: string;
+  item_name?: string;
+  item_brand?: string;
+  item_number?: string;
+  filename?: string;
+  pickup_date?: string;
+  pickup_signing?: string;
+  pickup_evidence?: string;
+  pickup_bast?: string;
 }
 
 export interface FindAll {
-  page: number;
-  limit: number;
-  sort_by: string;
-  sort: 'asc' | 'desc';
-  request_type: number;
-  division: string;
-  status: number;
-}
-export interface UpdateStatus {
-  status: number;
-  notes: string;
-}
-export interface UpdateItem {
-  item_name: string;
-  item_brand: string;
-  item_number: string;
-  status: number;
-}
-
-export interface UpdateFilename {
-  filename: string;
-  status: number;
-}
-
-export interface UpdateNotes {
-  status: number;
-  notes: string;
+  page?: number;
+  limit?: number;
+  sort_by?: string;
+  sort?: 'asc' | 'desc';
+  request_type?: number;
+  division?: string;
+  status?: number;
 }
