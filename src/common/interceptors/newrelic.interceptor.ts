@@ -5,10 +5,9 @@ import {
   CallHandler,
   Logger,
 } from '@nestjs/common';
-import { Request, Response } from 'express';
+import { Request } from 'express';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 import newrelic from 'newrelic';
 
 @Injectable()
