@@ -1,12 +1,7 @@
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from '../../entities/request.entity';
-import {
-  FindAll,
-  UpdateFilename,
-  UpdateItem,
-  UpdateNotes,
-} from './requests.interface';
+import { FindAll, Update } from './requests.interface';
 import { Pagination } from 'src/common/interfaces/pagination.interface';
 import { UserAccess } from 'src/common/interfaces/keycloak-user.interface';
 export class RequestsRepository {
@@ -59,19 +54,7 @@ export class RequestsRepository {
     return result;
   }
 
-  updateStatus(id: string, status: number) {
-    return this.request.update(id, { status });
-  }
-
-  updateItem(id: string, updated: UpdateItem) {
-    return this.request.update(id, updated);
-  }
-
-  updateFilePath(id: string, updated: UpdateFilename) {
-    return this.request.update(id, updated);
-  }
-
-  updateNotes(id: string, updated: UpdateNotes) {
+  update(id: string, updated: Update) {
     return this.request.update(id, updated);
   }
 }
