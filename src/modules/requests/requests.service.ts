@@ -5,14 +5,7 @@ import {
   queryPagination,
 } from '../../common/helpers/pagination';
 import { UserAccess } from '../../common/interfaces/keycloak-user.interface';
-import {
-  Create,
-  UpdateStatus,
-  UpdateItem,
-  UpdateFilename,
-  UpdateNotes,
-  FindAll,
-} from './requests.interface';
+import { Create, Update, FindAll } from './requests.interface';
 import { status } from '../../common/helpers/status';
 import { MinioClientService } from '../../storage/minio/minio.service';
 
@@ -33,6 +26,7 @@ export class RequestsService {
       requested_item: create.requested_item,
       purpose: create.purpose,
       priority: create.priority,
+      replacement_evidence: create.replacement_evidence,
     });
   }
 
@@ -63,30 +57,37 @@ export class RequestsService {
     return { data, meta: {} };
   }
 
-  updateStatus(id: string, updateStatus: UpdateStatus) {
-    const status = updateStatus.status;
-    return this.repo.updateStatus(id, status);
+  updateStatus(id: string, updateStatus: Update) {
+    return this.repo.update(id, updateStatus);
   }
 
   updateFilePath(id: string, filename: string) {
-    const updated: UpdateFilename = {
+    const updated: Update = {
       filename,
       status: status.APPROVED,
     };
 
-    return this.repo.updateFilePath(id, updated);
+    return this.repo.update(id, updated);
   }
 
-  updateItem(id: string, updateItem: UpdateItem) {
+  updateItem(id: string, updateItem: Update) {
     const updated = {
       ...updateItem,
       status: status.REQUESTED,
     };
 
-    return this.repo.updateItem(id, updated);
+    return this.repo.update(id, updated);
   }
 
-  updateNotes(id: string, updateNotes: UpdateNotes) {
-    return this.repo.updateNotes(id, updateNotes);
+  updateNotes(id: string, updateNotes: Update) {
+    return this.repo.update(id, updateNotes);
+  }
+
+  updatePickup(id: string, updatedPickup: Update) {
+    const updated = {
+      ...updatedPickup,
+      status: status.COMPLETED,
+    };
+    return this.repo.update(id, updated);
   }
 }
