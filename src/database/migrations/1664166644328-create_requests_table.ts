@@ -44,6 +44,12 @@ export class CreateRequestTable1664166644328 implements MigrationInterface {
             isNullable: false,
           },
           {
+            name: 'replacement_evidence',
+            type: 'varchar',
+            length: '255',
+            isNullable: true,
+          },
+          {
             name: 'requested_item',
             type: 'varchar',
             length: '255',
@@ -93,6 +99,29 @@ export class CreateRequestTable1664166644328 implements MigrationInterface {
             name: 'notes',
             type: 'text',
             isNullable: false,
+          },
+          {
+            name: 'pickup_date',
+            type: 'datetime',
+            isNullable: true,
+          },
+          {
+            name: 'pickup_signing',
+            type: 'varchar',
+            length: '255',
+            isNullable: true,
+          },
+          {
+            name: 'pickup_evidence',
+            type: 'varchar',
+            length: '255',
+            isNullable: true,
+          },
+          {
+            name: 'pickup_bast',
+            type: 'varchar',
+            length: '255',
+            isNullable: true,
           },
           {
             name: 'created_at',

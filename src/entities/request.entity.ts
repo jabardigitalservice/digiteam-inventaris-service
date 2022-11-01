@@ -26,6 +26,10 @@ export class Request {
   @Column({ type: 'int', nullable: false })
   public request_type: number;
 
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  public replacement_evidence?: string;
+  public replacement_evidence_url?: string;
+
   @Column({ type: 'varchar', length: 255, nullable: false })
   public requested_item: string;
 
@@ -54,6 +58,20 @@ export class Request {
 
   @Column({ type: 'text', nullable: true })
   public notes?: string;
+
+  @Column({ type: 'datetime', length: 255, nullable: true })
+  public pickup_date?: Date;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  public pickup_signing?: string;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  public pickup_evidence?: string;
+  public pickup_evidence_url?: string;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  public pickup_bast?: string;
+  public pickup_bast_url?: string;
 
   @CreateDateColumn({ type: 'timestamp', nullable: false })
   public created_at?: Date;
