@@ -66,32 +66,32 @@ export class RequestsService {
   }
 
   updateFilePath(id: string, filename: string) {
-    const updated: Update = {
+    const update: Update = {
       filename,
       status: status.APPROVED,
     };
 
-    return this.repo.update(id, updated);
+    return this.repo.update(id, update);
   }
 
   updateItem(id: string, updateItem: Update) {
-    const updated = {
+    const update = {
       ...updateItem,
       status: status.REQUESTED,
     };
 
-    return this.repo.update(id, updated);
+    return this.repo.update(id, update);
   }
 
   updateNotes(id: string, updateNotes: Update) {
     return this.repo.update(id, updateNotes);
   }
 
-  updatePickup(id: string, updatedPickup: Update) {
-    const updated = {
-      ...updatedPickup,
+  updatePickup(id: string, updatePickup: Update) {
+    const update = {
+      ...updatePickup,
       status: status.COMPLETED,
     };
-    return this.repo.update(id, updated);
+    return this.repo.update(id, update);
   }
 }
