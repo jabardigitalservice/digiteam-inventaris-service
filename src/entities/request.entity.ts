@@ -59,7 +59,7 @@ export class Request {
   @Column({ type: 'text', nullable: true })
   public notes?: string;
 
-  @Column({ type: 'datetime', length: 255, nullable: true })
+  @Column({ type: 'datetime', nullable: true })
   public pickup_date?: Date;
 
   @Column({ type: 'varchar', length: 255, nullable: true })
