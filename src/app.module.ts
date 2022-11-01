@@ -4,6 +4,7 @@ import { KeycloakConfigModule } from './config/sso/keycloak/config.module';
 import { ExceptionModule } from './common/exceptions/exception.module';
 import { MysqlConfigModule } from './config/database/mysql/config.module';
 import { AuthenticationsModule } from './modules/authentications/authentications.module';
+import { FilesModule } from './modules/files/files.module';
 @Module({
   imports: [
     ExceptionModule,
@@ -11,6 +12,7 @@ import { AuthenticationsModule } from './modules/authentications/authentications
     KeycloakConfigModule,
     RequestsModule,
     AuthenticationsModule,
+    FilesModule,
   ],
 })
 export class AppModule {}
