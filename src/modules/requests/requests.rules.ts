@@ -42,3 +42,7 @@ export const UpdatePickupPayloadSchema = Joi.object({
   pickup_evidence: Joi.string().required(),
   pickup_bast: Joi.string().required(),
 });
+
+export const UpdateFilenamePayloadSchema = Joi.object({
+  filename: Joi.string().required(),
+});
