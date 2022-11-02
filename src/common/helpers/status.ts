@@ -5,6 +5,7 @@ export const status = {
   REQUESTED: 4,
   CHECKED: 5,
   READY: 6,
-  COMPLETED: 7,
-  RETURNED: 8,
+  RECEIVED: 7,
+  COMPLETED: 8,
+  RETURNED: 9,
 };

@@ -87,11 +87,22 @@ export class RequestsService {
     return this.repo.update(id, updateNotes);
   }
 
+  updateReceived(id: string) {
+    const pickup_date = new Date();
+    const update = {
+      pickup_date,
+      status: status.RECEIVED,
+    };
+
+    return this.repo.update(id, update);
+  }
+
   updatePickup(id: string, updatePickup: Update) {
     const update = {
       ...updatePickup,
       status: status.COMPLETED,
     };
+
     return this.repo.update(id, update);
   }
 }
