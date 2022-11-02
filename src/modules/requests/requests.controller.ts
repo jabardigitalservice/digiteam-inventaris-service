@@ -9,10 +9,8 @@ import {
   Patch,
   Param,
   UnauthorizedException,
-  UploadedFile,
-  UseInterceptors,
 } from '@nestjs/common';
-import { Express, Response } from 'express';
+import { Response } from 'express';
 import { RequestsService } from './requests.service';
 import { JoiValidationPipe } from '../../common/pipes/joi-validation.pipe';
 import {
@@ -22,21 +20,18 @@ import {
   UpdateItemPayloadSchema,
   UpdateNotesPayloadSchema,
   UpdatePickupPayloadSchema,
+  UpdateFilenamePayloadSchema,
 } from './requests.rules';
 import { AuthenticatedUser } from 'nest-keycloak-connect';
 import { AuthUser } from '../../common/interfaces/keycloak-user.interface';
 import { UserAccessService } from './../../common/providers/user-access.service';
 import { Update, Create, FindAll } from './requests.interface';
-import { MinioClientService } from '../../storage/minio/minio.service';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { multerOptions } from '../../common/helpers/upload';
 
 @Controller('requests')
 export class RequestsController {
   constructor(
     private requestsService: RequestsService,
     private userAccessService: UserAccessService,
-    private minioClientService: MinioClientService,
   ) {}
 
   @Post()
@@ -130,11 +125,11 @@ export class RequestsController {
     });
   }
 
-  @Post(':id/upload')
-  @UseInterceptors(FileInterceptor('file', multerOptions))
-  async upload(
+  @Patch(':id/filename')
+  async updateFilename(
     @Param('id') id: string,
-    @UploadedFile() file: Express.Multer.File,
+    @Body(new JoiValidationPipe(UpdateFilenamePayloadSchema))
+    updateFilename: Update,
     @AuthenticatedUser() authUser: AuthUser,
     @Res() res: Response,
   ) {
@@ -143,8 +138,7 @@ export class RequestsController {
       throw new UnauthorizedException();
     }
 
-    const filename = await this.minioClientService.upload(file);
-    this.requestsService.updateFilePath(id, filename);
+    this.requestsService.updateFilename(id, updateFilename);
 
     return res.status(HttpStatus.OK).send({
       message: 'UPDATED',

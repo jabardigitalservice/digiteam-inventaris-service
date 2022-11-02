@@ -65,9 +65,9 @@ export class RequestsService {
     return this.repo.update(id, updateStatus);
   }
 
-  updateFilePath(id: string, filename: string) {
+  updateFilename(id: string, updateFilename: Update) {
     const update: Update = {
-      filename,
+      ...updateFilename,
       status: status.APPROVED,
     };
 
