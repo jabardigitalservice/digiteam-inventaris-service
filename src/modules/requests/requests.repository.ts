@@ -22,13 +22,17 @@ export class RequestsRepository {
   ) {
     const { email, isAdmin } = userAccess;
     const criteria: Record<string, any> = {};
-    criteria.request_type = Number(findAll.request_type) || null;
-    criteria.division = findAll.division || null;
-    criteria.status = Number(findAll.status) || null;
+
+    if (findAll.request_type)
+      criteria.request_type = Number(findAll.request_type);
+
+    if (findAll.division) criteria.division = findAll.division;
+
+    if (findAll.status) criteria.status = Number(findAll.status);
+
+    if (isAdmin) criteria.email = email;
 
     const order: Record<string, any> = {};
-
-    if (!isAdmin) criteria.email = email;
 
     if (findAll.sort_by) {
       delete order['created_at'];
