@@ -21,19 +21,24 @@ export class RequestsRepository {
     userAccess: UserAccess,
   ) {
     const { email, isAdmin } = userAccess;
-    const condition: Record<string, any> = {};
+    const criteria: Record<string, any> = {};
+    criteria.request_type = Number(findAll.request_type) || null;
+    criteria.division = findAll.division || null;
+    criteria.status = Number(findAll.status) || null;
+
     const order: Record<string, any> = {};
 
-    if (!isAdmin) condition.email = email;
+    if (!isAdmin) criteria.email = email;
+
+    if (findAll.sort_by) {
+      delete order['created_at'];
+      order[findAll.sort_by] = findAll.sort || 'asc';
+    }
 
     order['created_at'] = 'desc';
 
-    if (findAll.sort_by) {
-      order[findAll.sort_by] = findAll.sort;
-    }
-
     const options = {
-      where: condition,
+      where: criteria,
       take: pagination.limit,
       skip: pagination.offset,
       order: order,
@@ -41,7 +46,7 @@ export class RequestsRepository {
 
     const result = await this.request.find(options);
 
-    const total = await this.request.count({ where: condition });
+    const total = await this.request.count({ where: criteria });
 
     return {
       result,
