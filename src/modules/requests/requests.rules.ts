@@ -20,6 +20,9 @@ export const FindAllPayloadSchema = Joi.object({
   page: Joi.number().allow(...emptyAllow),
   sort_by: Joi.string().equal(...sortByAllow),
   sort: Joi.string().equal(...sort),
+  request_type: Joi.string().allow(...emptyAllow),
+  division: Joi.string().allow(...emptyAllow),
+  status: Joi.string().allow(...emptyAllow),
 });
 
 export const UpdateStatusPayloadSchema = Joi.object({
