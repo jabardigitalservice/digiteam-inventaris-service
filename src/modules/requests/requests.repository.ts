@@ -34,9 +34,10 @@ export class RequestsRepository {
 
     const order: Record<string, any> = {};
 
+    if (!findAll.sort) findAll.sort = 'asc';
+
     if (findAll.sort_by) {
-      delete order['created_at'];
-      order[findAll.sort_by] = findAll.sort || 'asc';
+      order[findAll.sort_by] = findAll.sort;
     }
 
     order['created_at'] = 'desc';
