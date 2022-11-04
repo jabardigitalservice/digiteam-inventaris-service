@@ -54,10 +54,6 @@ export class RequestsService {
       throw new NotFoundException();
     }
 
-    if (data.filename) {
-      data.file_url = await this.minioClientService.download(data.filename);
-    }
-
     return { data, meta: {} };
   }
 
