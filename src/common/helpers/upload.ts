@@ -2,8 +2,11 @@ import { randomUUID } from 'crypto';
 import { extname } from 'path';
 import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface';
 
-const MIME_TYPE =
-  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+const mimeTypes = [
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  'image/png',
+  'image/jpeg',
+];
 
 export const createFileObject = (file: Express.Multer.File) => {
   const name = randomUUID();
@@ -24,7 +27,7 @@ export const createFileObject = (file: Express.Multer.File) => {
 
 export const multerOptions: MulterOptions = {
   fileFilter: (req, file: Express.Multer.File, callback) => {
-    if (file.mimetype !== MIME_TYPE) {
+    if (!mimeTypes.includes(file.mimetype)) {
       return callback(null, false);
     }
     callback(null, true);
