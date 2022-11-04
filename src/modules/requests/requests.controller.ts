@@ -125,6 +125,13 @@ export class RequestsController {
     });
   }
 
+  @Patch(':id')
+  async update(@Res() res: Response): Promise<any> {
+    return res.status(HttpStatus.OK).send({
+      message: 'UPDATED',
+    });
+  }
+
   @Patch(':id/filename')
   async updateFilename(
     @Param('id') id: string,
