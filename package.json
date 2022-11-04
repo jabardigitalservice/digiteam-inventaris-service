@@ -27,6 +27,7 @@
     "migration:revert": "typeorm-ts-node-commonjs migration:revert -d ./dist/database/orm/typeorm.config.js"
   },
   "dependencies": {
+    "@nestjs/axios": "^1.0.0",
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^2.2.0",
     "@nestjs/core": "^9.0.0",
