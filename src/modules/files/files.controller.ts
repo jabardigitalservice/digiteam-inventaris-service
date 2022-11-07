@@ -1,5 +1,6 @@
 import {
   Controller,
+  Get,
   HttpStatus,
   Param,
   Post,
@@ -26,5 +27,12 @@ export class FilesController {
     const responseBody = await this.service.upload(file);
 
     return res.status(HttpStatus.OK).send(responseBody);
+  }
+
+  @Get(':filename')
+  async download(@Param('filename') filename: string, @Res() res: Response) {
+    const { headers, data } = await this.service.download(filename);
+
+    res.header(headers).send(data);
   }
 }

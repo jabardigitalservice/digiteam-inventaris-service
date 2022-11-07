@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { MinioService } from 'nestjs-minio-client';
@@ -36,7 +37,17 @@ export class MinioClientService {
     }
   }
 
+  async isExist(fileName: string) {
+    try {
+      await this.client.statObject(this.bucketName, fileName);
+    } catch (error) {
+      throw new NotFoundException(error.message);
+    }
+  }
+
   async download(fileName: string) {
+    await this.isExist(fileName);
+
     try {
       const url = await this.client.presignedGetObject(
         this.bucketName,
