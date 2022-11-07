@@ -12,14 +12,10 @@ import { FilesService } from './files.service';
 import { Express, Response } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { multerOptions } from '../../common/helpers/upload';
-import { MinioClientService } from '../../storage/minio/minio.service';
 
 @Controller('files')
 export class FilesController {
-  constructor(
-    private service: FilesService,
-    private minioClientService: MinioClientService,
-  ) {}
+  constructor(private service: FilesService) {}
 
   @Post('upload')
   @UseInterceptors(FileInterceptor('file', multerOptions))
@@ -35,8 +31,6 @@ export class FilesController {
 
   @Get(':filename')
   async download(@Param('filename') filename: string, @Res() res: Response) {
-    await this.minioClientService.isExist(filename);
-
     const { headers, data } = await this.service.download(filename);
 
     res.header(headers).send(data);
