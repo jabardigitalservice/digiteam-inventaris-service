@@ -31,7 +31,6 @@ export class FilesController {
 
   @Get(':filename')
   async download(@Param('filename') filename: string, @Res() res: Response) {
-    await this.service.isExist(filename);
     const { headers, data } = await this.service.download(filename);
 
     res.header(headers).send(data);
