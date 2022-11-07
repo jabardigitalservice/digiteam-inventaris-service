@@ -26,8 +26,6 @@ export class FilesService {
   }
 
   async download(fileName: string) {
-    await this.minioClientService.isExist(fileName);
-
     const fileUrl = await this.minioClientService.download(fileName);
 
     const file = await lastValueFrom(
@@ -41,5 +39,9 @@ export class FilesService {
       headers,
       data,
     };
+  }
+
+  isExist(fileName: string) {
+    return this.minioClientService.isExist(fileName);
   }
 }

@@ -53,8 +53,8 @@ export class MinioClientService {
       );
 
       return url;
-    } catch {
-      throw new InternalServerErrorException();
+    } catch (error) {
+      throw new InternalServerErrorException(error);
     }
   }
 }
