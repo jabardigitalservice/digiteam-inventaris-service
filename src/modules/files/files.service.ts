@@ -25,8 +25,8 @@ export class FilesService {
     };
   }
 
-  async download(filename: string) {
-    const fileUrl = await this.minioClientService.download(filename);
+  async download(fileName: string) {
+    const fileUrl = await this.minioClientService.download(fileName);
 
     const file = await lastValueFrom(
       this.httpService.get(fileUrl, { responseType: 'arraybuffer' }),
