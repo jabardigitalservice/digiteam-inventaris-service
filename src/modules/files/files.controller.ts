@@ -11,7 +11,7 @@ import {
 import { FilesService } from './files.service';
 import { Express, Response } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { multerOptions } from 'src/common/helpers/upload';
+import { multerOptions } from '../../common/helpers/upload';
 
 @Controller('files')
 export class FilesController {

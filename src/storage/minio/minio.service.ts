@@ -46,8 +46,6 @@ export class MinioClientService {
   }
 
   async download(fileName: string) {
-    await this.isExist(fileName);
-
     try {
       const url = await this.client.presignedGetObject(
         this.bucketName,
@@ -55,8 +53,8 @@ export class MinioClientService {
       );
 
       return url;
-    } catch {
-      throw new InternalServerErrorException();
+    } catch (error) {
+      throw new InternalServerErrorException(error);
     }
   }
 }
