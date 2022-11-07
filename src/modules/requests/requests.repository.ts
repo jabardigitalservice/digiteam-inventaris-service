@@ -21,16 +21,15 @@ export class RequestsRepository {
     userAccess: UserAccess,
   ) {
     const { email, isAdmin } = userAccess;
-    const criteria: Record<string, any> = {};
+    const where: Record<string, any> = {};
 
-    if (findAll.request_type)
-      criteria.request_type = Number(findAll.request_type);
+    if (findAll.request_type) where.request_type = Number(findAll.request_type);
 
-    if (findAll.division) criteria.division = findAll.division;
+    if (findAll.division) where.division = findAll.division;
 
-    if (findAll.status) criteria.status = Number(findAll.status);
+    if (findAll.status) where.status = Number(findAll.status);
 
-    if (isAdmin) criteria.email = email;
+    if (!isAdmin) where.email = email;
 
     const order: Record<string, any> = {};
 
@@ -43,7 +42,7 @@ export class RequestsRepository {
     order['created_at'] = 'desc';
 
     const options = {
-      where: criteria,
+      where: where,
       take: pagination.limit,
       skip: pagination.offset,
       order: order,
@@ -51,7 +50,7 @@ export class RequestsRepository {
 
     const result = await this.request.find(options);
 
-    const total = await this.request.count({ where: criteria });
+    const total = await this.request.count({ where: where });
 
     return {
       result,
