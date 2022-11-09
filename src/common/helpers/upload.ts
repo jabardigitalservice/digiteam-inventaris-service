@@ -4,6 +4,8 @@ import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer
 
 const mimeTypes = [
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'application/pdf',
   'image/png',
   'image/jpeg',
 ];
