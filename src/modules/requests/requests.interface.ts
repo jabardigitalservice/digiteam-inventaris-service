@@ -1,3 +1,5 @@
+import { Pagination } from 'src/common/interfaces/pagination.interface';
+
 export interface Create {
   division: string;
   phone_number: string;
@@ -21,12 +23,11 @@ export interface Update {
   pickup_bast?: string;
 }
 
-export interface FindAll {
-  page?: number;
-  limit?: number;
+export interface FindAll extends Pagination {
   sort_by?: string;
   sort?: 'asc' | 'desc';
   request_type?: number;
   division?: string;
   status?: number;
+  q?: string;
 }
