@@ -48,18 +48,18 @@ export class RequestsRepository {
   }
 
   async findAll(findAll: FindAll) {
-    const where = this.setFilter(findAll);
+    const filter = this.setFilter(findAll);
     const order = this.setOrder(findAll);
     const search = this.setSearch(findAll);
 
+    const where = findAll.q ? [filter, ...search] : filter;
+
     const options = {
-      where: findAll.q ? [where, ...search] : where,
+      where: where,
       take: findAll.limit,
       skip: findAll.offset,
       order: order,
     };
-
-    console.log(options);
 
     const result = await this.request.find(options);
 
