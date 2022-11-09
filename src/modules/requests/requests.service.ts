@@ -5,7 +5,7 @@ import {
   queryPagination,
 } from '../../common/helpers/pagination';
 import { UserAccess } from '../../common/interfaces/keycloak-user.interface';
-import { Create, Update, FindAll } from './requests.interface';
+import { Create, Update, FindAll, FindRequests } from './requests.interface';
 import { status } from '../../common/helpers/status';
 import { MinioClientService } from '../../storage/minio/minio.service';
 
@@ -36,7 +36,7 @@ export class RequestsService {
       limit: queryParams.limit,
     });
 
-    const findAll: FindAll = {
+    const findAll: FindRequests = {
       ...queryParams,
       ...pagination,
       ...userAccess,

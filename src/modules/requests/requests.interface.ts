@@ -22,17 +22,20 @@ export interface Update {
 }
 
 export interface FindAll {
-  email?: string;
-  isAdmin?: boolean;
   page?: number;
   limit?: number;
-  offset?: number;
   sort_by?: string;
   sort?: 'asc' | 'desc';
   request_type?: number;
   division?: string;
   status?: number;
   q?: string;
+}
+
+export interface FindRequests extends FindAll {
   username?: string;
   phone_number?: string;
+  email?: string;
+  isAdmin?: boolean;
+  offset?: number;
 }

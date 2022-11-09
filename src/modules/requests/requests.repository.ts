@@ -1,7 +1,7 @@
 import { Like, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from '../../entities/request.entity';
-import { FindAll, Update } from './requests.interface';
+import { FindRequests, Update } from './requests.interface';
 
 export class RequestsRepository {
   constructor(
@@ -14,7 +14,7 @@ export class RequestsRepository {
     this.request.save(request);
   }
 
-  private setFilter(findAll: FindAll) {
+  private setFilter(findAll: FindRequests) {
     const where: Record<string, any> = {};
 
     if (!findAll.isAdmin) where.email = findAll.email;
@@ -25,7 +25,7 @@ export class RequestsRepository {
     return where;
   }
 
-  private setOrder(findAll: FindAll) {
+  private setOrder(findAll: FindRequests) {
     if (!findAll.sort_by) findAll.sort_by = 'created_at';
 
     if (!findAll.sort) findAll.sort = 'desc';
@@ -35,7 +35,7 @@ export class RequestsRepository {
     };
   }
 
-  private setSearch(findAll: FindAll) {
+  private setSearch(findAll: FindRequests) {
     const search: Array<Record<string, any>> = [];
     const keyword = findAll.q;
 
@@ -47,7 +47,7 @@ export class RequestsRepository {
     return search;
   }
 
-  async findAll(findAll: FindAll) {
+  async findAll(findAll: FindRequests) {
     const filter = this.setFilter(findAll);
     const order = this.setOrder(findAll);
     const search = this.setSearch(findAll);
