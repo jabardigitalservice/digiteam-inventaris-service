@@ -29,5 +29,5 @@ export interface FindAll extends Pagination {
   request_type?: number;
   division?: string;
   status?: number;
-  keyword?: string;
+  q?: string;
 }

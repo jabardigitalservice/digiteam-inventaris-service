@@ -39,9 +39,9 @@ export class RequestsRepository {
 
   private setSearch(findAll: FindAll) {
     const search: Array<Record<string, any>> = [];
-    const keyword = findAll.keyword;
+    const keyword = findAll.q;
 
-    if (findAll.keyword) {
+    if (findAll.q) {
       search.push({ username: Like(`%${keyword}%`) });
       search.push({ phone_number: Like(`%${keyword}%`) });
     }
@@ -54,7 +54,7 @@ export class RequestsRepository {
     const order = this.setOrder(findAll);
     const search = this.setSearch(findAll);
 
-    const where = findAll.keyword ? [filter, ...search] : filter;
+    const where = findAll.q ? [filter, ...search] : filter;
 
     const options = {
       where: where,
