@@ -30,14 +30,19 @@ export class RequestsService {
     });
   }
 
-  async findAll(findAll: FindAll, userAccess: UserAccess) {
-    const pagination = queryPagination(findAll);
+  async findAll(queryParams: FindAll, userAccess: UserAccess) {
+    const pagination = queryPagination({
+      page: queryParams.page,
+      limit: queryParams.limit,
+    });
 
-    const { result, total } = await this.repo.findAll(
-      findAll,
-      pagination,
-      userAccess,
-    );
+    const findAll: FindAll = {
+      ...queryParams,
+      ...pagination,
+      ...userAccess,
+    };
+
+    const { result, total } = await this.repo.findAll(findAll);
 
     const meta = metaPagination(total, result, pagination);
 
