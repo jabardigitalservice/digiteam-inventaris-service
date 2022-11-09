@@ -1,7 +1,8 @@
 import { Like, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from '../../entities/request.entity';
-import { FindRequests, Update } from './requests.interface';
+import { FindAll, Update } from './requests.interface';
+import { UserAccess } from 'src/common/interfaces/keycloak-user.interface';
 
 export class RequestsRepository {
   constructor(
@@ -14,10 +15,11 @@ export class RequestsRepository {
     this.request.save(request);
   }
 
-  private setFilter(findAll: FindRequests) {
+  private setFilter(findAll: FindAll, userAccess: UserAccess) {
     const where: Record<string, any> = {};
+    const { email, isAdmin } = userAccess;
 
-    if (!findAll.isAdmin) where.email = findAll.email;
+    if (!isAdmin) where.email = email;
     if (findAll.request_type) where.request_type = Number(findAll.request_type);
     if (findAll.division) where.division = findAll.division;
     if (findAll.status) where.status = Number(findAll.status);
@@ -25,7 +27,7 @@ export class RequestsRepository {
     return where;
   }
 
-  private setOrder(findAll: FindRequests) {
+  private setOrder(findAll: FindAll) {
     if (!findAll.sort_by) findAll.sort_by = 'created_at';
 
     if (!findAll.sort) findAll.sort = 'desc';
@@ -35,7 +37,7 @@ export class RequestsRepository {
     };
   }
 
-  private setSearch(findAll: FindRequests) {
+  private setSearch(findAll: FindAll) {
     const search: Array<Record<string, any>> = [];
     const keyword = findAll.q;
 
@@ -47,8 +49,8 @@ export class RequestsRepository {
     return search;
   }
 
-  async findAll(findAll: FindRequests) {
-    const filter = this.setFilter(findAll);
+  async findAll(findAll: FindAll, userAccess: UserAccess) {
+    const filter = this.setFilter(findAll, userAccess);
     const order = this.setOrder(findAll);
     const search = this.setSearch(findAll);
 
