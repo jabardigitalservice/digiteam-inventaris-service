@@ -1,9 +1,8 @@
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from '../../entities/request.entity';
 import { FindAll, Update } from './requests.interface';
-import { Pagination } from 'src/common/interfaces/pagination.interface';
-import { UserAccess } from 'src/common/interfaces/keycloak-user.interface';
+
 export class RequestsRepository {
   constructor(
     @InjectRepository(Request)
@@ -15,42 +14,56 @@ export class RequestsRepository {
     this.request.save(request);
   }
 
-  async findAll(
-    findAll: FindAll,
-    pagination: Pagination,
-    userAccess: UserAccess,
-  ) {
-    const { email, isAdmin } = userAccess;
+  private setFilter(findAll: FindAll) {
     const where: Record<string, any> = {};
 
+    if (!findAll.isAdmin) where.email = findAll.email;
     if (findAll.request_type) where.request_type = Number(findAll.request_type);
-
     if (findAll.division) where.division = findAll.division;
-
     if (findAll.status) where.status = Number(findAll.status);
 
-    if (!isAdmin) where.email = email;
+    return where;
+  }
 
-    const order: Record<string, any> = {};
+  private setOrder(findAll: FindAll) {
+    if (!findAll.sort_by) findAll.sort_by = 'created_at';
 
-    if (!findAll.sort) findAll.sort = 'asc';
+    if (!findAll.sort) findAll.sort = 'desc';
 
-    if (findAll.sort_by) {
-      order[findAll.sort_by] = findAll.sort;
+    return {
+      [findAll.sort_by]: findAll.sort,
+    };
+  }
+
+  private setSearch(findAll: FindAll) {
+    const search: Array<Record<string, any>> = [];
+    const keyword = findAll.q;
+
+    if (findAll.q) {
+      search.push({ username: Like(`%${keyword}%`) });
+      search.push({ phone_number: Like(`%${keyword}%`) });
     }
 
-    order['created_at'] = 'desc';
+    return search;
+  }
+
+  async findAll(findAll: FindAll) {
+    const where = this.setFilter(findAll);
+    const order = this.setOrder(findAll);
+    const search = this.setSearch(findAll);
 
     const options = {
-      where: where,
-      take: pagination.limit,
-      skip: pagination.offset,
+      where: findAll.q ? [where, ...search] : where,
+      take: findAll.limit,
+      skip: findAll.offset,
       order: order,
     };
 
+    console.log(options);
+
     const result = await this.request.find(options);
 
-    const total = await this.request.count({ where: where });
+    const total = await this.request.count({ where: options.where });
 
     return {
       result,
