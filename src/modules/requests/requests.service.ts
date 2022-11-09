@@ -7,14 +7,10 @@ import {
 import { UserAccess } from '../../common/interfaces/keycloak-user.interface';
 import { Create, Update, FindAll } from './requests.interface';
 import { status } from '../../common/helpers/status';
-import { MinioClientService } from '../../storage/minio/minio.service';
 
 @Injectable()
 export class RequestsService {
-  constructor(
-    private repo: RequestsRepository,
-    private minioClientService: MinioClientService,
-  ) {}
+  constructor(private repo: RequestsRepository) {}
 
   store(create: Create, userAccess: UserAccess) {
     this.repo.store({
