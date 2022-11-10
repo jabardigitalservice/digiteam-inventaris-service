@@ -69,3 +69,28 @@ export const UpdatePayloadSchema = Joi.object({
     otherwise: Joi.forbidden(),
   }),
 });
+
+export const UpdateStatusPayloadSchema = Joi.object({
+  status: Joi.number().strict().required(),
+});
+
+export const UpdateItemPayloadSchema = Joi.object({
+  item_name: Joi.string().required(),
+  item_brand: Joi.string().required(),
+  item_number: Joi.string().required(),
+});
+
+export const UpdateNotesPayloadSchema = Joi.object({
+  status: Joi.number().strict().equal(status.REJECTED, status.READY).required(),
+  notes: Joi.string().required(),
+});
+
+export const UpdatePickupPayloadSchema = Joi.object({
+  pickup_signing: Joi.string().required(),
+  pickup_evidence: Joi.string().required(),
+  pickup_bast: Joi.string().required(),
+});
+
+export const UpdateFilenamePayloadSchema = Joi.object({
+  filename: Joi.string().required(),
+});
