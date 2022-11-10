@@ -41,10 +41,17 @@ export class RequestsRepository {
     const search: Array<Record<string, any>> = [];
     const keyword = findAll.q;
 
-    const byUsername = { ...filter, username: Like(`%${keyword}%`) };
-    const byPhoneNumber = { ...filter, phone_number: Like(`%${keyword}%`) };
+    const matchbyUsername = {
+      ...filter,
+      username: Like(`%${keyword}%`),
+    };
 
-    search.push(byUsername, byPhoneNumber);
+    const matchByPhoneNumber = {
+      ...filter,
+      phone_number: Like(`%${keyword}%`),
+    };
+
+    search.push(matchbyUsername, matchByPhoneNumber);
 
     return search;
   }
