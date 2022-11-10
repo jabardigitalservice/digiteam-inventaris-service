@@ -17,7 +17,6 @@ export interface Update {
   item_brand?: string;
   item_number?: string;
   filename?: string;
-  pickup_date?: Date;
   pickup_signing?: string;
   pickup_evidence?: string;
   pickup_bast?: string;

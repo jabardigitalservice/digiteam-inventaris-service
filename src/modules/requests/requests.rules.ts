@@ -26,6 +26,50 @@ export const FindAllPayloadSchema = Joi.object({
   q: Joi.string().allow(...emptyAllow),
 });
 
+export const UpdatePayloadSchema = Joi.object({
+  status: Joi.number().strict().equal(),
+  notes: Joi.alternatives().conditional('status', {
+    is: Joi.equal(status.REJECTED, status.CHECKED),
+    then: Joi.string().required(),
+    otherwise: Joi.forbidden(),
+  }),
+  filename: Joi.alternatives().conditional('status', {
+    is: Joi.equal(status.APPROVED),
+    then: Joi.string().required(),
+    otherwise: Joi.forbidden(),
+  }),
+  item_name: Joi.alternatives().conditional('status', {
+    is: Joi.equal(status.REQUESTED),
+    then: Joi.string().required(),
+    otherwise: Joi.forbidden(),
+  }),
+  item_brand: Joi.alternatives().conditional('status', {
+    is: Joi.equal(status.REQUESTED),
+    then: Joi.string().required(),
+    otherwise: Joi.forbidden(),
+  }),
+  item_number: Joi.alternatives().conditional('status', {
+    is: Joi.equal(status.REQUESTED),
+    then: Joi.string().required(),
+    otherwise: Joi.forbidden(),
+  }),
+  pickup_signing: Joi.alternatives().conditional('status', {
+    is: Joi.equal(status.RECEIVED),
+    then: Joi.string().required(),
+    otherwise: Joi.forbidden(),
+  }),
+  pickup_evidence: Joi.alternatives().conditional('status', {
+    is: Joi.equal(status.RECEIVED),
+    then: Joi.string().required(),
+    otherwise: Joi.forbidden(),
+  }),
+  pickup_bast: Joi.alternatives().conditional('status', {
+    is: Joi.equal(status.RECEIVED),
+    then: Joi.string().required(),
+    otherwise: Joi.forbidden(),
+  }),
+});
+
 export const UpdateStatusPayloadSchema = Joi.object({
   status: Joi.number().strict().required(),
 });

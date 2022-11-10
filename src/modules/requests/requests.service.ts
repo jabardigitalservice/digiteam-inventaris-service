@@ -61,6 +61,10 @@ export class RequestsService {
     return this.repo.update(id, updateStatus);
   }
 
+  update(id: string, update: Update) {
+    return this.repo.update(id, update);
+  }
+
   updateFilename(id: string, updateFilename: Update) {
     const update: Update = {
       ...updateFilename,

@@ -7,6 +7,7 @@ import {
   HttpStatus,
   Query,
   Patch,
+  Put,
   Param,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -21,6 +22,7 @@ import {
   UpdateNotesPayloadSchema,
   UpdatePickupPayloadSchema,
   UpdateFilenamePayloadSchema,
+  UpdatePayloadSchema,
 } from './requests.rules';
 import { AuthenticatedUser } from 'nest-keycloak-connect';
 import { AuthUser } from '../../common/interfaces/keycloak-user.interface';
@@ -71,6 +73,19 @@ export class RequestsController {
     const responseBody = await this.requestsService.findById(id);
 
     return res.status(HttpStatus.OK).send(responseBody);
+  }
+
+  @Put(':id')
+  async update(
+    @Param('id') id: string,
+    @Body(new JoiValidationPipe(UpdatePayloadSchema))
+    update: Update,
+    @Res() res: Response,
+  ) {
+    this.requestsService.update(id, update);
+    return res.status(HttpStatus.OK).send({
+      message: 'UPDATED',
+    });
   }
 
   @Patch(':id/status')
