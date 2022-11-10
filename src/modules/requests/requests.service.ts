@@ -6,7 +6,6 @@ import {
 } from '../../common/helpers/pagination';
 import { UserAccess } from '../../common/interfaces/keycloak-user.interface';
 import { Create, Update, FindAll } from './requests.interface';
-import { status } from '../../common/helpers/status';
 
 @Injectable()
 export class RequestsService {
@@ -57,48 +56,7 @@ export class RequestsService {
     return { data, meta: {} };
   }
 
-  updateStatus(id: string, updateStatus: Update) {
-    return this.repo.update(id, updateStatus);
-  }
-
-  updateFilename(id: string, updateFilename: Update) {
-    const update: Update = {
-      ...updateFilename,
-      status: status.APPROVED,
-    };
-
-    return this.repo.update(id, update);
-  }
-
-  updateItem(id: string, updateItem: Update) {
-    const update = {
-      ...updateItem,
-      status: status.REQUESTED,
-    };
-
-    return this.repo.update(id, update);
-  }
-
-  updateNotes(id: string, updateNotes: Update) {
-    return this.repo.update(id, updateNotes);
-  }
-
-  updateReceived(id: string) {
-    const pickup_date = new Date();
-    const update = {
-      pickup_date,
-      status: status.RECEIVED,
-    };
-
-    return this.repo.update(id, update);
-  }
-
-  updatePickup(id: string, updatePickup: Update) {
-    const update = {
-      ...updatePickup,
-      status: status.COMPLETED,
-    };
-
+  update(id: string, update: Update) {
     return this.repo.update(id, update);
   }
 }

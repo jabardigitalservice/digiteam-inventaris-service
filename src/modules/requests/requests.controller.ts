@@ -8,7 +8,6 @@ import {
   Query,
   Patch,
   Param,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { RequestsService } from './requests.service';
@@ -16,11 +15,7 @@ import { JoiValidationPipe } from '../../common/pipes/joi-validation.pipe';
 import {
   FindAllPayloadSchema,
   CreatePayloadSchema,
-  UpdateStatusPayloadSchema,
-  UpdateItemPayloadSchema,
-  UpdateNotesPayloadSchema,
-  UpdatePickupPayloadSchema,
-  UpdateFilenamePayloadSchema,
+  UpdatePayloadSchema,
 } from './requests.rules';
 import { AuthenticatedUser } from 'nest-keycloak-connect';
 import { AuthUser } from '../../common/interfaces/keycloak-user.interface';
@@ -73,110 +68,14 @@ export class RequestsController {
     return res.status(HttpStatus.OK).send(responseBody);
   }
 
-  @Patch(':id/status')
-  async updateStatus(
-    @Param('id') id: string,
-    @Body(new JoiValidationPipe(UpdateStatusPayloadSchema))
-    updateStatus: Update,
-    @AuthenticatedUser() authUser: AuthUser,
-    @Res() res: Response,
-  ): Promise<any> {
-    const userAccess = this.userAccessService.getUserAccess(authUser);
-    if (!userAccess.isAdmin) {
-      throw new UnauthorizedException();
-    }
-
-    this.requestsService.updateStatus(id, updateStatus);
-    return res.status(HttpStatus.OK).send({
-      message: 'UPDATED',
-    });
-  }
-
-  @Patch(':id/notes')
-  async updateNotes(
-    @Param('id') id: string,
-    @Body(new JoiValidationPipe(UpdateNotesPayloadSchema))
-    updateNotes: Update,
-    @AuthenticatedUser() authUser: AuthUser,
-    @Res() res: Response,
-  ): Promise<any> {
-    const userAccess = this.userAccessService.getUserAccess(authUser);
-    if (!userAccess.isAdmin) {
-      throw new UnauthorizedException();
-    }
-
-    this.requestsService.updateNotes(id, updateNotes);
-    return res.status(HttpStatus.OK).send({
-      message: 'UPDATED',
-    });
-  }
-
   @Patch(':id')
-  async updateItem(
+  async update(
     @Param('id') id: string,
-    @Body(new JoiValidationPipe(UpdateItemPayloadSchema))
-    updateItem: Update,
-    @Res() res: Response,
-  ): Promise<any> {
-    this.requestsService.updateItem(id, updateItem);
-
-    return res.status(HttpStatus.OK).send({
-      message: 'UPDATED',
-    });
-  }
-
-  @Patch(':id/filename')
-  async updateFilename(
-    @Param('id') id: string,
-    @Body(new JoiValidationPipe(UpdateFilenamePayloadSchema))
-    updateFilename: Update,
-    @AuthenticatedUser() authUser: AuthUser,
+    @Body(new JoiValidationPipe(UpdatePayloadSchema))
+    update: Update,
     @Res() res: Response,
   ) {
-    const userAccess = this.userAccessService.getUserAccess(authUser);
-    if (!userAccess.isAdmin) {
-      throw new UnauthorizedException();
-    }
-
-    this.requestsService.updateFilename(id, updateFilename);
-
-    return res.status(HttpStatus.OK).send({
-      message: 'UPDATED',
-    });
-  }
-
-  @Patch(':id/received')
-  async updateReceived(
-    @Param('id') id: string,
-    @AuthenticatedUser() authUser: AuthUser,
-    @Res() res: Response,
-  ): Promise<any> {
-    const userAccess = this.userAccessService.getUserAccess(authUser);
-    if (!userAccess.isAdmin) {
-      throw new UnauthorizedException();
-    }
-
-    this.requestsService.updateReceived(id);
-    return res.status(HttpStatus.OK).send({
-      message: 'UPDATED',
-    });
-  }
-
-  @Patch(':id/pickup')
-  async updatePickup(
-    @Param('id') id: string,
-    @Body(new JoiValidationPipe(UpdatePickupPayloadSchema))
-    updatePickup: Update,
-    @AuthenticatedUser() authUser: AuthUser,
-    @Res() res: Response,
-  ): Promise<any> {
-    const userAccess = this.userAccessService.getUserAccess(authUser);
-    if (!userAccess.isAdmin) {
-      throw new UnauthorizedException();
-    }
-
-    this.requestsService.updatePickup(id, updatePickup);
-
+    this.requestsService.update(id, update);
     return res.status(HttpStatus.OK).send({
       message: 'UPDATED',
     });
