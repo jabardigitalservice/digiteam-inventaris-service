@@ -37,11 +37,10 @@ export class RequestsRepository {
     };
   }
 
-  private setSearch(findAll: FindAll, userAccess: UserAccess) {
+  private setSearch(findAll: FindAll, filter: Object) {
     const search: Array<Record<string, any>> = [];
     const keyword = findAll.q;
 
-    const filter = this.setFilter(findAll, userAccess);
     const byUsername = { ...filter, username: Like(`%${keyword}%`) };
     const byPhoneNumber = { ...filter, phone_number: Like(`%${keyword}%`) };
 
@@ -53,7 +52,7 @@ export class RequestsRepository {
   async findAll(findAll: FindAll, userAccess: UserAccess) {
     const filter = this.setFilter(findAll, userAccess);
     const order = this.setOrder(findAll);
-    const withSearch = this.setSearch(findAll, userAccess);
+    const withSearch = this.setSearch(findAll, filter);
 
     const where = findAll.q ? withSearch : filter;
 
