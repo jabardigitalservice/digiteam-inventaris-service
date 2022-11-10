@@ -64,8 +64,6 @@ export class RequestsRepository {
       order: order,
     };
 
-    console.log(options);
-
     const result = await this.request.find(options);
 
     const total = await this.request.count({ where: options.where });
