@@ -37,14 +37,15 @@ export class RequestsRepository {
     };
   }
 
-  private setSearch(findAll: FindAll) {
+  private setSearch(findAll: FindAll, userAccess: UserAccess) {
     const search: Array<Record<string, any>> = [];
     const keyword = findAll.q;
 
-    if (findAll.q) {
-      search.push({ username: Like(`%${keyword}%`) });
-      search.push({ phone_number: Like(`%${keyword}%`) });
-    }
+    const filter = this.setFilter(findAll, userAccess);
+    const byUsername = { ...filter, username: Like(`%${keyword}%`) };
+    const byPhoneNumber = { ...filter, phone_number: Like(`%${keyword}%`) };
+
+    search.push(byUsername, byPhoneNumber);
 
     return search;
   }
@@ -52,9 +53,9 @@ export class RequestsRepository {
   async findAll(findAll: FindAll, userAccess: UserAccess) {
     const filter = this.setFilter(findAll, userAccess);
     const order = this.setOrder(findAll);
-    const search = this.setSearch(findAll);
+    const withSearch = this.setSearch(findAll, userAccess);
 
-    const where = findAll.q ? [filter, ...search] : filter;
+    const where = findAll.q ? withSearch : filter;
 
     const options = {
       where: where,
@@ -62,6 +63,8 @@ export class RequestsRepository {
       skip: findAll.offset,
       order: order,
     };
+
+    console.log(options);
 
     const result = await this.request.find(options);
 
