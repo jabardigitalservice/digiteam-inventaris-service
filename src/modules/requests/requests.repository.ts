@@ -2,7 +2,7 @@ import { Like, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from '../../entities/request.entity';
 import { FindAll, Update } from './requests.interface';
-import { UserAccess } from 'src/common/interfaces/keycloak-user.interface';
+import { UserAccess } from '../../common/interfaces/keycloak-user.interface';
 
 export class RequestsRepository {
   constructor(
@@ -41,17 +41,8 @@ export class RequestsRepository {
     const search: Array<Record<string, any>> = [];
     const keyword = findAll.q;
 
-    const matchByUsername = {
-      ...filter,
-      username: Like(`%${keyword}%`),
-    };
-
-    const matchByPhoneNumber = {
-      ...filter,
-      phone_number: Like(`%${keyword}%`),
-    };
-
-    search.push(matchByUsername, matchByPhoneNumber);
+    search.push({ ...filter, username: Like(`%${keyword}%`) });
+    search.push({ ...filter, phone_number: Like(`%${keyword}%`) });
 
     return search;
   }
