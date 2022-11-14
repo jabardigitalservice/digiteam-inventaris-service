@@ -31,7 +31,7 @@ export class RequestsService {
       limit: queryParams.limit,
     });
 
-    const findAll = {
+    const findAll: FindAll = {
       ...queryParams,
       ...pagination,
     };

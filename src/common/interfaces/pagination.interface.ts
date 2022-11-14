@@ -1,12 +1,7 @@
-export interface QueryPagination {
+export interface Pagination {
   page?: number;
   limit?: number;
-}
-
-export interface Pagination {
-  page: number;
-  limit: number;
-  offset: number;
+  offset?: number;
 }
 
 export interface MetaPagination {

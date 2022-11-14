@@ -1,10 +1,6 @@
-import {
-  MetaPagination,
-  Pagination,
-  QueryPagination,
-} from '../interfaces/pagination.interface';
+import { MetaPagination, Pagination } from '../interfaces/pagination.interface';
 
-export const queryPagination = (request: QueryPagination): Pagination => {
+export const queryPagination = (request: Pagination): Pagination => {
   const limit = Number(request.limit) || 10;
   const page = Number(request.page) || 1;
   const offset = (page - 1) * limit;
