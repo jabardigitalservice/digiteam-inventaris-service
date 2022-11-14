@@ -9,7 +9,6 @@ import {
   Patch,
   Put,
   Param,
-  UseGuards,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { RequestsService } from './requests.service';
@@ -28,7 +27,6 @@ import { AuthenticatedUser } from 'nest-keycloak-connect';
 import { AuthUser } from '../../common/interfaces/keycloak-user.interface';
 import { Update, Create, FindAll } from './requests.interface';
 import { KeycloakRolesService } from 'src/sso/keycloak/roles.provider';
-import { KeycloakRolesGuard } from 'src/sso/keycloak/roles.guard';
 
 @Controller('requests')
 export class RequestsController {
@@ -38,7 +36,6 @@ export class RequestsController {
   ) {}
 
   @Post()
-  @UseGuards(KeycloakRolesGuard)
   async store(
     @Body(new JoiValidationPipe(CreatePayloadSchema))
     create: Create,
@@ -54,7 +51,6 @@ export class RequestsController {
   }
 
   @Get()
-  @UseGuards(KeycloakRolesGuard)
   async findAll(
     @Query(new JoiValidationPipe(FindAllPayloadSchema))
     queryParams: FindAll,
@@ -161,7 +157,6 @@ export class RequestsController {
     @Param('id') id: string,
     @Body(new JoiValidationPipe(UpdatePickupPayloadSchema))
     updatePickup: Update,
-    @AuthenticatedUser() authUser: AuthUser,
     @Res() res: Response,
   ): Promise<any> {
     this.requestsService.updatePickup(id, updatePickup);
