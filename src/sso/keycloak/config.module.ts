@@ -8,7 +8,7 @@ import {
   AuthGuard,
 } from 'nest-keycloak-connect';
 import { APP_GUARD } from '@nestjs/core';
-import { AppConfigModule } from 'src/config/app/config.module';
+import { AppConfigModule } from 'src/config/config.module';
 
 @Global()
 @Module({
