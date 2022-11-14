@@ -1,4 +1,4 @@
-import { Pagination } from 'src/common/interfaces/pagination.interface';
+import { QueryPagination } from 'src/common/interfaces/pagination.interface';
 
 export interface Create {
   division: string;
@@ -22,7 +22,7 @@ export interface Update {
   pickup_bast?: string;
 }
 
-export interface FindAll extends Pagination {
+export interface FindAll extends QueryPagination {
   sort_by?: string;
   sort?: 'asc' | 'desc';
   request_type?: number;
