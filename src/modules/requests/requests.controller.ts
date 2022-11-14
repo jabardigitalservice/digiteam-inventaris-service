@@ -9,7 +9,6 @@ import {
   Patch,
   Put,
   Param,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { RequestsService } from './requests.service';
@@ -26,14 +25,14 @@ import {
 } from './requests.rules';
 import { AuthenticatedUser } from 'nest-keycloak-connect';
 import { AuthUser } from '../../common/interfaces/keycloak-user.interface';
-import { UserAccessService } from './../../common/providers/user-access.service';
 import { Update, Create, FindAll } from './requests.interface';
+import { KeycloakRolesService } from 'src/sso/keycloak/roles.provider';
 
 @Controller('requests')
 export class RequestsController {
   constructor(
     private requestsService: RequestsService,
-    private userAccessService: UserAccessService,
+    private rolesService: KeycloakRolesService,
   ) {}
 
   @Post()
@@ -43,7 +42,7 @@ export class RequestsController {
     @AuthenticatedUser() authUser: AuthUser,
     @Res() res: Response,
   ): Promise<any> {
-    const userAccess = this.userAccessService.getUserAccess(authUser);
+    const userAccess = this.rolesService.getUserAccess(authUser);
     this.requestsService.store(create, userAccess);
 
     return res.status(HttpStatus.CREATED).send({
@@ -58,7 +57,7 @@ export class RequestsController {
     @AuthenticatedUser() authUser: AuthUser,
     @Res() res: Response,
   ): Promise<any> {
-    const userAccess = this.userAccessService.getUserAccess(authUser);
+    const userAccess = this.rolesService.getUserAccess(authUser);
 
     const responseBody = await this.requestsService.findAll(
       queryParams,
@@ -93,14 +92,8 @@ export class RequestsController {
     @Param('id') id: string,
     @Body(new JoiValidationPipe(UpdateStatusPayloadSchema))
     updateStatus: Update,
-    @AuthenticatedUser() authUser: AuthUser,
     @Res() res: Response,
   ): Promise<any> {
-    const userAccess = this.userAccessService.getUserAccess(authUser);
-    if (!userAccess.isAdmin) {
-      throw new UnauthorizedException();
-    }
-
     this.requestsService.updateStatus(id, updateStatus);
     return res.status(HttpStatus.OK).send({
       message: 'UPDATED',
@@ -112,14 +105,8 @@ export class RequestsController {
     @Param('id') id: string,
     @Body(new JoiValidationPipe(UpdateNotesPayloadSchema))
     updateNotes: Update,
-    @AuthenticatedUser() authUser: AuthUser,
     @Res() res: Response,
   ): Promise<any> {
-    const userAccess = this.userAccessService.getUserAccess(authUser);
-    if (!userAccess.isAdmin) {
-      throw new UnauthorizedException();
-    }
-
     this.requestsService.updateNotes(id, updateNotes);
     return res.status(HttpStatus.OK).send({
       message: 'UPDATED',
@@ -145,14 +132,8 @@ export class RequestsController {
     @Param('id') id: string,
     @Body(new JoiValidationPipe(UpdateFilenamePayloadSchema))
     updateFilename: Update,
-    @AuthenticatedUser() authUser: AuthUser,
     @Res() res: Response,
   ) {
-    const userAccess = this.userAccessService.getUserAccess(authUser);
-    if (!userAccess.isAdmin) {
-      throw new UnauthorizedException();
-    }
-
     this.requestsService.updateFilename(id, updateFilename);
 
     return res.status(HttpStatus.OK).send({
@@ -163,14 +144,8 @@ export class RequestsController {
   @Patch(':id/received')
   async updateReceived(
     @Param('id') id: string,
-    @AuthenticatedUser() authUser: AuthUser,
     @Res() res: Response,
   ): Promise<any> {
-    const userAccess = this.userAccessService.getUserAccess(authUser);
-    if (!userAccess.isAdmin) {
-      throw new UnauthorizedException();
-    }
-
     this.requestsService.updateReceived(id);
     return res.status(HttpStatus.OK).send({
       message: 'UPDATED',
@@ -182,14 +157,8 @@ export class RequestsController {
     @Param('id') id: string,
     @Body(new JoiValidationPipe(UpdatePickupPayloadSchema))
     updatePickup: Update,
-    @AuthenticatedUser() authUser: AuthUser,
     @Res() res: Response,
   ): Promise<any> {
-    const userAccess = this.userAccessService.getUserAccess(authUser);
-    if (!userAccess.isAdmin) {
-      throw new UnauthorizedException();
-    }
-
     this.requestsService.updatePickup(id, updatePickup);
 
     return res.status(HttpStatus.OK).send({

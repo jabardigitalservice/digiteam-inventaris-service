@@ -1,5 +1,5 @@
 import { config } from 'dotenv';
-import { convertToBoolean } from '../../common/helpers/convert';
+import { convertToBoolean } from '../common/helpers/convert';
 
 config();
 
