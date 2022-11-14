@@ -1,12 +1,10 @@
 import { Module } from '@nestjs/common';
-import { RoleAccessService } from 'src/common/providers/role-access.service';
-import { UserAccessService } from 'src/common/providers/user-access.service';
-
+import { KeycloakRolesService } from 'src/sso/keycloak/roles.provider';
 import { AuthenticationsController } from './authentications.controller';
-import { AuthenticationsService } from './services/authentications.service';
+import { AuthenticationsService } from './authentications.service';
 
 @Module({
-  providers: [RoleAccessService, UserAccessService, AuthenticationsService],
+  providers: [KeycloakRolesService, AuthenticationsService],
   controllers: [AuthenticationsController],
 })
 export class AuthenticationsModule {}

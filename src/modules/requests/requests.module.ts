@@ -5,8 +5,7 @@ import { RequestsController } from './requests.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Request } from '../../entities/request.entity';
 import { RequestsRepository } from './requests.repository';
-import { UserAccessService } from '../../common/providers/user-access.service';
-import { RoleAccessService } from '../../common/providers/role-access.service';
+import { KeycloakRolesService } from 'src/sso/keycloak/roles.provider';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Request])],
@@ -14,8 +13,7 @@ import { RoleAccessService } from '../../common/providers/role-access.service';
     ConfigService,
     RequestsRepository,
     RequestsService,
-    RoleAccessService,
-    UserAccessService,
+    KeycloakRolesService,
   ],
   controllers: [RequestsController],
 })

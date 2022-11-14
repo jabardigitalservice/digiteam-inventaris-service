@@ -4,14 +4,14 @@ import {
   AuthUser,
   UserAccess,
 } from 'src/common/interfaces/keycloak-user.interface';
-import { UserAccessService } from 'src/common/providers/user-access.service';
+import { KeycloakRolesService } from 'src/sso/keycloak/roles.provider';
 
 @Injectable()
 export class AuthenticationsService {
-  constructor(private userAccessService: UserAccessService) {}
+  constructor(private rolesService: KeycloakRolesService) {}
 
   getProfile(authUser: AuthUser) {
-    const userAccess = this.userAccessService.getUserAccess(authUser);
+    const userAccess = this.rolesService.getUserAccess(authUser);
 
     const data: UserAccess = {
       name: userAccess.name,

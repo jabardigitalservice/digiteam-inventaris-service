@@ -2,7 +2,7 @@ import { Controller, Get, Res, HttpStatus } from '@nestjs/common';
 import { Response } from 'express';
 import { AuthenticatedUser } from 'nest-keycloak-connect';
 import { AuthUser } from 'src/common/interfaces/keycloak-user.interface';
-import { AuthenticationsService } from './services/authentications.service';
+import { AuthenticationsService } from './authentications.service';
 
 @Controller('authentications')
 export class AuthenticationsController {
