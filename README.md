@@ -57,33 +57,34 @@ npm run start:dev
 ## Repo Structure
 
 ```bash
-.github/
-└── workflows
-docker
-src/
-├── common/
-│   ├── exceptions
-│   ├── helpers
-│   ├── interceptors
-│   ├── interfaces
-│   ├── lang
-│   ├── logger
-│   └── pipes
-├── config
-├── database/
-│   ├── migrations
-│   ├── mysql
-│   └── orm
-├── entities
-├── modules/
-│   └── <module_name>/
-│       ├── <module_name>.controller
-│       ├── <module_name>.interface
-│       ├── <module_name>.module
-│       ├── <module_name>.repository
-│       ├── <module_name>.rules
-│       └── <module_name>.service  
-├── sso/
-│   └── keycloak
-└── storage
+.
+├── .github/
+│   └── workflows
+├── docker
+└── src/
+    ├── common/
+    │   ├── exceptions
+    │   ├── helpers
+    │   ├── interceptors
+    │   ├── interfaces
+    │   ├── lang
+    │   ├── logger
+    │   └── pipes
+    ├── config
+    ├── database/
+    │   ├── migrations
+    │   ├── mysql
+    │   └── orm
+    ├── entities
+    ├── modules/
+    │   └── <module_name>/
+    │       ├── <module_name>.controller 
+    │       ├── <module_name>.interface
+    │       ├── <module_name>.module
+    │       ├── <module_name>.respository
+    │       ├── <module_name>.rules
+    │       └── <module_name>.service  
+    └── providers/
+        ├── sso
+        └── storage
 ```
