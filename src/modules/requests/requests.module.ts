@@ -5,7 +5,7 @@ import { RequestsController } from './requests.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Request } from '../../entities/request.entity';
 import { RequestsRepository } from './requests.repository';
-import { KeycloakRolesService } from 'src/sso/keycloak/roles.provider';
+import { KeycloakRolesService } from 'src/providers/keycloak/roles.provider';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Request])],

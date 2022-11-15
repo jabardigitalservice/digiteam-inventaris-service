@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { MinioClientService } from 'src/storage/minio/minio.service';
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
 import { ConfigService } from '@nestjs/config';
+import { MinioClientService } from '../../providers/minio/minio.service';
 
 @Injectable()
 export class FilesService {

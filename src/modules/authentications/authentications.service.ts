@@ -4,7 +4,7 @@ import {
   AuthUser,
   UserAccess,
 } from 'src/common/interfaces/keycloak-user.interface';
-import { KeycloakRolesService } from 'src/sso/keycloak/roles.provider';
+import { KeycloakRolesService } from '../../providers/keycloak/roles.provider';
 
 @Injectable()
 export class AuthenticationsService {
