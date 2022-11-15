@@ -80,7 +80,7 @@ src/
 │       ├── <module_name>.controller
 │       ├── <module_name>.interface
 │       ├── <module_name>.module
-│       ├── <module_name>.respository
+│       ├── <module_name>.repository
 │       ├── <module_name>.rules
 │       └── <module_name>.service  
 ├── sso/
