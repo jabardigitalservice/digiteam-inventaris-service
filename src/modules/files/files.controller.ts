@@ -20,7 +20,6 @@ export class FilesController {
   @Post('upload')
   @UseInterceptors(FileInterceptor('file', multerOptions))
   async upload(
-    @Param('id') id: string,
     @UploadedFile() file: Express.Multer.File,
     @Res() res: Response,
   ) {
