@@ -2,7 +2,7 @@ import { ConfigService } from '@nestjs/config';
 import { Module } from '@nestjs/common';
 import { KeycloakConnectModule, AuthGuard } from 'nest-keycloak-connect';
 import { APP_GUARD } from '@nestjs/core';
-import { AppConfigModule } from '../../config/config.module';
+import { AppConfigModule } from '../../../config/config.module';
 
 @Module({
   imports: [

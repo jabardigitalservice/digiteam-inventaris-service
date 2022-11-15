@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { MinioService } from 'nestjs-minio-client';
-import { createFileObject } from './../../common/helpers/upload';
+import { createFileObject } from '../../../common/helpers/upload';
 
 @Injectable()
 export class MinioClientService {

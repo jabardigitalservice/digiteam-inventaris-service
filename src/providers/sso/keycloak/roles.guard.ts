@@ -1,5 +1,5 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
-import { AuthUser } from '../../common/interfaces/keycloak-user.interface';
+import { AuthUser } from '../../../common/interfaces/keycloak-user.interface';
 import { KeycloakRolesService } from './roles.provider';
 
 @Injectable()

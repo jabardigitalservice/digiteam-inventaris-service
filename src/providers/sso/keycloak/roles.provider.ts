@@ -1,10 +1,10 @@
 import { ConfigService } from '@nestjs/config';
 import { Injectable } from '@nestjs/common';
-import { RoleAccess } from '../../common/interfaces/role-access.interface';
+import { RoleAccess } from '../../../common/interfaces/role-access.interface';
 import {
   AuthUser,
   UserAccess,
-} from '../../common/interfaces/keycloak-user.interface';
+} from '../../../common/interfaces/keycloak-user.interface';
 
 @Injectable()
 export class KeycloakRolesService {

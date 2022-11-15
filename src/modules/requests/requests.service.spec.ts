@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { RequestsService } from './requests.service';
 import { RequestsRepository } from './requests.repository';
-import { MinioClientModule } from '../../storage/minio/minio.module';
+import { MinioClientModule } from '../../providers/storage/minio/minio.module';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Request } from '../../entities/request.entity';
 import { Repository } from 'typeorm';
