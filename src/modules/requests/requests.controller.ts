@@ -37,6 +37,7 @@ export class RequestsController {
     @Res() res: Response,
   ): Promise<any> {
     const userAccess = this.rolesService.getUserAccess(authUser);
+
     this.requestsService.store(create, userAccess);
 
     return res.status(HttpStatus.CREATED).send({
@@ -76,6 +77,7 @@ export class RequestsController {
     @Res() res: Response,
   ) {
     this.requestsService.update(id, update);
+
     return res.status(HttpStatus.OK).send({
       message: 'UPDATED',
     });
