@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { MinioClientService } from 'src/storage/minio/minio.service';
+import { MinioClientService } from '../../providers/storage/minio/minio.service';
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
 import { ConfigService } from '@nestjs/config';

@@ -20,7 +20,7 @@ import {
 import { AuthenticatedUser } from 'nest-keycloak-connect';
 import { AuthUser } from '../../common/interfaces/keycloak-user.interface';
 import { Update, Create, FindAll } from './requests.interface';
-import { KeycloakRolesService } from 'src/sso/keycloak/roles.provider';
+import { KeycloakRolesService } from '../../providers/sso/keycloak/roles.provider';
 
 @Controller('requests')
 export class RequestsController {
