@@ -60,7 +60,7 @@ jobs:
       - name: GitOps ArgoCD Create Branch, Commit, Push
         run: |
           export GIT_SSH_COMMAND="ssh -i /tmp/gitlab-deploy-ssh-key -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
-          cd jds-terraform-gke/k8s/digital-inevtaris-service/development
+          cd jds-terraform-gke/k8s/digital-inventaris-service/development
           git config user.email "github-action@github.com"
           git config user.name "Github Action"
           git checkout -b digiteam-inventaris-service-${{ steps.get_version.outputs.VERSION }}-staging
