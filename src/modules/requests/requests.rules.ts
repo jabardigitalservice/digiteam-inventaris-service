@@ -56,16 +56,21 @@ export const UpdatePayloadSchema = Joi.object({
     'status',
     setStatusWhenOption([status.REQUESTED]),
   ),
+  pickup_date: Joi.alternatives().conditional('status', {
+    is: Joi.equal(status.RECEIVED),
+    then: Joi.date().default(new Date()),
+    otherwise: Joi.any().strip(),
+  }),
   pickup_signing: Joi.alternatives().conditional(
     'status',
-    setStatusWhenOption([status.RECEIVED]),
+    setStatusWhenOption([status.COMPLETED]),
   ),
   pickup_evidence: Joi.alternatives().conditional(
     'status',
-    setStatusWhenOption([status.RECEIVED]),
+    setStatusWhenOption([status.COMPLETED]),
   ),
   pickup_bast: Joi.alternatives().conditional(
     'status',
-    setStatusWhenOption([status.RECEIVED]),
+    setStatusWhenOption([status.COMPLETED]),
   ),
 });
