@@ -57,6 +57,6 @@ export class RequestsService {
   }
 
   update(id: string, update: Update) {
-    return this.repo.update(id, update);
+    this.repo.update(id, update);
   }
 }

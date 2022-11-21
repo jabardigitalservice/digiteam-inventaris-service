@@ -77,6 +77,6 @@ export class RequestsRepository {
   }
 
   update(id: string, update: Update) {
-    return this.request.update(id, update);
+    this.request.update(id, update);
   }
 }
