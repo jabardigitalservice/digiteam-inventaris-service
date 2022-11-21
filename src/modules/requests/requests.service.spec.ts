@@ -5,12 +5,18 @@ import { MinioClientModule } from '../../providers/storage/minio/minio.module';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Request } from '../../entities/request.entity';
 import { Repository } from 'typeorm';
-import { mockFindAll, mockStore } from './requests.mock';
-import { Create } from './requests.interface';
+import { Create, Update } from './requests.interface';
 import { UserAccess } from '../../common/interfaces/keycloak-user.interface';
+import {
+  mockFindAll,
+  mockStore,
+  mockFindById,
+  mockUpdate,
+} from './requests.mock';
 
 let service: RequestsService;
 let repo: RequestsRepository;
+
 const userAccess: UserAccess = {
   name: 'test',
   email: 'test',
@@ -41,11 +47,11 @@ describe('service test request', () => {
 
     const createStore: Create = {
       division: 'test',
-      phone_number: 'test,',
-      request_type: 123,
+      phone_number: 'test',
+      request_type: 1,
       requested_item: 'test',
       purpose: 'test',
-      priority: 123,
+      priority: 1,
     };
 
     const userAccess: UserAccess = {
@@ -54,6 +60,7 @@ describe('service test request', () => {
       role: ['test'],
       isAdmin: true,
     };
+
     expect(service.store(createStore, userAccess)).toEqual(undefined);
   });
 });
@@ -63,7 +70,7 @@ describe('service test request', () => {
     const mockDataRepo = {
       result: [
         {
-          id: 1,
+          id: '1',
         },
       ],
       total: 1,
@@ -76,5 +83,36 @@ describe('service test request', () => {
     };
 
     expect(await service.findAll(queryRequest, userAccess));
+  });
+});
+
+describe('service test request', () => {
+  it('test findAll request', async () => {
+    const id = '1';
+    mockFindById(repo, id);
+
+    expect(await service.findById(id));
+  });
+});
+
+describe('service test request', () => {
+  it('test update request', async () => {
+    mockUpdate(repo);
+
+    const id = '1';
+
+    const update: Update = {
+      status: 7,
+      filename: 'test',
+      item_name: 'test',
+      item_brand: 'test',
+      item_number: 'test',
+      notes: 'test',
+      pickup_signing: 'test',
+      pickup_evidence: 'test',
+      pickup_bast: 'test',
+    };
+
+    expect(service.update(id, update)).toEqual(undefined);
   });
 });

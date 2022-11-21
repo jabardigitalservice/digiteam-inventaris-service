@@ -12,3 +12,16 @@ export const mockFindAll = (
 ) => {
   jest.spyOn(requestsRepository, 'findAll').mockResolvedValue(result);
 };
+
+export const mockFindById = (
+  requestsRepository: RequestsRepository,
+  result: any,
+) => {
+  jest.spyOn(requestsRepository, 'findById').mockResolvedValue(result);
+};
+
+export const mockUpdate = (requestsRepository: RequestsRepository) => {
+  jest
+    .spyOn(requestsRepository, 'update')
+    .mockImplementation(() => Promise.resolve());
+};
