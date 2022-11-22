@@ -38,7 +38,7 @@ export class RequestsController {
   ): Promise<any> {
     const userAccess = this.rolesService.getUserAccess(authUser);
 
-    this.requestsService.store(create, userAccess);
+    await this.requestsService.store(create, userAccess);
 
     return res.status(HttpStatus.CREATED).send({
       message: 'CREATED',

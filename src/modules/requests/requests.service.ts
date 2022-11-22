@@ -12,7 +12,7 @@ export class RequestsService {
   constructor(private repo: RequestsRepository) {}
 
   store(create: Create, userAccess: UserAccess) {
-    this.repo.store({
+    return this.repo.store({
       email: userAccess.email,
       username: userAccess.name,
       division: create.division,
