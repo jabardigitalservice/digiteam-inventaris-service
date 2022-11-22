@@ -1,9 +1,10 @@
 import { RequestsRepository } from './requests.repository';
 
-export const mockStore = (requestsRepository: RequestsRepository) => {
-  jest
-    .spyOn(requestsRepository, 'store')
-    .mockImplementationOnce(() => Promise.resolve());
+export const mockStore = (
+  requestsRepository: RequestsRepository,
+  result: any,
+) => {
+  jest.spyOn(requestsRepository, 'store').mockResolvedValue(result);
 };
 
 export const mockFindAll = (

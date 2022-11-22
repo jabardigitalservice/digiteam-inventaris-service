@@ -43,7 +43,8 @@ beforeAll(async () => {
 
 describe('service test request', () => {
   it('test store request', async () => {
-    mockStore(repo);
+    const result = new Request();
+    mockStore(repo, result);
 
     const createStore: Create = {
       division: 'test',
@@ -61,7 +62,7 @@ describe('service test request', () => {
       isAdmin: true,
     };
 
-    expect(service.store(createStore, userAccess)).toEqual(undefined);
+    expect(await service.store(createStore, userAccess));
   });
 });
 
