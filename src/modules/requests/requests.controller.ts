@@ -76,7 +76,7 @@ export class RequestsController {
     update: Update,
     @Res() res: Response,
   ) {
-    this.requestsService.update(id, update);
+    await this.requestsService.update(id, update);
 
     return res.status(HttpStatus.OK).send({
       message: 'UPDATED',

@@ -56,7 +56,11 @@ export class RequestsService {
     return { data, meta: {} };
   }
 
-  update(id: string, update: Update) {
-    this.repo.update(id, update);
+  async update(id: string, update: Update) {
+    const updated = await this.repo.update(id, update);
+
+    if (updated.affected < 1) {
+      throw new NotFoundException();
+    }
   }
 }
