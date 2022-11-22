@@ -97,7 +97,8 @@ describe('service test request', () => {
 
 describe('service test request', () => {
   it('test update request', async () => {
-    mockUpdate(repo);
+    const result = { affected: 1 };
+    mockUpdate(repo, result);
 
     const id = '1';
 
@@ -113,6 +114,6 @@ describe('service test request', () => {
       pickup_bast: 'test',
     };
 
-    expect(service.update(id, update)).toEqual(undefined);
+    expect(await service.update(id, update));
   });
 });
