@@ -76,7 +76,7 @@ export class RequestsRepository {
     return result;
   }
 
-  async update(id: string, update: Update) {
+  update(id: string, update: Update) {
     return this.request.update(id, update);
   }
 }

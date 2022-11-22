@@ -11,8 +11,8 @@ import { Create, Update, FindAll } from './requests.interface';
 export class RequestsService {
   constructor(private repo: RequestsRepository) {}
 
-  store(create: Create, userAccess: UserAccess) {
-    return this.repo.store({
+  async store(create: Create, userAccess: UserAccess) {
+    const request = await this.repo.store({
       email: userAccess.email,
       username: userAccess.name,
       division: create.division,
@@ -23,6 +23,8 @@ export class RequestsService {
       priority: create.priority,
       replacement_evidence: create.replacement_evidence,
     });
+
+    return request;
   }
 
   async findAll(queryParams: FindAll, userAccess: UserAccess) {
