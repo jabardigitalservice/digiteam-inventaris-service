@@ -1,120 +1,50 @@
+import { RequestsRepository } from './requests.repository';
 import { Test, TestingModule } from '@nestjs/testing';
 import { RequestsService } from './requests.service';
-import { RequestsRepository } from './requests.repository';
-import { MinioClientModule } from '../../providers/storage/minio/minio.module';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Request } from '../../entities/request.entity';
+import { Request } from 'src/entities/request.entity';
 import { Repository } from 'typeorm';
-import { Create, Update } from './requests.interface';
-import { UserAccess } from '../../common/interfaces/keycloak-user.interface';
-import {
-  mockFindAll,
-  mockStore,
-  mockFindById,
-  mockUpdate,
-} from './requests.mock';
 
-let service: RequestsService;
-let repo: RequestsRepository;
+describe('RequestsService', () => {
+  let repository: RequestsRepository;
+  let service: RequestsService;
 
-const userAccess: UserAccess = {
-  name: 'test',
-  email: 'test',
-  role: ['test'],
-  isAdmin: true,
-};
-
-beforeAll(async () => {
-  const module: TestingModule = await Test.createTestingModule({
-    imports: [MinioClientModule],
-    providers: [
-      RequestsService,
-      RequestsRepository,
-      {
-        provide: getRepositoryToken(Request),
-        useClass: Repository,
-      },
-    ],
-  }).compile();
-
-  service = module.get<RequestsService>(RequestsService);
-  repo = module.get<RequestsRepository>(RequestsRepository);
-});
-
-describe('service test request', () => {
-  it('test store request', async () => {
-    const result = new Request();
-    mockStore(repo, result);
-
-    const createStore: Create = {
-      division: 'test',
-      phone_number: 'test',
-      request_type: 1,
-      requested_item: 'test',
-      purpose: 'test',
-      priority: 1,
-    };
-
-    const userAccess: UserAccess = {
-      name: 'test',
-      email: 'test',
-      role: ['test'],
-      isAdmin: true,
-    };
-
-    expect(await service.store(createStore, userAccess));
-  });
-});
-
-describe('service test request', () => {
-  it('test findAll request', async () => {
-    const mockDataRepo = {
-      result: [
+  beforeAll(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        RequestsService,
+        RequestsRepository,
         {
-          id: '1',
+          provide: getRepositoryToken(Request),
+          useClass: Repository,
         },
       ],
-      total: 1,
-    };
-    mockFindAll(repo, mockDataRepo);
+    }).compile();
 
-    const queryRequest = {
-      page: 1,
-      limit: 10,
-    };
-
-    expect(await service.findAll(queryRequest, userAccess));
+    repository = module.get<RequestsRepository>(RequestsRepository);
+    service = module.get<RequestsService>(RequestsService);
   });
-});
 
-describe('service test request', () => {
-  it('test findAll request', async () => {
-    const id = '1';
-    mockFindById(repo, id);
+  describe('findById', () => {
+    it('test return a request', async () => {
+      const request: Request = {
+        id: 'test',
+        email: 'test',
+        username: 'test',
+        division: 'test',
+        phone_number: 'test',
+        request_type: 1,
+        requested_item: 'test',
+        purpose: 'test',
+        priority: 1,
+        status: 1,
+      };
 
-    expect(await service.findById(id));
-  });
-});
+      jest.spyOn(repository, 'findById').mockResolvedValueOnce(request);
 
-describe('service test request', () => {
-  it('test update request', async () => {
-    const result = { affected: 1 };
-    mockUpdate(repo, result);
-
-    const id = '1';
-
-    const update: Update = {
-      status: 7,
-      filename: 'test',
-      item_name: 'test',
-      item_brand: 'test',
-      item_number: 'test',
-      notes: 'test',
-      pickup_signing: 'test',
-      pickup_evidence: 'test',
-      pickup_bast: 'test',
-    };
-
-    expect(await service.update(id, update));
+      expect(service.findById('test')).resolves.toEqual(request);
+      expect(repository.findById).toHaveBeenCalled();
+      expect(repository.findById).toHaveBeenCalledWith('test');
+    });
   });
 });
