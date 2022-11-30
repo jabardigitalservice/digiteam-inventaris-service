@@ -6,6 +6,7 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Request } from 'src/entities/request.entity';
 import { Repository, UpdateResult } from 'typeorm';
 import { UserAccess } from 'src/common/interfaces/keycloak-user.interface';
+import { NotFoundException } from '@nestjs/common';
 
 const mockRequest: Request = {
   id: 'test',
@@ -51,10 +52,12 @@ const mockCreate: Request = {
   replacement_evidence: 'test',
 };
 
-const mockUpdateResult: UpdateResult = {
-  raw: 'test',
-  affected: 1,
-  generatedMaps: [],
+const mockUpdateResult = (affected: number): UpdateResult => {
+  return {
+    raw: 'test',
+    affected,
+    generatedMaps: [],
+  };
 };
 
 const mockUpdate: Update = {
@@ -88,6 +91,18 @@ describe('RequestsService', () => {
 
       expect(service.findById('test')).resolves.toEqual(mockRequest);
       expect(repository.findById).toHaveBeenCalled();
+      expect(repository.findById).toHaveBeenCalledWith('test');
+    });
+
+    it('should throw not found exception if result is empty', async () => {
+      jest.spyOn(repository, 'findById').mockResolvedValueOnce(null);
+
+      expect(service.findById('test')).resolves.toEqual(
+        new NotFoundException(),
+      );
+
+      expect(repository.findById).toHaveBeenCalled();
+
       expect(repository.findById).toHaveBeenCalledWith('test');
     });
   });
@@ -125,9 +140,27 @@ describe('RequestsService', () => {
 
   describe('update', () => {
     it('should update a request', async () => {
-      jest.spyOn(repository, 'update').mockResolvedValueOnce(mockUpdateResult);
+      jest
+        .spyOn(repository, 'update')
+        .mockResolvedValueOnce(mockUpdateResult(1));
 
-      expect(service.update('test', mockUpdate)).resolves.toEqual(mockRequest);
+      expect(service.update('test', mockUpdate)).resolves.toEqual(
+        mockUpdateResult(1),
+      );
+
+      expect(repository.update).toHaveBeenCalled();
+
+      expect(repository.update).toHaveBeenCalledWith('test', mockUpdate);
+    });
+
+    it('should throw not found exception if affected less than 1', async () => {
+      jest
+        .spyOn(repository, 'update')
+        .mockResolvedValueOnce(mockUpdateResult(0));
+
+      expect(service.update('test', mockUpdate)).resolves.toEqual(
+        new NotFoundException(),
+      );
 
       expect(repository.update).toHaveBeenCalled();
 
