@@ -109,8 +109,12 @@ const newRequestWithEvidence = (requestType: number): Create => {
   };
 };
 
+const storeExpectation = expect.objectContaining({
+  message: expect.stringContaining('CREATED'),
+});
+
 const update = {
-  status: 2,
+  status: 3,
   notes: faker.lorem.lines(),
 };
 
@@ -190,23 +194,30 @@ describe('RequestsController for User (e2e)', () => {
       request(app.getHttpServer())
         .post('/requests')
         .set('Authorization', `Bearer ${accessToken}`)
-        .expect(HttpStatus.CREATED);
+        .send(newRequest)
+        .expect(HttpStatus.CREATED)
+        .then((res) => {
+          expect(res.body).toEqual(storeExpectation);
+        });
     });
 
     it('(POST) /request with invalid request_type for replacement_evidence ', async () => {
       request(app.getHttpServer())
         .post('/requests')
-        .send(newRequestWithEvidence(1))
         .set('Authorization', `Bearer ${accessToken}`)
+        .send(newRequestWithEvidence(1))
         .expect(HttpStatus.UNPROCESSABLE_ENTITY);
     });
 
     it('(POST) /request with valid request_type for replacement_evidence ', async () => {
       request(app.getHttpServer())
         .post('/requests')
-        .send(newRequestWithEvidence(2))
         .set('Authorization', `Bearer ${accessToken}`)
-        .expect(HttpStatus.CREATED);
+        .send(newRequestWithEvidence(2))
+        .expect(HttpStatus.CREATED)
+        .then((res) => {
+          expect(res.body).toEqual(storeExpectation);
+        });
     });
   });
 
