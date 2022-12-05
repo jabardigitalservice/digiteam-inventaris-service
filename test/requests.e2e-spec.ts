@@ -113,8 +113,12 @@ const storeExpectation = expect.objectContaining({
   message: expect.stringContaining('CREATED'),
 });
 
+const updateExpectation = expect.objectContaining({
+  message: expect.stringContaining('UPDATED'),
+});
+
 const update = {
-  status: 3,
+  status: 2,
   notes: faker.lorem.lines(),
 };
 
@@ -129,7 +133,7 @@ beforeAll(async () => {
   await app.init();
 });
 
-describe('RequestsController for User (e2e)', () => {
+describe('RequestsController (e2e)', () => {
   beforeEach(async () => {
     accessToken = await getAccessToken(
       process.env.TEST_USER_USERNAME,
@@ -139,13 +143,13 @@ describe('RequestsController for User (e2e)', () => {
 
   describe('findAll', () => {
     it('(GET) /requests Unauthorized', async () => {
-      request(app.getHttpServer())
+      await request(app.getHttpServer())
         .get('/requests')
         .expect(HttpStatus.UNAUTHORIZED);
     });
 
     it('(GET) /requests Authorization', async () => {
-      request(app.getHttpServer())
+      await request(app.getHttpServer())
         .get('/requests')
         .set('Authorization', `Bearer ${accessToken}`)
         .expect(HttpStatus.OK)
@@ -159,20 +163,20 @@ describe('RequestsController for User (e2e)', () => {
 
   describe('findById', () => {
     it('(GET) /requests/:id Unauthorized', async () => {
-      request(app.getHttpServer())
+      await request(app.getHttpServer())
         .get('/requests/123abcd')
         .expect(HttpStatus.UNAUTHORIZED);
     });
 
     it('(GET) /requests/:id Not Found', async () => {
-      request(app.getHttpServer())
-        .get(`/requests/123abcd`)
+      await request(app.getHttpServer())
+        .get('/requests/123abcd')
         .set('Authorization', `Bearer ${accessToken}`)
         .expect(HttpStatus.NOT_FOUND);
     });
 
     it('(GET) /requests/:id', async () => {
-      request(app.getHttpServer())
+      await request(app.getHttpServer())
         .get(`/requests/${requestId}`)
         .set('Authorization', `Bearer ${accessToken}`)
         .expect(HttpStatus.OK)
@@ -184,14 +188,14 @@ describe('RequestsController for User (e2e)', () => {
 
   describe('create', () => {
     it('(POST /requests Unauthorized', async () => {
-      request(app.getHttpServer())
+      await request(app.getHttpServer())
         .post('/requests')
         .send(newRequest)
         .expect(HttpStatus.UNAUTHORIZED);
     });
 
     it('(POST) /request without replacement_evidence', async () => {
-      request(app.getHttpServer())
+      await request(app.getHttpServer())
         .post('/requests')
         .set('Authorization', `Bearer ${accessToken}`)
         .send(newRequest)
@@ -202,7 +206,7 @@ describe('RequestsController for User (e2e)', () => {
     });
 
     it('(POST) /request with invalid request_type for replacement_evidence ', async () => {
-      request(app.getHttpServer())
+      await request(app.getHttpServer())
         .post('/requests')
         .set('Authorization', `Bearer ${accessToken}`)
         .send(newRequestWithEvidence(1))
@@ -210,7 +214,7 @@ describe('RequestsController for User (e2e)', () => {
     });
 
     it('(POST) /request with valid request_type for replacement_evidence ', async () => {
-      request(app.getHttpServer())
+      await request(app.getHttpServer())
         .post('/requests')
         .set('Authorization', `Bearer ${accessToken}`)
         .send(newRequestWithEvidence(2))
@@ -222,12 +226,38 @@ describe('RequestsController for User (e2e)', () => {
   });
 
   describe('update', () => {
-    it('(PUT /requests/:id Unauthorized', async () => {
-      request(app.getHttpServer())
+    it('(PUT) /requests/:id Unauthorized', async () => {
+      await request(app.getHttpServer())
+        .put(`/requests/${requestId}`)
+        .send(update)
+        .expect(HttpStatus.UNAUTHORIZED);
+    });
+
+    it('(PUT) /requests/:id Not Found', async () => {
+      await request(app.getHttpServer())
+        .put('/requests/123abcd')
+        .set('Authorization', `Bearer ${accessToken}`)
+        .send(update)
+        .expect(HttpStatus.NOT_FOUND);
+    });
+
+    it('(PUT) /requests/:id with invalid notes for case rejected', async () => {
+      await request(app.getHttpServer())
+        .put(`/requests/${requestId}`)
+        .set('Authorization', `Bearer ${accessToken}`)
+        .send({ status: 2 })
+        .expect(HttpStatus.UNPROCESSABLE_ENTITY);
+    });
+
+    it('(PUT) /requests/:id with invalid notes for case rejected', async () => {
+      await request(app.getHttpServer())
         .put(`/requests/${requestId}`)
         .set('Authorization', `Bearer ${accessToken}`)
         .send(update)
-        .expect(HttpStatus.UNAUTHORIZED);
+        .expect(HttpStatus.OK)
+        .then((res) => {
+          expect(res.body).toEqual(updateExpectation);
+        });
     });
   });
 });
