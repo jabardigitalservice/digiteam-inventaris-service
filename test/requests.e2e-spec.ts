@@ -6,6 +6,8 @@ import 'jest-extended';
 import { config } from 'dotenv';
 import axios from 'axios';
 import qs from 'qs';
+import { Create } from '../src/modules/requests/requests.interface';
+import faker from 'faker';
 
 config();
 
@@ -88,26 +90,46 @@ const findByIdExpectation = expect.objectContaining({
   meta: {},
 });
 
-const notFoundError = {
-  error: 'Not Found',
+const replacement_evidence = faker.image.avatar();
+
+const newRequest: Create = {
+  division: 'ITDEV',
+  phone_number: faker.phone.phoneNumber(),
+  request_type: 1,
+  requested_item: 'Laptop',
+  purpose: 'Kebutuhan Meeting 2',
+  priority: 1,
 };
 
-describe('RequestsController (e2e)', () => {
-  let app: INestApplication;
+const newRequestWithEvidence = (requestType: number): Create => {
+  return {
+    ...newRequest,
+    request_type: requestType,
+    replacement_evidence,
+  };
+};
 
-  beforeEach(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
+const update = {
+  status: 2,
+  notes: faker.lorem.lines(),
+};
 
-    app = moduleFixture.createNestApplication();
-    await app.init();
-  });
+let app: INestApplication;
 
+beforeAll(async () => {
+  const moduleFixture: TestingModule = await Test.createTestingModule({
+    imports: [AppModule],
+  }).compile();
+
+  app = moduleFixture.createNestApplication();
+  await app.init();
+});
+
+describe('RequestsController for User (e2e)', () => {
   beforeEach(async () => {
     accessToken = await getAccessToken(
-      process.env.TEST_ADMIN_USERNAME,
-      process.env.TEST_ADMIN_PASSWORD,
+      process.env.TEST_USER_USERNAME,
+      process.env.TEST_USER_PASSWORD,
     );
   });
 
@@ -140,7 +162,7 @@ describe('RequestsController (e2e)', () => {
 
     it('(GET) /requests/:id Not Found', async () => {
       request(app.getHttpServer())
-        .get(`/requests/${requestId}`)
+        .get(`/requests/123abcd`)
         .set('Authorization', `Bearer ${accessToken}`)
         .expect(HttpStatus.NOT_FOUND);
     });
@@ -153,6 +175,48 @@ describe('RequestsController (e2e)', () => {
         .then((res) => {
           expect(res.body).toEqual(findByIdExpectation);
         });
+    });
+  });
+
+  describe('create', () => {
+    it('(POST /requests Unauthorized', async () => {
+      request(app.getHttpServer())
+        .post('/requests')
+        .send(newRequest)
+        .expect(HttpStatus.UNAUTHORIZED);
+    });
+
+    it('(POST) /request without replacement_evidence', async () => {
+      request(app.getHttpServer())
+        .post('/requests')
+        .set('Authorization', `Bearer ${accessToken}`)
+        .expect(HttpStatus.CREATED);
+    });
+
+    it('(POST) /request with invalid request_type for replacement_evidence ', async () => {
+      request(app.getHttpServer())
+        .post('/requests')
+        .send(newRequestWithEvidence(1))
+        .set('Authorization', `Bearer ${accessToken}`)
+        .expect(HttpStatus.UNPROCESSABLE_ENTITY);
+    });
+
+    it('(POST) /request with valid request_type for replacement_evidence ', async () => {
+      request(app.getHttpServer())
+        .post('/requests')
+        .send(newRequestWithEvidence(2))
+        .set('Authorization', `Bearer ${accessToken}`)
+        .expect(HttpStatus.CREATED);
+    });
+  });
+
+  describe('update', () => {
+    it('(PUT /requests/:id Unauthorized', async () => {
+      request(app.getHttpServer())
+        .put(`/requests/${requestId}`)
+        .set('Authorization', `Bearer ${accessToken}`)
+        .send(update)
+        .expect(HttpStatus.UNAUTHORIZED);
     });
   });
 });
