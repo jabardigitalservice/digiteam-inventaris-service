@@ -140,7 +140,7 @@ describe('RequestsController for User (e2e)', () => {
         .expect(HttpStatus.UNAUTHORIZED);
     });
 
-    it('(GET) /requests admin Authorization', async () => {
+    it('(GET) /requests Authorization', async () => {
       request(app.getHttpServer())
         .get('/requests')
         .set('Authorization', `Bearer ${accessToken}`)
