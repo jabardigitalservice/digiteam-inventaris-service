@@ -6,13 +6,14 @@ import {
 } from '../../common/helpers/pagination';
 import { UserAccess } from '../../common/interfaces/keycloak-user.interface';
 import { Create, Update, FindAll } from './requests.interface';
+import { Request } from 'src/entities/request.entity';
 
 @Injectable()
 export class RequestsService {
   constructor(private repo: RequestsRepository) {}
 
   async store(create: Create, userAccess: UserAccess) {
-    const request = await this.repo.store({
+    const request: Request = await this.repo.store({
       email: userAccess.email,
       username: userAccess.name,
       division: create.division,
