@@ -8,6 +8,7 @@ import axios from 'axios';
 import qs from 'qs';
 import { Create } from '../src/modules/requests/requests.interface';
 import faker from 'faker';
+import boostrap from '../src/main';
 
 config();
 
@@ -125,12 +126,7 @@ const update = {
 let app: INestApplication;
 
 beforeAll(async () => {
-  const moduleFixture: TestingModule = await Test.createTestingModule({
-    imports: [AppModule],
-  }).compile();
-
-  app = moduleFixture.createNestApplication();
-  await app.init();
+  app = await boostrap;
 });
 
 describe('RequestsController (e2e)', () => {
