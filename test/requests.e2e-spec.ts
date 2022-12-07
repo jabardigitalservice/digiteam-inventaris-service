@@ -1,6 +1,4 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, HttpStatus } from '@nestjs/common';
-import { AppModule } from '../src/app.module';
 import request from 'supertest';
 import 'jest-extended';
 import { config } from 'dotenv';
