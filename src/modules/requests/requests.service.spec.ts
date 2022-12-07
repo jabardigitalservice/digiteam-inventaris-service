@@ -1,80 +1,170 @@
+import { FindAll, Update } from './requests.interface';
+import { RequestsRepository } from './requests.repository';
 import { Test, TestingModule } from '@nestjs/testing';
 import { RequestsService } from './requests.service';
-import { RequestsRepository } from './requests.repository';
-import { MinioClientModule } from '../../providers/storage/minio/minio.module';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Request } from '../../entities/request.entity';
-import { Repository } from 'typeorm';
-import { mockFindAll, mockStore } from './requests.mock';
-import { Create } from './requests.interface';
-import { UserAccess } from '../../common/interfaces/keycloak-user.interface';
+import { Request } from 'src/entities/request.entity';
+import { Repository, UpdateResult } from 'typeorm';
+import { UserAccess } from 'src/common/interfaces/keycloak-user.interface';
+import { NotFoundException } from '@nestjs/common';
 
-let service: RequestsService;
-let repo: RequestsRepository;
-const userAccess: UserAccess = {
+const mockRequest: Request = {
+  id: 'test',
+  email: 'test',
+  username: 'test',
+  division: 'test',
+  phone_number: 'test',
+  request_type: 1,
+  replacement_evidence: 'test',
+  requested_item: 'test',
+  purpose: 'test',
+  priority: 1,
+  status: 1,
+};
+
+const mockUserAccess: UserAccess = {
   name: 'test',
   email: 'test',
   role: ['test'],
-  isAdmin: true,
+  isAdmin: false,
 };
 
-beforeAll(async () => {
-  const module: TestingModule = await Test.createTestingModule({
-    imports: [MinioClientModule],
-    providers: [
-      RequestsService,
-      RequestsRepository,
-      {
-        provide: getRepositoryToken(Request),
-        useClass: Repository,
-      },
-    ],
-  }).compile();
+const mockRequests = {
+  result: [mockRequest],
+  total: 1,
+};
 
-  service = module.get<RequestsService>(RequestsService);
-  repo = module.get<RequestsRepository>(RequestsRepository);
-});
+const mockFindAll: FindAll = {
+  page: 1,
+  limit: 1,
+  offset: 0,
+};
 
-describe('service test request', () => {
-  it('test store request', async () => {
-    mockStore(repo);
+const mockCreate: Request = {
+  username: mockUserAccess.name,
+  email: mockUserAccess.email,
+  division: 'test',
+  phone_number: 'test',
+  request_type: 1,
+  requested_item: 'test',
+  purpose: 'test',
+  priority: 1,
+  replacement_evidence: 'test',
+};
 
-    const createStore: Create = {
-      division: 'test',
-      phone_number: 'test,',
-      request_type: 123,
-      requested_item: 'test',
-      purpose: 'test',
-      priority: 123,
-    };
+const mockUpdateResult = (affected: number): UpdateResult => {
+  return {
+    raw: 'test',
+    affected,
+    generatedMaps: [],
+  };
+};
 
-    const userAccess: UserAccess = {
-      name: 'test',
-      email: 'test',
-      role: ['test'],
-      isAdmin: true,
-    };
-    expect(service.store(createStore, userAccess)).toEqual(undefined);
-  });
-});
+const mockUpdate: Update = {
+  status: 2,
+  notes: 'test',
+};
 
-describe('service test request', () => {
-  it('test findAll request', async () => {
-    const mockDataRepo = {
-      result: [
+describe('RequestsService', () => {
+  let repository: RequestsRepository;
+  let service: RequestsService;
+
+  beforeAll(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        RequestsService,
+        RequestsRepository,
         {
-          id: 1,
+          provide: getRepositoryToken(Request),
+          useClass: Repository,
         },
       ],
-      total: 1,
-    };
-    mockFindAll(repo, mockDataRepo);
+    }).compile();
 
-    const queryRequest = {
-      page: 1,
-      limit: 10,
-    };
+    repository = module.get<RequestsRepository>(RequestsRepository);
+    service = module.get<RequestsService>(RequestsService);
+  });
 
-    expect(await service.findAll(queryRequest, userAccess));
+  describe('findById', () => {
+    it('should return a request', async () => {
+      jest.spyOn(repository, 'findById').mockResolvedValueOnce(mockRequest);
+
+      expect(service.findById('test')).resolves.toEqual(mockRequest);
+      expect(repository.findById).toHaveBeenCalled();
+      expect(repository.findById).toHaveBeenCalledWith('test');
+    });
+
+    it('should throw not found exception if result is empty', async () => {
+      jest.spyOn(repository, 'findById').mockResolvedValueOnce(null);
+
+      expect(service.findById('test')).resolves.toEqual(
+        new NotFoundException(),
+      );
+
+      expect(repository.findById).toHaveBeenCalled();
+
+      expect(repository.findById).toHaveBeenCalledWith('test');
+    });
+  });
+
+  describe('findAll', () => {
+    it('should return an array of requests', async () => {
+      jest.spyOn(repository, 'findAll').mockResolvedValueOnce(mockRequests);
+
+      expect(service.findAll(mockFindAll, mockUserAccess)).resolves.toEqual(
+        mockRequests,
+      );
+
+      expect(repository.findAll).toHaveBeenCalled();
+
+      expect(repository.findAll).toHaveBeenCalledWith(
+        mockFindAll,
+        mockUserAccess,
+      );
+    });
+  });
+
+  describe('store', () => {
+    it('should store a new request', async () => {
+      jest.spyOn(repository, 'store').mockResolvedValueOnce(mockRequest);
+
+      expect(service.store(mockCreate, mockUserAccess)).resolves.toEqual(
+        mockRequest,
+      );
+
+      expect(repository.store).toHaveBeenCalled();
+
+      expect(repository.store).toHaveBeenCalledWith(mockCreate);
+    });
+  });
+
+  describe('update', () => {
+    it('should update a request', async () => {
+      jest
+        .spyOn(repository, 'update')
+        .mockResolvedValueOnce(mockUpdateResult(1));
+
+      expect(service.update('test', mockUpdate)).resolves.toEqual(
+        mockUpdateResult(1),
+      );
+
+      expect(repository.update).toHaveBeenCalled();
+
+      expect(repository.update).toHaveBeenCalledWith('test', mockUpdate);
+    });
+
+    it('should throw not found exception if affected less than 1', async () => {
+      jest
+        .spyOn(repository, 'update')
+        .mockResolvedValueOnce(mockUpdateResult(0));
+
+      expect(service.update('test', mockUpdate)).resolves.toEqual(
+        new NotFoundException(),
+      );
+
+      expect(repository.update).toHaveBeenCalled();
+
+      expect(repository.update).toHaveBeenCalledWith('test', mockUpdate);
+    });
   });
 });

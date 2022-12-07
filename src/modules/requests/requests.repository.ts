@@ -12,7 +12,7 @@ export class RequestsRepository {
 
   store(newRequest: Request) {
     const request = this.request.create(newRequest);
-    this.request.save(request);
+    return this.request.save(request);
   }
 
   private setFilter(findAll: FindAll, userAccess: UserAccess) {

@@ -59,23 +59,23 @@ npm run start:dev
 ```bash
 .
 ├── .github/
-│   └── workflows
-├── docker
+│   └── workflows/
+├── docker/
 └── src/
     ├── common/
-    │   ├── exceptions
-    │   ├── helpers
-    │   ├── interceptors
-    │   ├── interfaces
-    │   ├── lang
-    │   ├── logger
-    │   └── pipes
-    ├── config
+    │   ├── exceptions/
+    │   ├── helpers/
+    │   ├── interceptors/
+    │   ├── interfaces/
+    │   ├── lang/
+    │   ├── logger/
+    │   └── pipes/
+    ├── config/
     ├── database/
-    │   ├── migrations
-    │   ├── mysql
-    │   └── orm
-    ├── entities
+    │   ├── migrations/
+    │   ├── mysql/
+    │   └── orm/
+    ├── entities/
     ├── modules/
     │   └── <module_name>/
     │       ├── <module_name>.controller 
@@ -85,6 +85,6 @@ npm run start:dev
     │       ├── <module_name>.rules
     │       └── <module_name>.service  
     └── providers/
-        ├── sso
-        └── storage
+        ├── sso/
+        └── storage/
 ```

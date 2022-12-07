@@ -13,6 +13,10 @@ async function bootstrap() {
   app.use(helmet());
   app.useGlobalInterceptors(new NewrelicInterceptor());
 
-  await app.listen(configService.get('app.port'));
+  if (configService.get('app.env') !== 'test') {
+    await app.listen(configService.get('app.port'));
+  }
+
+  return app;
 }
-bootstrap();
+export default bootstrap();

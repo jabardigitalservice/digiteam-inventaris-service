@@ -6,13 +6,14 @@ import {
 } from '../../common/helpers/pagination';
 import { UserAccess } from '../../common/interfaces/keycloak-user.interface';
 import { Create, Update, FindAll } from './requests.interface';
+import { Request } from 'src/entities/request.entity';
 
 @Injectable()
 export class RequestsService {
   constructor(private repo: RequestsRepository) {}
 
-  store(create: Create, userAccess: UserAccess) {
-    this.repo.store({
+  async store(create: Create, userAccess: UserAccess) {
+    const request: Request = await this.repo.store({
       email: userAccess.email,
       username: userAccess.name,
       division: create.division,
@@ -23,6 +24,8 @@ export class RequestsService {
       priority: create.priority,
       replacement_evidence: create.replacement_evidence,
     });
+
+    return request;
   }
 
   async findAll(queryParams: FindAll, userAccess: UserAccess) {
@@ -56,7 +59,11 @@ export class RequestsService {
     return { data, meta: {} };
   }
 
-  update(id: string, update: Update) {
-    return this.repo.update(id, update);
+  async update(id: string, update: Update) {
+    const updated = await this.repo.update(id, update);
+
+    if (updated.affected < 1) {
+      throw new NotFoundException();
+    }
   }
 }

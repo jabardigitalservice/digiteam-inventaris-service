@@ -20,7 +20,11 @@ export const CreatePayloadSchema = Joi.object({
   requested_item: Joi.string().required(),
   purpose: Joi.string().required(),
   priority: Joi.number().strict().required(),
-  replacement_evidence: Joi.string().allow(...emptyAllow),
+  replacement_evidence: Joi.alternatives().conditional('request_type', {
+    is: Joi.equal(2),
+    then: Joi.string().required(),
+    otherwise: Joi.forbidden(),
+  }),
 });
 
 export const FindAllPayloadSchema = Joi.object({
