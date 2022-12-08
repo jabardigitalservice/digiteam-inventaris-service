@@ -6,7 +6,7 @@ import axios from 'axios';
 import qs from 'qs';
 import { Create } from '../src/modules/requests/requests.interface';
 import faker from 'faker';
-import boostrap from '../src/main';
+import bootstrap from '../src/main';
 
 config();
 
@@ -124,7 +124,7 @@ const update = {
 let app: INestApplication;
 
 beforeAll(async () => {
-  app = await boostrap;
+  app = await bootstrap;
 });
 
 describe('RequestsController (e2e)', () => {
