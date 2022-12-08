@@ -4,6 +4,11 @@ import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer
 import { FileFilterCallback } from 'multer';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import lang from '../lang/config';
+import { config } from 'dotenv';
+
+config();
+
+const limitSize = parseInt(process.env.FILE_LIMIT_SIZE);
 
 export const createFileObject = (file: Express.Multer.File) => {
   const name = randomUUID();
@@ -22,7 +27,7 @@ export const createFileObject = (file: Express.Multer.File) => {
   };
 };
 
-const allowFileSize = 2 * 1024 * 1024;
+const allowFileSize = limitSize * 1024 * 1024;
 
 const allowExtension = 'jpeg|png|pdf|docx|xlsx';
 
