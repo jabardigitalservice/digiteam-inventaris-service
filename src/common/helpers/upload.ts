@@ -22,7 +22,7 @@ export const createFileObject = (file: Express.Multer.File) => {
   };
 };
 
-const allowFileSize = 1 * 1024 * 1024;
+const allowFileSize = 2 * 1024 * 1024;
 
 const allowExtension = 'jpeg|png|pdf|docx|xlsx';
 
