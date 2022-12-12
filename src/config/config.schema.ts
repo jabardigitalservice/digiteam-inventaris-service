@@ -1,8 +1,10 @@
 import Joi from 'joi';
 
+const validEnv = ['development', 'test', 'production'];
+
 export const schema = Joi.object({
   APP_ENV: Joi.string()
-    .valid('development', 'production')
+    .valid(...validEnv)
     .default('development'),
   APP_NAME: Joi.string().required(),
   APP_PORT: Joi.number().default(3000),
