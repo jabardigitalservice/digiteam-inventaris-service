@@ -15,6 +15,11 @@ export default () => ({
     realm: process.env.KEYCLOAK_REALM,
     clientId: process.env.KEYCLOAK_CLIENT_ID,
     secret: process.env.KEYCLOAK_SECRET,
+    grantType: process.env.KEYCLOAK_GRANT_TYPE,
+    redirectUri: process.env.KEYCLOAK_REDIRECT_URI,
+    testAuthUri: process.env.TEST_KEYCLOAK_AUTH_URI,
+    testUsername: process.env.TEST_USER_USERNAME,
+    testPassword: process.env.TEST_USER_PASSWORD,
   },
   mysql: {
     host: process.env.DB_HOST,
