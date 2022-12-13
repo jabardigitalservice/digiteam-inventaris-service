@@ -1,12 +1,10 @@
 import { INestApplication, HttpStatus } from '@nestjs/common';
 import request from 'supertest';
 import 'jest-extended';
-import { config } from 'dotenv';
 import { Create } from '../src/modules/requests/requests.interface';
 import bootstrap from '../src/main';
 import { getAccessToken } from './authentications.e2e-spec';
-
-config();
+import { ConfigService } from '@nestjs/config';
 
 jest.setTimeout(10000);
 
@@ -98,10 +96,9 @@ describe('RequestsController (e2e)', () => {
   beforeAll(async () => {
     app = await bootstrap;
 
-    accessToken = await getAccessToken(
-      process.env.TEST_USER_USERNAME,
-      process.env.TEST_USER_PASSWORD,
-    );
+    const configService: ConfigService = app.get(ConfigService);
+
+    accessToken = await getAccessToken(configService);
   });
 
   afterAll(async () => {

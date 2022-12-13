@@ -1,31 +1,29 @@
 import { INestApplication, HttpStatus } from '@nestjs/common';
 import request from 'supertest';
 import 'jest-extended';
-import { config } from 'dotenv';
 import axios from 'axios';
 import qs from 'qs';
 import bootstrap from '../src/main';
-
-config();
+import { ConfigService } from '@nestjs/config';
 
 jest.setTimeout(10000);
 
 let accessToken: string;
 
-export const getAccessToken = async (username: string, password: string) => {
+export const getAccessToken = async (configService: ConfigService) => {
   try {
     const data = qs.stringify({
-      username,
-      password,
-      client_id: process.env.KEYCLOAK_CLIENT_ID,
-      redirect_uri: process.env.KEYCLOAK_REDIRECT_URI,
-      grant_type: process.env.KEYCLOAK_GRANT_TYPE,
-      client_secret: process.env.KEYCLOAK_SECRET,
+      username: configService.get('keycloak.testUsername'),
+      password: configService.get('keycloak.testPassword'),
+      client_id: configService.get('keycloak.clientId'),
+      client_secret: configService.get('keycloak.secret'),
+      grant_type: configService.get('keycloak.grantType'),
+      redirect_uri: configService.get('keycloak.redirectUri'),
     });
 
     const config = {
       method: 'post',
-      url: process.env.TEST_KEYCLOAK_AUTH_URI,
+      url: configService.get('keycloak.testAuthUri'),
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
@@ -47,10 +45,9 @@ describe('AuthenticationsController (e2e)', () => {
   beforeAll(async () => {
     app = await bootstrap;
 
-    accessToken = await getAccessToken(
-      process.env.TEST_USER_USERNAME,
-      process.env.TEST_USER_PASSWORD,
-    );
+    const configService: ConfigService = app.get(ConfigService);
+
+    accessToken = await getAccessToken(configService);
   });
 
   afterAll(async () => {
