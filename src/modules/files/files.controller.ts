@@ -11,14 +11,13 @@ import {
 import { FilesService } from './files.service';
 import { Express, Response } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { multerOptions } from '../../common/helpers/upload';
 
 @Controller('files')
 export class FilesController {
   constructor(private service: FilesService) {}
 
   @Post('upload')
-  @UseInterceptors(FileInterceptor('file', multerOptions))
+  @UseInterceptors(FileInterceptor('file'))
   async upload(
     @UploadedFile() file: Express.Multer.File,
     @Res() res: Response,
