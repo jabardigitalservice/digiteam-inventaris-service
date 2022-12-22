@@ -31,4 +31,5 @@ export const schema = Joi.object({
   TEST_KEYCLOAK_AUTH_URI: Joi.string().required(),
   TEST_USER_USERNAME: Joi.string().required(),
   TEST_USER_PASSWORD: Joi.string().required(),
+  FILE_LIMIT_SIZE: Joi.number().required(),
 });

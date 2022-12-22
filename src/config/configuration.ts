@@ -40,4 +40,7 @@ export default () => ({
     secretKey: process.env.MINIO_SECRET_KEY,
     bucketName: process.env.MINIO_BUCKET_NAME,
   },
+  file: {
+    limitSize: parseInt(process.env.FILE_LIMIT_SIZE),
+  },
 });
