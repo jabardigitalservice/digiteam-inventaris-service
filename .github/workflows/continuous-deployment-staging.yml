@@ -4,7 +4,7 @@ name: Digiteam Inventaris Sevice
 
 on:
   push:
-    branches: [development]
+    branches: [development, ops/cd]
     paths:
       - 'src/**'
 
@@ -55,7 +55,7 @@ jobs:
       - name: GitOps ArgoCD Update Image Tag
         uses: mikefarah/yq@master
         with:
-          cmd: yq -i '.spec.template.spec.containers[0].image = "${{ secrets.SERVICE_TAGNAME }}:${{ steps.vars.outputs.sha_short}}"' 'jds-terraform-gke/k8s/digiteam-inventaris-service/development/deployment.yaml'
+          cmd: yq -i '.spec.template.spec.containers[0].image = "${{ secrets.SERVICE_TAGNAME }}:${{ steps.vars.outputs.sha_short }}"' 'jds-terraform-gke/k8s/digiteam-inventaris-service/development/deployment.yaml'
 
       - name: GitOps ArgoCD Create Branch, Commit, Push
         run: |
@@ -63,7 +63,7 @@ jobs:
           cd jds-terraform-gke/k8s/digiteam-inventaris-service/development
           git config user.email "github-action@github.com"
           git config user.name "Github Action"
-          git checkout -b digiteam-inventaris-service-${{ steps.vars.outputs.sha_short}}-staging
+          git checkout -b digiteam-inventaris-service-${{ steps.vars.outputs.sha_short }}-staging
           git add deployment.yaml
-          git commit -m "Digiteam Inventaris Staging ${{ steps.vars.outputs.sha_short}} to staging"
-          git push origin digiteam-inventaris-service-${{ steps.vars.outputs.sha_short}}-staging -o merge_request.description="# Overview \n\n - Digiteam Inventaris Staging ${{ steps.vars.outputs.sha_short}} to staging \n\n ## Evidence \n\n - title: Digiteam Inventaris Staging ${{ steps.vars.outputs.sha_short}} to staging \n - project: Digiteam Inventaris Platform \n - participants:  " -o merge_request.create
+          git commit -m "Digiteam Inventaris Staging ${{ steps.vars.outputs.sha_short }} to staging"
+          git push origin digiteam-inventaris-service-${{ steps.vars.outputs.sha_short }}-staging -o merge_request.description="# Overview \n\n - Digiteam Inventaris Staging ${{ steps.vars.outputs.sha_short }} to staging \n\n ## Evidence \n\n - title: Digiteam Inventaris Staging ${{ steps.vars.outputs.sha_short }} to staging \n - project: Digiteam Inventaris Platform \n - participants:  " -o merge_request.create
