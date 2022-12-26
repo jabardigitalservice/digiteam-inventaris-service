@@ -40,6 +40,23 @@ const mockFindAll: FindAll = {
   offset: 0,
 };
 
+const mockFindByIdResult = {
+  data: mockRequest,
+  meta: {},
+};
+
+const mockFindAllResult = {
+  data: [mockRequest],
+  meta: {
+    from: 1,
+    last_page: 1,
+    limit: 1,
+    page: 1,
+    to: 1,
+    total: 1,
+  },
+};
+
 const mockCreate: Request = {
   username: mockUserAccess.name,
   email: mockUserAccess.email,
@@ -89,7 +106,7 @@ describe('RequestsService', () => {
     it('should return a request', async () => {
       jest.spyOn(repository, 'findById').mockResolvedValueOnce(mockRequest);
 
-      expect(service.findById('test')).resolves.toEqual(mockRequest);
+      expect(service.findById('test')).resolves.toEqual(mockFindByIdResult);
       expect(repository.findById).toHaveBeenCalled();
       expect(repository.findById).toHaveBeenCalledWith('test');
     });
@@ -97,9 +114,7 @@ describe('RequestsService', () => {
     it('should throw not found exception if result is empty', async () => {
       jest.spyOn(repository, 'findById').mockResolvedValueOnce(null);
 
-      expect(service.findById('test')).resolves.toEqual(
-        new NotFoundException(),
-      );
+      expect(service.findById('test')).rejects.toEqual(new NotFoundException());
 
       expect(repository.findById).toHaveBeenCalled();
 
@@ -112,7 +127,7 @@ describe('RequestsService', () => {
       jest.spyOn(repository, 'findAll').mockResolvedValueOnce(mockRequests);
 
       expect(service.findAll(mockFindAll, mockUserAccess)).resolves.toEqual(
-        mockRequests,
+        mockFindAllResult,
       );
 
       expect(repository.findAll).toHaveBeenCalled();
@@ -158,7 +173,7 @@ describe('RequestsService', () => {
         .spyOn(repository, 'update')
         .mockResolvedValueOnce(mockUpdateResult(0));
 
-      expect(service.update('test', mockUpdate)).resolves.toEqual(
+      expect(service.update('test', mockUpdate)).rejects.toEqual(
         new NotFoundException(),
       );
 

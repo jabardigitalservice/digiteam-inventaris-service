@@ -1,8 +1,10 @@
 import Joi from 'joi';
 
+const validEnv = ['development', 'test', 'production'];
+
 export const schema = Joi.object({
   APP_ENV: Joi.string()
-    .valid('development', 'production')
+    .valid(...validEnv)
     .default('development'),
   APP_NAME: Joi.string().required(),
   APP_PORT: Joi.number().default(3000),
@@ -11,6 +13,8 @@ export const schema = Joi.object({
   KEYCLOAK_REALM: Joi.string().required(),
   KEYCLOAK_CLIENT_ID: Joi.string().required(),
   KEYCLOAK_SECRET: Joi.string().required(),
+  KEYCLOAK_GRANT_TYPE: Joi.string().required(),
+  KEYCLOAK_REDIRECT_URI: Joi.string().required(),
   DB_HOST: Joi.string().required(),
   DB_PORT: Joi.number().required(),
   DB_USERNAME: Joi.string().required(),
@@ -24,4 +28,8 @@ export const schema = Joi.object({
   MINIO_ACCESS_KEY: Joi.string().required(),
   MINIO_SECRET_KEY: Joi.string().required(),
   MINIO_BUCKET_NAME: Joi.string().required(),
+  TEST_KEYCLOAK_AUTH_URI: Joi.string().required(),
+  TEST_USER_USERNAME: Joi.string().required(),
+  TEST_USER_PASSWORD: Joi.string().required(),
+  FILE_LIMIT_SIZE: Joi.number().required(),
 });

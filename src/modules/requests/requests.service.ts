@@ -65,5 +65,7 @@ export class RequestsService {
     if (updated.affected < 1) {
       throw new NotFoundException();
     }
+
+    return updated;
   }
 }
