@@ -4,9 +4,9 @@ name: Digiteam Inventaris Sevice
 
 on:
   push:
-    branches: [development, ops/cd]
-    # paths:
-    #   - 'src/**'
+    branches: [development]
+    paths:
+      - 'src/**'
 
 jobs:
   deploy:
